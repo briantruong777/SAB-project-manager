@@ -2,13 +2,41 @@ import java.util.*;
 
 public class Task 
 {
-	public enum status
+	private String name;
+	private Status taskStatus;
+	private HashMap<String, Widget> tools = new HashMap<String, Widget>();
+	private HashMap<String, Widget> parts = new HashMap<String, Widget>();
+	
+	public enum Status
 	{
-		Incomplete, Working, Complete
+		INCOMPLETE, WORKING, COMPLETE;
 	}
 	
-	public Task()
+	public Task(String s)
 	{
-		
-	}		
+		this.name = s;
+		taskStatus = Status.INCOMPLETE;		
+	}
+	
+	public Status getStatus()
+	{
+		return this.taskStatus;
+	}
+	
+	public void setStatus(Status s)
+	{
+		this.taskStatus = s;
+	}
+	
+	public void addTool(String name, int available, int max)
+	{
+		tools.put(name, new Widget(available, max));
+	}
+	
+	public void addPart(String name, int available, int max)
+	{
+		parts.put(name, new Widget(available, max));
+	}
+	
+	
 }

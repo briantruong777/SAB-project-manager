@@ -2,7 +2,8 @@ public class Runner
 {
 	public static void main(String[] args)
 	{
-		GUIFrame g = new GUIFrame();
-		Runner r = new Runner();
+		//GUIFrame g = new GUIFrame();
+		Inventory box = new Inventory();
+		box.printMap();
 	}
 }
