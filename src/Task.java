@@ -9,7 +9,4 @@ public class Task
 	{
 		status = STATUS[0];
 	}
-	
-	
-		
 }

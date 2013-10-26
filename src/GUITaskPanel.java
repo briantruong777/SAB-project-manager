@@ -35,8 +35,13 @@ public class GUITaskPanel extends JPanel
     add(b);
     add(new JLabel(ic));
     add(c);
-
+    
     lbl = new JLabel("Task 1");
     add(lbl);
+  }
+  
+  public String getStatus()
+  {
+	  return ((Button) grp.getSelection()).getLabel();
   }
 }
