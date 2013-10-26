@@ -14,7 +14,6 @@ public class GUIFrame extends JFrame
   public GUIFrame()
   {
     super("SAB Project Manager");
-    setBounds(100,100,300,200);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     menuBar = new JMenuBar();
