@@ -4,8 +4,9 @@ public class Task
 {
 	private String name;
 	private Status taskStatus;
-	private HashMap<String, Widget> tools = new HashMap<String, Widget>();
-	private HashMap<String, Widget> parts = new HashMap<String, Widget>();
+	private HashMap<String, Widget> tools;
+	private HashMap<String, Widget> parts;
+	private ArrayList<Task> dependencies;
 	
 	public enum Status
 	{
@@ -16,6 +17,9 @@ public class Task
 	{
 		this.name = s;
 		taskStatus = Status.INCOMPLETE;		
+		tools = new HashMap<String, Widget>();
+		parts = new HashMap<String, Widget>();
+		dependencies = new ArrayList<Task>();
 	}
 	
 	public Status getStatus()
@@ -30,13 +34,42 @@ public class Task
 	
 	public void addTool(String name, int available, int max)
 	{
-		tools.put(name, new Widget(available, max));
+		this.tools.put(name, new Widget(available, max));
 	}
 	
 	public void addPart(String name, int available, int max)
 	{
-		parts.put(name, new Widget(available, max));
+		this.parts.put(name, new Widget(available, max));
 	}
 	
+	public void removeTool(String name)
+	{
+		this.tools.remove(name);
+	}
 	
+	public void removePart(String name)
+	{
+		this.parts.remove(name);
+	}
+	
+	public void addDependency(Task t)
+	{
+		this.dependencies.add(t);
+	}
+	
+	public boolean checkresources()
+	{
+		//tools in Task HashMap tools available in tools in Inventory HashMap tools
+		//parts in Task HashMap parts available in tools in Inventory HashMap parts
+		
+		boolean available = false;
+		return available;
+	}
+	
+	public boolean checkDependencies()
+	{
+		//
+		boolean available = false;
+		return available;
+	}
 }
