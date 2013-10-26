@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Inventory
 {
@@ -10,6 +11,13 @@ public class Inventory
 		
 	}
 	
-	
+	public void fillMap(HashMap map, String filename)
+	{
+		Scanner filereader = new Scanner(filename);
+		while (filereader.hasNext())
+		{
+			map.put(filereader.next(), new Widget(filereader.nextInt(), filereader.nextInt()));
+		}
+	}
 	
 }
