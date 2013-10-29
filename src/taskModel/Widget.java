@@ -1,11 +1,11 @@
 package taskModel;
 public class Widget 
 {
-	public int available, max;
+	public int num, max;
 	
-	public Widget(int a, int m)
+	public Widget(int n, int m)
 	{
-		available = a;
+		num = n;
 		max = m;
 	}
 }

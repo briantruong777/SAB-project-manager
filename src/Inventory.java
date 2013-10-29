@@ -5,8 +5,8 @@ import taskModel.Widget;
 
 public class Inventory
 {
-	public static HashMap<String, Widget> tools = new HashMap<String, Widget>();
-	public static HashMap<String, Widget> parts = new HashMap<String, Widget>();
+	private static HashMap<String, Widget> tools = new HashMap<String, Widget>();
+	private static HashMap<String, Widget> parts = new HashMap<String, Widget>();
 	
 	public Inventory()
 	{
@@ -38,4 +38,44 @@ public class Inventory
 			System.out.println(key + " has " + tools.get(key).available + " available out of " + tools.get(key).max + " total"); 
 		}*/
 	}
+	
+	public static boolean checkResources(HashMap<String, Widget> taskTools, HashMap<String, Widget> taskParts)
+	{
+		boolean available = true;
+		for (String key : taskTools.keySet())
+		{
+			if (taskTools.get(key).num > tools.get(key).num)
+				available = false;
+		}
+		for (String key : taskParts.keySet())
+		{
+			if (taskParts.get(key).num > parts.get(key).num)
+				available = false;
+		}
+		return available;	
+	}
+	
+	public static boolean checkTools(HashMap<String, Widget> taskTools)
+	{
+		boolean available = true;
+		for (String key : taskTools.keySet())
+		{
+			if (taskTools.get(key).num > tools.get(key).num)
+				available = false;
+		}
+		return available;	
+	}
+	
+	public static boolean checkParts(HashMap<String, Widget> taskParts)
+	{
+		boolean available = true;
+		for (String key : taskParts.keySet())
+		{
+			if (taskParts.get(key).num > parts.get(key).num)
+				available = false;
+		}
+		return available;	
+	}
+	
+	
 }
