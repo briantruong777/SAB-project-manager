@@ -1,0 +1,39 @@
+tasks
+
+import task:
+task name
+reference steps
+part/tool constraint
+predecessor constraint
+
+tasks:
+pause
+builder, foreman
+how long builder spends completing task
+start date/time, end date/time
+link to folder, embed, qr code picture of parts, models of assembly
+list of parts/tools
+notes
+determine next task
+
+quality issues of parts
+constraints
+
+export
+task
+builder
+foreman
+notes
+time start, paused, complete, spent
+
+quality issues export
+part name
+builder
+foreman
+issue
+steps fix
+part usable
+
+
+
+work on file handler

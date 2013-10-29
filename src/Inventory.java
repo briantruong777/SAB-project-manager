@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Scanner;
 
+import taskModel.Widget;
+
 public class Inventory
 {
 	public static HashMap<String, Widget> tools = new HashMap<String, Widget>();

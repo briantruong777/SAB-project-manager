@@ -1,4 +1,6 @@
-import java.util.*;
+package taskModel;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Task 
 {
@@ -10,7 +12,7 @@ public class Task
 	
 	public enum Status
 	{
-		INCOMPLETE, WORKING, COMPLETE;
+		ILLEGAL, UNAVAILABLE, INCOMPLETE, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -20,6 +22,11 @@ public class Task
 		tools = new HashMap<String, Widget>();
 		parts = new HashMap<String, Widget>();
 		dependencies = new ArrayList<Task>();
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	public Status getStatus()
