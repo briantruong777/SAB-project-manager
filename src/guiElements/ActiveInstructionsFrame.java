@@ -131,7 +131,6 @@ public class ActiveInstructionsFrame extends JFrame
 		JPanel taskListPanel = new JPanel();
 		scrollPane.setViewportView(taskListPanel);
 		taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
-		taskListPanel.add(new TaskDisplayPanel());
 		
 		JPanel taskViewControlPanel = new JPanel();
 		taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);
@@ -166,33 +165,8 @@ public class ActiveInstructionsFrame extends JFrame
 		JButton btnNew = new JButton("New");
 		taskControlPanel.add(btnNew);
 		
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		taskControlPanel.add(btnEdit);
-		
 		JButton btnDelete = new JButton("Delete");
 		taskControlPanel.add(btnDelete);
-		
-		JSeparator separator_2 = new JSeparator();
-		taskControlPanel.add(separator_2);
-		
-		JButton btnStart = new JButton("Start");
-		taskControlPanel.add(btnStart);
-		
-		JButton btnPause = new JButton("Pause");
-		taskControlPanel.add(btnPause);
-		
-		JButton btnComplete = new JButton("Complete");
-		taskControlPanel.add(btnComplete);
-		
-		JSeparator separator_3 = new JSeparator();
-		taskControlPanel.add(separator_3);
-		
-		JButton btnNotes = new JButton("Notes");
-		taskControlPanel.add(btnNotes);
 		
 		Box resourcePanel = Box.createHorizontalBox();
 		tabbedPane.addTab("Resources", null, resourcePanel, null);

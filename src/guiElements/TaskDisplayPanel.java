@@ -11,14 +11,19 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import taskModel.Task;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 public class TaskDisplayPanel extends JPanel
 {
 
 	Task task;
-	JRadioButton rdbtnPlayButton;
-	JRadioButton rdbtnPausebutton;
-	JRadioButton rdbtnStopbutton;
+	JRadioButton mradioPlayButton;
+	JRadioButton mradioPausebutton;
+	JRadioButton mradioStopbutton;
+	private JRadioButton mradioNotesButton;
+	private JSeparator mseparator;
+	private JRadioButton mradioLinkutton;
 	
 	/**
 	 * Create the panel.
@@ -35,20 +40,31 @@ public class TaskDisplayPanel extends JPanel
 		
 		TaskStatusManager statusManager = new TaskStatusManager();
 		
-		rdbtnPlayButton = new JRadioButton(new ImageIcon("res/play.png"));
-		rdbtnPlayButton.addActionListener(statusManager);
-		rdbtnPlayButton.setActionCommand("Play");
-		add(rdbtnPlayButton);
+		mradioPlayButton = new JRadioButton(new ImageIcon("res/play.png"));
+		mradioPlayButton.addActionListener(statusManager);
+		mradioPlayButton.setActionCommand("Play");
+		add(mradioPlayButton);
 		
-		rdbtnPausebutton = new JRadioButton(new ImageIcon("res/pause.png"));
-		rdbtnPausebutton.addActionListener(statusManager);
-		rdbtnPausebutton.setActionCommand("Pause");
-		add(rdbtnPausebutton);
+		mradioPausebutton = new JRadioButton(new ImageIcon("res/pause.png"));
+		mradioPausebutton.addActionListener(statusManager);
+		mradioPausebutton.setActionCommand("Pause");
+		add(mradioPausebutton);
 		
-		rdbtnStopbutton = new JRadioButton(new ImageIcon("res/stop.png"));
-		rdbtnStopbutton.addActionListener(statusManager);
-		rdbtnStopbutton.setActionCommand("Stop");
-		add(rdbtnStopbutton);
+		mradioStopbutton = new JRadioButton(new ImageIcon("res/stop.png"));
+		mradioStopbutton.addActionListener(statusManager);
+		mradioStopbutton.setActionCommand("Stop");
+		add(mradioStopbutton);
+		
+		mseparator = new JSeparator();
+		mseparator.setOrientation(SwingConstants.VERTICAL);
+		add(mseparator);
+
+		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
+		mradioStopbutton.setActionCommand("Notes");
+		add(mradioNotesButton);
+		
+		mradioLinkutton = new JRadioButton(new ImageIcon("res/folder.png"));
+		add(mradioLinkutton);
 		
 		taskStatusChange();
 	}
@@ -58,39 +74,39 @@ public class TaskDisplayPanel extends JPanel
 		switch (task.getStatus())
 		{
 			case ILLEGAL:
-				rdbtnPlayButton.setEnabled(false);
-				rdbtnPausebutton.setEnabled(false);
-				rdbtnStopbutton.setEnabled(false);
+				mradioPlayButton.setEnabled(false);
+				mradioPausebutton.setEnabled(false);
+				mradioStopbutton.setEnabled(false);
 				setBackground(Color.RED);
 				break;
 			case UNAVAILABLE:
-				rdbtnPlayButton.setEnabled(false);
-				rdbtnPausebutton.setEnabled(false);
-				rdbtnStopbutton.setEnabled(false);
+				mradioPlayButton.setEnabled(false);
+				mradioPausebutton.setEnabled(false);
+				mradioStopbutton.setEnabled(false);
 				setBackground(Color.DARK_GRAY);
 				break;
 			case INCOMPLETE:
-				rdbtnPlayButton.setEnabled(true);
-				rdbtnPausebutton.setEnabled(false);
-				rdbtnStopbutton.setEnabled(false);
+				mradioPlayButton.setEnabled(true);
+				mradioPausebutton.setEnabled(false);
+				mradioStopbutton.setEnabled(false);
 				setBackground(Color.BLUE);
 				break;
 			case WORKING:
-				rdbtnPlayButton.setEnabled(false);
-				rdbtnPausebutton.setEnabled(true);
-				rdbtnStopbutton.setEnabled(true);
+				mradioPlayButton.setEnabled(false);
+				mradioPausebutton.setEnabled(true);
+				mradioStopbutton.setEnabled(true);
 				setBackground(Color.GREEN);
 				break;
 			case PAUSED:
-				rdbtnPlayButton.setEnabled(true);
-				rdbtnPausebutton.setEnabled(false);
-				rdbtnStopbutton.setEnabled(true);
+				mradioPlayButton.setEnabled(true);
+				mradioPausebutton.setEnabled(false);
+				mradioStopbutton.setEnabled(true);
 				setBackground(Color.YELLOW);
 				break;
 			case COMPLETE:
-				rdbtnPlayButton.setEnabled(false);
-				rdbtnPausebutton.setEnabled(false);
-				rdbtnStopbutton.setEnabled(false);
+				mradioPlayButton.setEnabled(false);
+				mradioPausebutton.setEnabled(false);
+				mradioStopbutton.setEnabled(false);
 				setBackground(Color.LIGHT_GRAY);
 				break;
 		}
