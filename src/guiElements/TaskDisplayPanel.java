@@ -28,30 +28,30 @@ public class TaskDisplayPanel extends JPanel
 	/**
 	 * Create the panel.
 	 */
-	public TaskDisplayPanel(Task t)
+	public TaskDisplayPanel(String s)
 	{
-		task = t;
+		//task = t;
 		
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-//		JLabel lblTasknamelabel = new JLabel("Tester");
-		JLabel lblTasknamelabel = new JLabel(t.getName());
+		JLabel lblTasknamelabel = new JLabel(s);
+//		JLabel lblTasknamelabel = new JLabel(t.getName());
 		add(lblTasknamelabel);
 		
-		TaskStatusManager statusManager = new TaskStatusManager();
+//		TaskStatusManager statusManager = new TaskStatusManager();
 		
 		mradioPlayButton = new JRadioButton(new ImageIcon("res/play.png"));
-		mradioPlayButton.addActionListener(statusManager);
+//		mradioPlayButton.addActionListener(statusManager);
 		mradioPlayButton.setActionCommand("Play");
 		add(mradioPlayButton);
 		
 		mradioPausebutton = new JRadioButton(new ImageIcon("res/pause.png"));
-		mradioPausebutton.addActionListener(statusManager);
+//		mradioPausebutton.addActionListener(statusManager);
 		mradioPausebutton.setActionCommand("Pause");
 		add(mradioPausebutton);
 		
 		mradioStopbutton = new JRadioButton(new ImageIcon("res/stop.png"));
-		mradioStopbutton.addActionListener(statusManager);
+//		mradioStopbutton.addActionListener(statusManager);
 		mradioStopbutton.setActionCommand("Stop");
 		add(mradioStopbutton);
 		
@@ -66,9 +66,9 @@ public class TaskDisplayPanel extends JPanel
 		mradioLinkutton = new JRadioButton(new ImageIcon("res/folder.png"));
 		add(mradioLinkutton);
 		
-		taskStatusChange();
+//		taskStatusChange();
 	}
-	
+/*	
 	private void taskStatusChange()
 	{
 		switch (task.getStatus())
@@ -131,5 +131,5 @@ public class TaskDisplayPanel extends JPanel
 			taskStatusChange();
 		}
 		
-	}
+	}*/
 }
