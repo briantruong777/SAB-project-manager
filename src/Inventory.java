@@ -33,9 +33,9 @@ public class Inventory
 	
 	public static void printMap()
 	{
-		for (String key : tools.keySet())
+		/*for (String key : tools.keySet())
 		{
 			System.out.println(key + " has " + tools.get(key).available + " available out of " + tools.get(key).max + " total"); 
-		}
+		}*/
 	}
 }
