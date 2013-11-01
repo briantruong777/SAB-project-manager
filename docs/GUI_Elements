@@ -2,13 +2,13 @@ tasks
 
 import task:
 task name
-reference steps
+reference steps, links
 part/tool constraint
 predecessor constraint
+builder, foreman
 
 tasks:
 pause
-builder, foreman
 how long builder spends completing task
 start date/time, end date/time
 link to folder, embed, qr code picture of parts, models of assembly

@@ -15,6 +15,11 @@ public class Task
 		ILLEGAL, UNAVAILABLE, INCOMPLETE, WORKING, PAUSED, COMPLETE;
 	}
 	
+	public Task()
+	{
+		
+	}
+	
 	public Task(String s)
 	{
 		this.name = s;
@@ -22,6 +27,11 @@ public class Task
 		tools = new HashMap<String, Widget>();
 		parts = new HashMap<String, Widget>();
 		dependencies = new ArrayList<Task>();
+	}
+	
+	public void setName(String s)
+	{
+		name = s;
 	}
 	
 	public String getName()
