@@ -34,7 +34,7 @@ public class TaskManager
     Task t = createNewTask(taskName);
 
     Task d;
-    for (String str: deps)
+    for (String str : deps)
     {
       if (!tasks.containsKey(str))
       {

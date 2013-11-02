@@ -1,4 +1,5 @@
-package taskModel;
+package resourceModel;
+
 public class Widget 
 {
 	public int num, max;

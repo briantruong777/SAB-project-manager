@@ -8,6 +8,7 @@ package taskModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Calendar;
+import resourceModel.Inventory;
 
 public class Task 
 {
@@ -143,23 +144,24 @@ public class Task
       lastResumeTime = -1;
     }
   }
-
-
-
 	
-	public boolean checkresources()
+	public boolean checkResources()
 	{
 		//tools in Task HashMap tools available in tools in Inventory HashMap tools
 		//parts in Task HashMap parts available in tools in Inventory HashMap parts
-		
-		boolean available = false;
-		return available;
+		return Inventory.checkResources(tools, parts);
 	}
 	
 	public boolean checkDependencies()
 	{
-		//
-		boolean available = false;
+		boolean available = true;
+    for (Task t : dependencies)
+    {
+      if (t.taskStatus != Status.COMPLETE)
+      {
+        available = false;
+      }
+    }
 		return available;
 	}
 }
