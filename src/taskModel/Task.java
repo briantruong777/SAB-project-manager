@@ -18,6 +18,9 @@ public class Task
 	private ArrayList<Task> dependencies;
   private Calendar startDate;
   private Calendar endDate;
+  private long timeSpent;
+
+  private long lastResumeTime;
 	
 	public enum Status
 	{
@@ -37,9 +40,12 @@ public class Task
 		parts = new HashMap<String, Integer>();
 		dependencies = new ArrayList<Task>();
     startDate = Calendar.getInstance();
-    startDate.clear(); // Instantiate these variables, but invalidate value
+    startDate.clear(); // Invalidates value
     endDate = Calendar.getInstance();
     endDate.clear();
+    timeSpent = 0; // In milliseconds
+
+    lastResumeTime = -1; // -1 when paused
 	}
 	
 	public void setName(String s)
@@ -107,10 +113,12 @@ public class Task
   public void start()
   {
     startDate = Calendar.getInstance();
+    resume();
   }
   public void stop()
   {
-    endDate = Calendar.getInstance()
+    endDate = Calendar.getInstance();
+    pause();
   }
   public Calendar getStartDate()
   {
@@ -119,6 +127,31 @@ public class Task
   public Calendar getEndDate()
   {
     return endDate;
+  }
+
+  public long getTimeSpent()
+  {
+    return timeSpent;
+  }
+  public void setTimeSpent(long timeSpent)
+  {
+    this.timeSpent = timeSpent;
+  }
+  public void resume()
+  {
+    if (lastResumeTime == -1) // Check if paused
+    {
+      lastResumeTime = Calendar.getInstance().getTimeInMillis();
+    }
+  }
+  public void pause()
+  {
+    if (lastResumeTime != -1) // Check for valid last resume time
+    {
+      long curTime = Calendar.getInstance().getTimeInMillis();
+      timeSpent += curTime - lastResumeTime;
+      lastResumeTime = -1;
+    }
   }
 
 
