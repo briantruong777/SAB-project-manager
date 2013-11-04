@@ -2,10 +2,18 @@ tasks
 
 import task:
 task name
-reference steps, links
-part/tool constraint
+builder
+foreman
 predecessor constraint
-builder, foreman
+
+part
+
+
+tool constraint
+
+
+reference steps, links
+time
 
 tasks:
 pause

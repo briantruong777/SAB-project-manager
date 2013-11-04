@@ -48,10 +48,6 @@ public class Task
     lastResumeTime = -1; // -1 when paused
 	}
 	
-	public void setName(String s)
-	{
-		name = s;
-	}
 	
 	public String getName()
 	{
