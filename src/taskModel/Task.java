@@ -8,6 +8,7 @@ package taskModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Calendar;
+import resourceModel.Inventory;
 
 public class Task 
 {
@@ -18,10 +19,18 @@ public class Task
 	private ArrayList<Task> dependencies;
   private Calendar startDate;
   private Calendar endDate;
+  private long timeSpent;
+
+  private long lastResumeTime;
 	
 	public enum Status
 	{
 		ILLEGAL, UNAVAILABLE, INCOMPLETE, WORKING, PAUSED, COMPLETE;
+	}
+	
+	public Task()
+	{
+		
 	}
 	
 	public Task(String s)
@@ -32,10 +41,14 @@ public class Task
 		parts = new HashMap<String, Integer>();
 		dependencies = new ArrayList<Task>();
     startDate = Calendar.getInstance();
-    startDate.clear(); // Instantiate these variables, but invalidate value
+    startDate.clear(); // Invalidates value
     endDate = Calendar.getInstance();
     endDate.clear();
+    timeSpent = 0; // In milliseconds
+
+    lastResumeTime = -1; // -1 when paused
 	}
+	
 	
 	public String getName()
 	{
@@ -97,10 +110,12 @@ public class Task
   public void start()
   {
     startDate = Calendar.getInstance();
+    resume();
   }
   public void stop()
   {
-    endDate = Calendar.getInstance()
+    endDate = Calendar.getInstance();
+    pause();
   }
   public Calendar getStartDate()
   {
@@ -111,22 +126,48 @@ public class Task
     return endDate;
   }
 
-
-
+  public long getTimeSpent()
+  {
+    return timeSpent;
+  }
+  public void setTimeSpent(long timeSpent)
+  {
+    this.timeSpent = timeSpent;
+  }
+  public void resume()
+  {
+    if (lastResumeTime == -1) // Check if paused
+    {
+      lastResumeTime = Calendar.getInstance().getTimeInMillis();
+    }
+  }
+  public void pause()
+  {
+    if (lastResumeTime != -1) // Check for valid last resume time
+    {
+      long curTime = Calendar.getInstance().getTimeInMillis();
+      timeSpent += curTime - lastResumeTime;
+      lastResumeTime = -1;
+    }
+  }
 	
-	public boolean checkresources()
+	public boolean checkResources()
 	{
 		//tools in Task HashMap tools available in tools in Inventory HashMap tools
 		//parts in Task HashMap parts available in tools in Inventory HashMap parts
-		
-		boolean available = false;
-		return available;
+		return Inventory.checkResources(tools, parts);
 	}
 	
 	public boolean checkDependencies()
 	{
-		//
-		boolean available = false;
+		boolean available = true;
+    for (Task t : dependencies)
+    {
+      if (t.taskStatus != Status.COMPLETE)
+      {
+        available = false;
+      }
+    }
 		return available;
 	}
 }

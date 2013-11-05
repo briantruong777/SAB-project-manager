@@ -1,0 +1,286 @@
+﻿
+Name:_____________________________                                Date: _____________________________
+Safety: 
+Parts Needed:
+CP-1
+CP-2
+CP-3
+CP-4
+A-905-L/R
+A-908  (2X)
+A-910  (2X)
+
+
+Rivets Needed:
+CS4-4
+LP4-3
+AN426AD3-3
+AN470AD4-4
+Tools Needed
+Tin Snips
+File
+Clecos (small silver and copper)
+Cleco Clamps
+Rivet Squeezer
+Drill Angle Guide
+Pop Rivet Tool
+Drill
+Oversized drill bit (for deburring)
+#30 Drill Bit
+#40 Drill Bit
+
+A. Preparation
+1. Be sure to follow all safety guidelines and regulations. Copies of safety guidelines and regulations can be found posted throughout the hanger.
+2. Check to be sure all parts and rivet types are accounted for in the kit. A list of parts and rivets can be found in above in the “Parts Needed” section. 
+3. Separate the two parts labeled A-910L/R.
+B. Separating A-910-L/R
+1.    There are two parts marked A-910. Using tin snips, separate each A-910 into A-910-L and A-910-R by removing the shaded area. There will now be four separate parts of which two are A-910-L and two are A-910-R.
+NOTE: 
+Cut inside the marked lines following to avoid removing too much material. For now, it is okay to have some shaded material left on the part.
+Cut gently, removing small portions of the shaded region at a time to avoid bending the part as you cut.
+Dispose off the excess material after cutting. This is waste. 
+
+2. 	If there remains any shaded material on A-910-L or A-910-R, remove the shaded material using a bench grinder.
+
+3.    Choose one A-910-R and one A-910-L to be used with CP-1.Using a sharpie, label the A-910-R and A-910-L chosen for CP-1 in a way that you will be able to identify later.
+NOTE: 
+From this time on, the A-910-R used for CP-1 cannot be switched with the A-910-R for CP-2. The same is true for A-910-L.
+4.    Place A-910-L, A-910-R, CP-3, and CP-4 onto CP-1, making sure all the holes line up with each other so that light could be seen through the holes.
+NOTE:
+Make sure that the thin side of CP-4 lines up with the back edge of CP-1
+Make sure that the center of the flange on CP-3 sits approximately in the middle of the corresponding line of holes on CP-1.
+5.    Check for interference between the CP-3, CP-4, A-905-L and A-905-R.
+NOTE: 
+Remember that there must not be interference with either part A-910-L or A-910-R.
+6.    If A-910-L or A-910-R interferes with either CP-3 and CP-4, use the bench grinder to remove excess material.
+7.    Repeat Steps 3-5 until there is no interference between A-910-L, A-910-R, CP-3, and CP-4 on CP-1.
+8.    Repeat Steps 2-7 for the other A-910-L and A-910-R chosen for CP-2.
+C. Match Drill A-910-L and A-910-R to CP-2 and CP-1
+1.    Place A-910-L and A-910-R on CP-1, being sure that the rib spines face inward.
+NOTE:
+The rib spines of A-910-L and A-910-R should be facing each other with the tapered ends pointing toward the back of CP-1
+2.   Using the small silver clecos, cleco every other hole of A-910-L and A-910-R to CP-1.
+3.    Using a #30 drill bit and a drill, match drill the non-clecoed holes of A-910-L and A-910-R to CP-1.
+4.    Remove the clecos holding A-910-L and A-910-R to CP-1 and place copper clecos into the previously match drilled holes.
+5.    Using a #30 drill bit and a drill, match drill the non-clecoed holes of A-910-L and A-910-R to CP-1.
+6.    Repeat Step 2 -5 for CP-2, A-901-L, and A-910-R being sure that the rib spines face away from each other.
+NOTE:  
+The rib spines of A-910-L and A-910-R should be facing the outside of CP-2 with the tapered ends pointing toward the back of CP-2.
+
+D. Deburr A-910-L, A-910-R, CP-1 and CP-2
+1.    Using an oversized drill bit, deburr all the match-drilled holes of A-910-L and A-910-R and CP-1 and CP-2.
+NOTE: 
+Don’t apply too much force on the material to avoid countersinking the holes.
+2.    For parts A-910-L, A-910-R, CP-1 and CP-2, use the file to round the corners.
+	NOTE:
+Deburr all edges of A-910-L, A-910-R, CP-1 and CP-2 only until there are no distinct ridges or sharp edges.
+E. Dimple A-910-L, A-910-R, CP-1 and CP-2
+1.  	Using a C-frame and dimple dies, dimple the match drilled and deburred holes of CP-1 and CP-2 that correspond to the holes of A-910-L and A-910-R.
+NOTE: 
+Make sure the male dimple die creates an indent on the outside of CP-1 and CP-2 so that a flush rivet can sit on the outside of the skin.
+2.    Using a C-frame and dimple dies, dimple the match drilled and deburred holes of A-910-R and A-910-L that correspond to the previously dimpled holes of CP-1 and CP-2.
+NOTE: 
+Make sure the male dimple die creates an indent on the side of A-910-R and A-910-L that is flush against CP-1 and CP-2. This way dimples from CP-1 and CP-2 can rest in the dimples of A-910-L and A-910-R.
+F. Rivet A-910-L and A-910-R to CP-1 and CP-2
+1. Using copper clecos, cleco every other hole of A-910-L and A-910-R to CP-1.
+NOTE: 
+The rib spines of A-910-L and A-910-R should be facing the outside of CP-1 with the tapered ends pointing toward the back of CP-1.
+Be sure that the correct A-910-L and A-910-R (the ones labeled for use on CP-1) are riveted onto CP-1.
+
+2.  Using the CS4-4 (flush) pop rivets and the pop-rivet tool, rivet all but the hole closest to tapered end of A-910-R and A-910-L onto CP-1.
+NOTE:
+Do not rivet the hole closest to the trailing edge (the hole closest to where CP-4 will be placed.
+3.    Remove the remaining clecos that hold A-910-L and A-910-R to CP-1.
+4.    Using the CS4-4 (flush) pop rivets and the pop-rivet tool, rivet the remaining holes of A-910-R and A-910-L to CP-1 except the hole closest to the tapered end.
+NOTE:
+Do not rivet the hole closest to the trailing edge (the hole closest to where CP-4 will be placed.
+5. Using AN426AD4-3 (flush) rivets, the back riveting plate, rivet tape, and the pneumatic rivet gun, rivet the hole closest to the trailing edge on A-910-L and A-910-R to CP-1.
+6.    Using the copper clecos, cleco every other hole of A-910-L and A-910-R to CP-2.
+NOTE: 
+The rib spines of A-910-L and A-910-R should be facing each other toward the middle of CP-2 with the tapered ends pointing toward the back of CP-2.
+Be sure that the correct A-910-L and A-910-R (the ones labeled for use on CP-2) are riveted onto CP-2.
+7.    Repeat Steps 2 and 3 for A-910-L, A-910-R, and CP-2.
+
+G. Match Drill A-908, CP-3, and A-905-L/R
+1. Fit A-905-L and A-905-R into CP-3.
+NOTE: 
+Make sure A-905-L and A-905-R fit into the flanges of CP-3 and are aligned with the outside edge of CP-3. A small amount of force may be necessary to get A-905-L and A-905-R to fit into CP-3.
+Make sure that the flanges of A-905-L and A-905-R are facing outward, away from the middle of CP-3.
+
+2. Clamp A-905-L and A-905-R to CP-3. 
+NOTE: 
+Place the clamp over the smaller middle holes. These holes will not be used.
+3. Using a sharpie and the larger outside holes of A-905-L and A-905-R as a guide, mark through the holes of A-905-L and A-905-R to where A-905-L and A-905-R will be riveted to CP-3.  
+4. Unclamp and remove A-905-L and A-905-R from CP-3. 
+5. Using a #30 drill bit and a drill, drill through the marked holes on CP-3 where A-905-L and A-905-R will be riveted to CP-3.
+NOTE:
+Be sure to drill through CP-3 at a 90 degree angle. 
+6. There are two pieces called A-908. Choose and mark one A-908 to be used on the left side of the assembly and one A-908 to be used on the right side of the assembly.
+NOTE:
+If instructions do not refer to a specific side of the assembly and reference A-908. Assume the instructions are for both parts labeled A-908.
+7. Clamp A-908 to A-905-L to CP-3 being sure to line up the holes of A-908, CP-3, A-905-L.
+NOTE: 
+Place the clamp over the smaller middle holes of A-905-R and A-905-L. These holes will not be used.
+Be sure the side of A-908 that has three holes faces the outside of the assembly.
+Be sure to the correct A-908 for the left and right sides of the assembly.
+
+8. Using a copper cleco, cleco one hole of A-908 to A-905-L to CP-3.
+9. Using a #30 drill bit and a drill, match drill the other outside hole of A-908 to CP-3 to A-905-L.
+10. Remove the cleco from A-908, CP-3 and A-905-L and repeat steps 8 and 9 for the other hole connecting A-908, CP-3, and A-905-L together
+11. Repeat steps 8-10 for A-908, CP-3, and A-905-R.
+12. Using copper clecos, cleco the match drilled holes of A-908, A-905-R, and CP-3.
+13. Using a #30 drill bit and a drill, match drill the remaining holes of A-908 to CP-3.
+14. Disassemble and deburr the holes of A-908, CP-3, A-905-L and A-905-R, using an oversized drill bit.
+NOTE:
+Be sure to deburr both sides of of A-908, CP-3, A-905-L and A-905-R.
+
+H. Rivet A-908 and CP-3 to A-905-R and A-905-L
+1. Using the AN470AD4-4 rivets, the rivet squeezer, and the regular die set, , rivet the outermost holes on A-908 that go through CP-3 and A-905-L.
+NOTE:
+Do not rivet the three holes of A-908 that only go through CP-3. 
+
+2. Using the AN470AD4-4 rivets, the rivet squeezer, and the regular die set, rivet the outermost holes on A-908 that go through CP-3 and A-905-R.
+NOTE:
+Do not rivet the three holes of A-908 that only go through CP-3. 
+
+3. Using LP4-3 rivets and the pop rivet tool, rivet the remaining holes of A-908 to CP-3.
+
+I. Match Drill CP-1 and CP-2 to A-905-L and A-905-R
+1. Using small silver clecos, cleco every other hole of CP-1 to A-905R and A-905-L.
+2. Using a #30 drill bit and a drill, match drill the non-clecoed holes of CP-1 to A-905-R and A-905-L 
+3.  Remove the clecos from A-905-R and A-905-L and place copper clecos through the match drilled holes of A-905-R and A-905-L. 
+Using a #30 drill bit and a drill, match drill the non-clecoed holes of CP-1 to A-905-R and A-905-L 
+NOTE:
+Do not disassemble or un-cleco the assembly.
+
+4. Repeat step 1-3 for A-905-R, A-905-L and CP-2.
+NOTE:
+Do not disassemble or un-cleco the assembly.
+
+J. Match drill CP-1 and CP-2 to CP-3
+1. Make sure CP-1, CP-3, A-905-L and A-905-R are still clecoed together.
+NOTE:
+Be sure the holes of CP-1 and CP-2 will lie in the middle of the flange of CP-3.
+2. Clamp CP-1 to CP-3 to avoid parts shifting while drilling.
+3. Using a #30 drill bit and a drill, and using the holes on CP-1 as a guide, drill CP-1 to CP-3
+NOTE: 
+Be sure that the holes created on CP-3 will be in the center of the flange. If there is not adequate distance on either side of the hole, the rivets could pull through the material.
+Begin drilling at the center of the assembly and work towards the ends.
+Using copper clecos, cleco each hole after drilling it, to avoid shifting of parts
+4. Repeat Steps 1-3 for CP-2 to CP-3.
+
+K. Drilling CP-1 to CP-4 to CP-2
+1. Be sure that CP-1 and CP-2 are clecoed to A-905-R, A-905-L, and CP-3. Orient the assembly so that CP-1 faces up.
+2. Insert CP-4 between CP-1 and CP-2. Line up the edges of CP-1, CP-2, and CP-4. Clamp these edges so that they cannot move while match drilling.
+NOTE: 
+Be sure that the arrows on CP-1 and CP-4 are touching and facing the same direction 
+3. Using a #40 drill bit, a drill, and the drill guide, drill the holes of CP-1 to CP-4 and CP-2 starting with the middle hole and toward the ends. Using the small silver clecos, cleco holes after drilling.
+NOTE: 
+There are no holes in CP-4 or CP-2 for the trailing edge. These holes will be drilled using CP-1 as a guide.
+The holes between CP-1, CP-4, and CP-2 will not be drilled at 90 degrees. It is very important to use the drill guide when drilling these holes. Carefully place the drill bit into the pilot hole and carefully press the angled side of the drill guide against the drill bit. Angle the drill bit so that it is parallel to the drill guide.
+L. Dimpling CP-1 and CP-2
+1. Remove all clecos from the assembly.
+2. Deburr all holes, edges, and corners on CP-1 and CP-2 that need to be deburred. 
+NOTE:  
+Do not deburr holes twice.
+3. Using a rivet squeezer and dimple die, dimple the holes of CP-1 and CP-2 associated with A-905-R, A-905-L, CP-3, and the CP-4. 
+NOTE: 
+Be sure that the indent of the dimple is on the outer side of both CP-1 and CP-2. To ensure this, be sure that the male dimple die is inserted on the outer side of CP-1 and CP-
+All holes that cannot be reached by the rivet squeezer will be dimpled in the next step. 
+Do not dimple the holes on CP-1 associated with CP-2.
+
+4. Using the C-Frame and dimple die, dimple the remaining holes of CP-1 and CP-2. 
+M. Dimpling A-905-R and A-905-L
+1. Deburr all holes, edges, and corners on A-905-R and A-905-L that need to be deburred.
+NOTE:  
+Do not deburr holes twice.
+
+2. Using a rivet squeezer and dimple die, dimple the holes of A-905-R and A-905-L.
+NOTE:
+The last couple of holes cannot be dimpled using the rivet squeezer. Use the male end of the dimple die and the mild steel with the countersunk hole to dimple the last few holes.
+N. Dimpling CP-3
+1. Deburr all holes, edges and corners on CP-3 that need to be deburred.
+NOTE: 
+Do not deburr holes twice.
+
+2. Adjust the microstop (with a bit that fits a #30 hole) so that the tool is barely visible when pushed out. 
+3. Using a drill and the adjusted microstop, machine countersink (remove material from) one hole in CP-3. 
+4. Determine which skin corresponds to the hole machine countersunk above. Place this skin on the hole.
+5. Place a CS4-4 rivet in the countersunk hole. If the rivet sits flush in the hole, you do not need to countersink any more. If the rivet does not sit flush, adjust the microstop so that it can remove more material and repeat Steps 3-5 using the same hole each time.
+6. Once the rivet sits flush in the machine countersunk hole, use a microstop (adjusted correctly from steps 3-5 above) and a drill to countersink the outside of all holes in CP-3.
+NOTE:  
+Only the side of the holes that touch CP-1 and CP-2 of CP-3 need to be machine countersunk.
+
+O. Dimpling CP-4
+1. Deburr all holes on CP-4 that need to be deburred.
+NOTE:  
+Do not deburr holes twice.
+
+2. Adjust the microstop (with a bit that fits a #40 hole) so that the tool is barely visible when pushed out. 
+3. Using a drill and the adjusted microstop, machine countersink (remove material from) one hole in CP-4.
+4. Determine which skin corresponds to the hole that has been machine countersunk above. Place this skin on the hole.
+5. Place a AN426AD4-4 rivet in the countersunk hole. If the rivet sits flush in the hole, you do not need to countersink anymore. If the rivet does not sit flush, adjust the microstop so that it can remove more material and repeat Steps 3-5 using the same hole each time.
+6. Once the rivet sits flush in the machine countersunk hole, use a microstop (adjusted correctly from Steps 3-5 above) and a drill to countersink all holes on both sides of CP-4.
+P. Riveting the CP-1 and CP-2 to CP-3, A-905-R, and A-905-L
+1. Using copper clecos, cleco CP-2 to CP-3, A-905-R, and A-905-L.
+2. Place the assembly on the edge of the worktable so that CP-3 is touching the work surface. Push the assembly so that CP-2 is touching the edge of the work surface.
+3. Clamp the assembly in the position stated in Step 2. 
+4. Using the pop rivet tool and CS4-4 rivets, rivet CP-2 to CP-3, A-905-L, and A-905-R.
+NOTE: 
+Do not rivet CP-2 or CP-1 to CP-4. 
+
+5. Remove the clamps and set the assembly so that CP-2 is face down on the work surface.
+6. Using copper clecos, cleco CP-1 to CP-3, A-905-R, and A-905-L.
+7. Using the pop rivet tool and CS4-4 rivets, rivet CP-2 to CP-3, A-905-L, and A-905-R.
+NOTE: 
+Do not rivet the trailing edge. 
+Q. Rivet CP-1 to CP-4 to CP-2
+1. Insert CP-4 between CP-1 and CP-2.
+NOTE: 
+Be sure that the arrow on CP-1 and CP-4 are touching and facing the same direction 
+2. Insert AN426AD3-3 rivets into the bottom row of holes on CP-1, making sure the rivet goes through CP-1, CP-4, and CP-3. 
+3. Using rivet tape, tape the rivets to CP-1 so they will not fall out. 
+4. Flip the assembly over so that CP-2 faces up.
+5. Using a Rivet Gun, a back riveting head, and a back riveting plate, set all rivets halfway.
+NOTE:  
+Do not drive the rivets all the way or the trailing edge will not be straight. 
+
+6. Set every third rivet just enough so that it lightly holds the trailing edge together, constantly checking to make sure the trailing edge is not bending.
+NOTE: 
+If the trailing edge starts to deform, you can drive a rivet in a direction to counter that deformity, but always start driving the rivet at a 90 degree angle.
+7. Set the remaining rivets just enough so that it lightly holds the trailing edge together, constantly checking to make sure the trailing edge is not bending.
+NOTE: 
+If the trailing edge starts to deform, you can drive a rivet in a direction to counter that deformity, but always start driving the rivet at a 90 degree angle.
+
+8. Flip the assembly over so that CP-1 is facing up.
+
+9. Using a rivet gun, a flush (mushroom) set, and the back riveting plate, buck the rivets to the final size constantly checking to make sure the trailing edge is not bending.
+NOTE: 
+If the trailing edge starts to deform, you can drive a rivet in a direction to counter that deformity, but always start driving the rivet at a 90 degree angle.
+R. Rolling CP-1 and CP-2
+1. Tape a ¾” to 1” steel water pipe or broomstick four inches or longer than the CP-1 to the CP-1, making sure to tape along the entire length of the CP-1. Clamp a vise grip or wrench to the end of the pipe to use as a handle. Make sure pressure is applied down and away from CP-3 so as not to bend the CP-1.  
+NOTE:  
+Do not try to form the final shape. This step should produce a slight curve in the skin.
+Be sure that CP-1 folds over CP-2. 
+2. Flip the Assembly over and repeat Step 1 for CP-2.
+
+3. For the last ¼ inch on CP-1 and CP-2 where they will overlap, use an edge forming tool to carefully create a slight crease (a few degrees at most) on both CP-1 and CP-2.
+NOTE: 
+The entire edge cannot be creased at once. The seamer will have to be worked across each leading edge, a little section at a time.
+S. Riveting CP-1 to CP-2
+1. Clamp CP-1 to CP-2 ensure that there is adequate overlap between CP-1 and CP-2.
+2. Using the holes in CP-1 as a guide, a #30 drill bit, and a drill, match drill CP-1 to CP-2.
+NOTE: 
+To deburr the holes towards the center will be tricky. CP-1 and CP-2 will need to be separated and coerced into a position where deburring can occur. If not possible, do not worry about deburring.
+Match drill from the center of CP-1 and work toward the edges. Using copper clecos, cleco each hole after match drilling.
+
+3. Deburr both sides of all holes drilled.
+NOTE: 
+To deburr the holes towards the center will be tricky. CP-1 and CP-2 will need to be separated and coerced into a position where deburring can occur. If not possible, do not worry about deburring.
+
+4. Using a pop rivet tool and AD-41-ABS rivets, rivet CP-1 to CP-2.
+
+5. DONE!!!
+ Full Assembly Rivet Map
+
+Front View Rivet Map

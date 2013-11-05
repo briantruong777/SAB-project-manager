@@ -1,22 +1,18 @@
+package resourceModel;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
-import taskModel.Widget;
+import resourceModel.Widget;
 
 public class Inventory
 {
 	private static HashMap<String, Widget> tools = new HashMap<String, Widget>();
 	private static HashMap<String, Widget> parts = new HashMap<String, Widget>();
 	
-	public Inventory()
-	{
-		fillMap(tools, "tools.txt");
-		//fillMap(parts, "parts.txt");
-	}
-	
 	public static void fillMap(HashMap map, String filename)
 	{
-		Scanner filereader = new Scanner("tools.txt");
+//		Scanner filereader = new Scanner("tools.txt");
 		/*while (filereader.hasNext())
 		{
 			String name = filereader.nextLine();
@@ -29,53 +25,43 @@ public class Inventory
 		tools.put("hammer", new Widget(1, 2));
 		tools.put("screwdriver", new Widget(5, 10));
 		tools.put("saw", new Widget(3, 7));
+
+    parts.put("blah", new Widget(2,2));
 	}	
 	
 	public static void printMap()
 	{
-		/*for (String key : tools.keySet())
+		for (String key : tools.keySet())
 		{
-			System.out.println(key + " has " + tools.get(key).available + " available out of " + tools.get(key).max + " total"); 
-		}*/
+			System.out.println(key + " has " + tools.get(key).num + " available out of " + tools.get(key).max + " total"); 
+		}
 	}
 	
-	public static boolean checkResources(HashMap<String, Widget> taskTools, HashMap<String, Widget> taskParts)
+	public static boolean checkTools(HashMap<String, Integer> taskTools)
 	{
 		boolean available = true;
 		for (String key : taskTools.keySet())
 		{
-			if (taskTools.get(key).num > tools.get(key).num)
-				available = false;
-		}
-		for (String key : taskParts.keySet())
-		{
-			if (taskParts.get(key).num > parts.get(key).num)
+			if (!tools.containsKey(key) || taskTools.get(key) > tools.get(key).num)
 				available = false;
 		}
 		return available;	
 	}
 	
-	public static boolean checkTools(HashMap<String, Widget> taskTools)
-	{
-		boolean available = true;
-		for (String key : taskTools.keySet())
-		{
-			if (taskTools.get(key).num > tools.get(key).num)
-				available = false;
-		}
-		return available;	
-	}
-	
-	public static boolean checkParts(HashMap<String, Widget> taskParts)
+	public static boolean checkParts(HashMap<String, Integer> taskParts)
 	{
 		boolean available = true;
 		for (String key : taskParts.keySet())
 		{
-			if (taskParts.get(key).num > parts.get(key).num)
+			if (!parts.containsKey(key) || taskParts.get(key) > parts.get(key).num)
 				available = false;
 		}
 		return available;	
 	}
-	
-	
+
+	public static boolean checkResources(HashMap<String, Integer> taskTools,
+                                       HashMap<String, Integer> taskParts)
+	{
+		return checkTools(taskTools) && checkParts(taskParts);	
+	}
 }

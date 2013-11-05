@@ -37,10 +37,6 @@ public class ActiveInstructionsFrame extends JFrame
 
 	private JPanel mcontentPane;
 	private FileHandler mfileHandler;
-	private JTextField mtextField;
-	private JTextField mtextField_1;
-	private JTextField mtextField_2;
-	private JTextField mtextField_3;
 
 	/**
 	 * Launch the application.
@@ -138,10 +134,6 @@ public class ActiveInstructionsFrame extends JFrame
 		JPanel taskListPanel = new JPanel();
 		scrollPane.setViewportView(taskListPanel);
 		taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
-		taskListPanel.add(new TaskDisplayPanel("Tester"));
-		taskListPanel.add(new TaskDisplayPanel("Tester2"));
-		taskListPanel.add(new TaskDisplayPanel("Tester3"));
-		taskListPanel.add(new TaskDisplayPanel("Tester4"));
 
 		JPanel taskViewControlPanel = new JPanel();
 		taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);
@@ -181,30 +173,6 @@ public class ActiveInstructionsFrame extends JFrame
 		
 		Box verticalBox = Box.createVerticalBox();
 		taskPanel.add(verticalBox, BorderLayout.WEST);
-		
-		mtextField = new JTextField();
-		mtextField.setBackground(Color.WHITE);
-		mtextField.setText("Not Started");
-		verticalBox.add(mtextField);
-		mtextField.setColumns(10);
-		
-		mtextField_1 = new JTextField();
-		mtextField_1.setBackground(Color.GREEN);
-		mtextField_1.setText("In Progress");
-		verticalBox.add(mtextField_1);
-		mtextField_1.setColumns(10);
-		
-		mtextField_2 = new JTextField();
-		mtextField_2.setBackground(Color.BLUE);
-		mtextField_2.setText("Paused");
-		verticalBox.add(mtextField_2);
-		mtextField_2.setColumns(10);
-		
-		mtextField_3 = new JTextField();
-		mtextField_3.setBackground(Color.LIGHT_GRAY);
-		mtextField_3.setText("Complete");
-		verticalBox.add(mtextField_3);
-		mtextField_3.setColumns(10);
 		
 		Box resourcePanel = Box.createHorizontalBox();
 		tabbedPane.addTab("Resources", null, resourcePanel, null);
