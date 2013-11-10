@@ -1,5 +1,11 @@
 package taskModel;
+
 import java.util.HashMap;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class TaskManager
 {
@@ -67,5 +73,22 @@ public class TaskManager
     }
 
     return t;
+  }
+
+  @SuppressWarnings("unchecked")
+  public void readFromFile(String fileName) throws IOException,
+                                                   ClassNotFoundException
+  {
+    FileInputStream fis = new FileInputStream(fileName);
+    ObjectInputStream in = new ObjectInputStream(fis);
+    tasks = (HashMap<String, Task>) in.readObject();
+    in.close();
+  }
+  public void writeToFile(String fileName) throws IOException
+  {
+    FileOutputStream fos = new FileOutputStream(fileName);
+    ObjectOutputStream out = new ObjectOutputStream(fos);
+    out.writeObject(tasks);
+    out.close();
   }
 }
