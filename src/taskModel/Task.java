@@ -14,6 +14,8 @@ import java.io.Serializable;
 public class Task implements Serializable
 {
   private String name;
+  private String builder;
+  private String foreman;
   private Status taskStatus;
   private HashMap<String, Integer> tools;
   private HashMap<String, Integer> parts;
@@ -21,6 +23,7 @@ public class Task implements Serializable
   private Calendar startDate;
   private Calendar endDate;
   private long timeSpent;
+  private String instructLoc;
 
   private long lastResumeTime;
   
@@ -37,6 +40,8 @@ public class Task implements Serializable
   public Task(String s)
   {
     this.name = s;
+    builder = "No Builder";
+    foreman = "No Foreman";
     taskStatus = Status.INCOMPLETE;
     tools = new HashMap<String, Integer>();
     parts = new HashMap<String, Integer>();
@@ -46,6 +51,7 @@ public class Task implements Serializable
     endDate = Calendar.getInstance();
     endDate.clear();
     timeSpent = 0; // In milliseconds
+    instructLoc = "No included instructions";
 
     lastResumeTime = -1; // -1 when paused
   }
@@ -58,6 +64,30 @@ public class Task implements Serializable
   public void setName(String str)
   {
     name = str;
+  }
+  public String getBuilder()
+  {
+    return builder;
+  }
+  public void setBuilder(String str)
+  {
+    builder = str;
+  }
+  public String getForeman()
+  {
+    return foreman;
+  }
+  public void setForeman(String str)
+  {
+    foreman = str;
+  }
+  public String getInstructLoc()
+  {
+    return instructLoc;
+  }
+  public void setInstructLoc(String str)
+  {
+    instructLoc = str;
   }
   
   public Status getStatus()
