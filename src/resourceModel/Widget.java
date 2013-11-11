@@ -1,6 +1,8 @@
 package resourceModel;
 
-public class Widget 
+import java.io.Serializable;
+
+public class Widget implements Serializable
 {
 	public int num, max;
 	
