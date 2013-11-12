@@ -31,6 +31,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 public class ActiveInstructionsFrame extends JFrame
 {
@@ -66,7 +69,7 @@ public class ActiveInstructionsFrame extends JFrame
 	{
 		setTitle("Untitled - Active Instructions");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 479, 303);
 
 		mfileHandler = new FileHandler();
 		
@@ -117,78 +120,62 @@ public class ActiveInstructionsFrame extends JFrame
 		mnFile.add(mntmQuit);
 		mcontentPane = new JPanel();
 		mcontentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		mcontentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(mcontentPane);
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{467, 0};
+		gbl_contentPane.rowHeights = new int[]{243, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		mcontentPane.setLayout(gbl_contentPane);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		mcontentPane.add(tabbedPane, BorderLayout.CENTER);
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.gridx = 0;
+		gbc_tabbedPane.gridy = 0;
+		mcontentPane.add(tabbedPane, gbc_tabbedPane);
 		
 		JPanel taskPanel = new JPanel();
 		tabbedPane.addTab("Tasks", null, taskPanel, null);
 		tabbedPane.setEnabledAt(0, true);
 		taskPanel.setLayout(new BorderLayout(0, 0));
+				
+				JScrollPane taskScroll = new JScrollPane();
+				taskPanel.add(taskScroll, BorderLayout.CENTER);
+				
+				JList taskList = new JList();
+				taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				taskScroll.setViewportView(taskList);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		taskPanel.add(scrollPane, BorderLayout.CENTER);
-		
-		JPanel taskListPanel = new JPanel();
-		scrollPane.setViewportView(taskListPanel);
-		taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
-
-		JPanel taskViewControlPanel = new JPanel();
-		taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);
-		FlowLayout fl_taskViewControlPanel = new FlowLayout(FlowLayout.CENTER, 5, 5);
-		taskViewControlPanel.setLayout(fl_taskViewControlPanel);
-		
-		ButtonGroup taskViewControlGroup = new ButtonGroup();
-		
-		JRadioButton rdbtnAll = new JRadioButton("All");
-		taskViewControlPanel.add(rdbtnAll);
-		taskViewControlGroup.add(rdbtnAll);
-		
-		JRadioButton rdbtnUnavailable = new JRadioButton("Unavailable");
-		taskViewControlPanel.add(rdbtnUnavailable);
-		taskViewControlGroup.add(rdbtnUnavailable);
-		
-		JRadioButton rdbtnNotStarted = new JRadioButton("Not Started");
-		taskViewControlPanel.add(rdbtnNotStarted);
-		taskViewControlGroup.add(rdbtnNotStarted);
-		
-		JRadioButton rdbtnInProgress = new JRadioButton("In Progress");
-		taskViewControlPanel.add(rdbtnInProgress);
-		taskViewControlGroup.add(rdbtnInProgress);
-		
-		JRadioButton rdbtnComplete = new JRadioButton("Complete");
-		taskViewControlPanel.add(rdbtnComplete);
-		taskViewControlGroup.add(rdbtnComplete);
-		
-		Box taskControlPanel = Box.createVerticalBox();
-		taskPanel.add(taskControlPanel, BorderLayout.EAST);
-		
-		JButton btnNew = new JButton("New");
-		taskControlPanel.add(btnNew);
-		
-		JButton btnDelete = new JButton("Delete");
-		taskControlPanel.add(btnDelete);
-		
-		Box verticalBox = Box.createVerticalBox();
-		taskPanel.add(verticalBox, BorderLayout.WEST);
-		
-		Box resourcePanel = Box.createHorizontalBox();
-		tabbedPane.addTab("Resources", null, resourcePanel, null);
-		
-		JList toolsList = new JList();
-		toolsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		resourcePanel.add(toolsList);
-		
-		Box toolsControls = Box.createVerticalBox();
-		resourcePanel.add(toolsControls);
-		
-		JList partsList = new JList();
-		partsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		resourcePanel.add(partsList);
-		
-		Box partsControl = Box.createVerticalBox();
-		resourcePanel.add(partsControl);
+				JPanel taskViewControlPanel = new JPanel();
+				taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);
+				FlowLayout fl_taskViewControlPanel = new FlowLayout(FlowLayout.CENTER, 5, 5);
+				taskViewControlPanel.setLayout(fl_taskViewControlPanel);
+				
+				
+				JCheckBox rdbtnUnavailable = new JCheckBox("Unavailable");
+				rdbtnUnavailable.setToolTipText("View tasks whose constraints have not been met.");
+				taskViewControlPanel.add(rdbtnUnavailable);
+				
+				JCheckBox rdbtnIncomplete = new JCheckBox("Incomplete");
+				rdbtnIncomplete.setSelected(true);
+				rdbtnIncomplete.setToolTipText("View tasks that can be started or are in progress.");
+				taskViewControlPanel.add(rdbtnIncomplete);
+				
+				JCheckBox rdbtnComplete = new JCheckBox("Complete");
+				rdbtnComplete.setToolTipText("View completed tasks.");
+				taskViewControlPanel.add(rdbtnComplete);
+				
+				Box taskControlPanel = Box.createVerticalBox();
+				taskPanel.add(taskControlPanel, BorderLayout.EAST);
+				
+				JButton btnNew = new JButton("New");
+				taskControlPanel.add(btnNew);
+				
+				JButton btnDelete = new JButton("Delete");
+				taskControlPanel.add(btnDelete);
+				
+				Box verticalBox = Box.createVerticalBox();
+				taskPanel.add(verticalBox, BorderLayout.WEST);
 	}
 }
