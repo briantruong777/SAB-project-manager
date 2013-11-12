@@ -34,12 +34,16 @@ import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JSpinner;
 
 public class ActiveInstructionsFrame extends JFrame
 {
 
 	private JPanel mcontentPane;
 	private FileHandler mfileHandler;
+	private JTextField mtextToolName;
+	private JTextField mtextField;
 
 	/**
 	 * Launch the application.
@@ -121,19 +125,10 @@ public class ActiveInstructionsFrame extends JFrame
 		mcontentPane = new JPanel();
 		mcontentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mcontentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{467, 0};
-		gbl_contentPane.rowHeights = new int[]{243, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		mcontentPane.setLayout(gbl_contentPane);
+		mcontentPane.setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
-		gbc_tabbedPane.gridx = 0;
-		gbc_tabbedPane.gridy = 0;
-		mcontentPane.add(tabbedPane, gbc_tabbedPane);
+		mcontentPane.add(tabbedPane);
 		
 		JPanel taskPanel = new JPanel();
 		tabbedPane.addTab("Tasks", null, taskPanel, null);
@@ -177,5 +172,122 @@ public class ActiveInstructionsFrame extends JFrame
 				
 				Box verticalBox = Box.createVerticalBox();
 				taskPanel.add(verticalBox, BorderLayout.WEST);
+				
+				JPanel resourcePanel = new JPanel();
+				tabbedPane.addTab("Resources", null, resourcePanel, null);
+				GridBagLayout gbl_resourcePanel = new GridBagLayout();
+				gbl_resourcePanel.columnWidths = new int[]{0, 0, 0, 0, 0};
+				gbl_resourcePanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+				gbl_resourcePanel.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+				gbl_resourcePanel.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+				resourcePanel.setLayout(gbl_resourcePanel);
+				
+				JLabel lblTools = new JLabel("Tools");
+				GridBagConstraints gbc_lblTools = new GridBagConstraints();
+				gbc_lblTools.gridwidth = 2;
+				gbc_lblTools.insets = new Insets(0, 0, 5, 5);
+				gbc_lblTools.gridx = 0;
+				gbc_lblTools.gridy = 0;
+				resourcePanel.add(lblTools, gbc_lblTools);
+				
+				JLabel lblParts = new JLabel("Parts");
+				GridBagConstraints gbc_lblParts = new GridBagConstraints();
+				gbc_lblParts.gridwidth = 2;
+				gbc_lblParts.insets = new Insets(0, 0, 5, 0);
+				gbc_lblParts.gridx = 2;
+				gbc_lblParts.gridy = 0;
+				resourcePanel.add(lblParts, gbc_lblParts);
+				
+				JList toolList = new JList();
+				GridBagConstraints gbc_toolList = new GridBagConstraints();
+				gbc_toolList.gridheight = 7;
+				gbc_toolList.insets = new Insets(0, 0, 0, 5);
+				gbc_toolList.fill = GridBagConstraints.BOTH;
+				gbc_toolList.gridx = 0;
+				gbc_toolList.gridy = 1;
+				resourcePanel.add(toolList, gbc_toolList);
+				
+				mtextToolName = new JTextField();
+				GridBagConstraints gbc_textToolName = new GridBagConstraints();
+				gbc_textToolName.insets = new Insets(0, 0, 5, 5);
+				gbc_textToolName.fill = GridBagConstraints.HORIZONTAL;
+				gbc_textToolName.gridx = 1;
+				gbc_textToolName.gridy = 2;
+				resourcePanel.add(mtextToolName, gbc_textToolName);
+				mtextToolName.setColumns(10);
+				
+				JList partList = new JList();
+				GridBagConstraints gbc_partList = new GridBagConstraints();
+				gbc_partList.gridheight = 7;
+				gbc_partList.insets = new Insets(0, 0, 0, 5);
+				gbc_partList.fill = GridBagConstraints.BOTH;
+				gbc_partList.gridx = 2;
+				gbc_partList.gridy = 1;
+				resourcePanel.add(partList, gbc_partList);
+				
+				mtextField = new JTextField();
+				GridBagConstraints gbc_textField = new GridBagConstraints();
+				gbc_textField.insets = new Insets(0, 0, 5, 0);
+				gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+				gbc_textField.gridx = 3;
+				gbc_textField.gridy = 2;
+				resourcePanel.add(mtextField, gbc_textField);
+				mtextField.setColumns(10);
+				
+				JSpinner toolNum = new JSpinner();
+				GridBagConstraints gbc_toolNum = new GridBagConstraints();
+				gbc_toolNum.insets = new Insets(0, 0, 5, 5);
+				gbc_toolNum.gridx = 1;
+				gbc_toolNum.gridy = 3;
+				resourcePanel.add(toolNum, gbc_toolNum);
+				
+				JSpinner partNum = new JSpinner();
+				GridBagConstraints gbc_partNum = new GridBagConstraints();
+				gbc_partNum.insets = new Insets(0, 0, 5, 0);
+				gbc_partNum.gridx = 3;
+				gbc_partNum.gridy = 3;
+				resourcePanel.add(partNum, gbc_partNum);
+				
+				JButton btnAddTool = new JButton("Add");
+				GridBagConstraints gbc_btnAddTool = new GridBagConstraints();
+				gbc_btnAddTool.insets = new Insets(0, 0, 5, 5);
+				gbc_btnAddTool.gridx = 1;
+				gbc_btnAddTool.gridy = 4;
+				resourcePanel.add(btnAddTool, gbc_btnAddTool);
+				
+				JButton btnAddPart = new JButton("Add");
+				GridBagConstraints gbc_btnAddPart = new GridBagConstraints();
+				gbc_btnAddPart.insets = new Insets(0, 0, 5, 0);
+				gbc_btnAddPart.gridx = 3;
+				gbc_btnAddPart.gridy = 4;
+				resourcePanel.add(btnAddPart, gbc_btnAddPart);
+				
+				JButton btnChangeTool = new JButton("Change");
+				GridBagConstraints gbc_btnChangeTool = new GridBagConstraints();
+				gbc_btnChangeTool.insets = new Insets(0, 0, 5, 5);
+				gbc_btnChangeTool.gridx = 1;
+				gbc_btnChangeTool.gridy = 5;
+				resourcePanel.add(btnChangeTool, gbc_btnChangeTool);
+				
+				JButton btnChangePart = new JButton("Change");
+				GridBagConstraints gbc_btnChangePart = new GridBagConstraints();
+				gbc_btnChangePart.insets = new Insets(0, 0, 5, 0);
+				gbc_btnChangePart.gridx = 3;
+				gbc_btnChangePart.gridy = 5;
+				resourcePanel.add(btnChangePart, gbc_btnChangePart);
+				
+				JButton btnRemoveTool = new JButton("Remove");
+				GridBagConstraints gbc_btnRemoveTool = new GridBagConstraints();
+				gbc_btnRemoveTool.insets = new Insets(0, 0, 5, 5);
+				gbc_btnRemoveTool.gridx = 1;
+				gbc_btnRemoveTool.gridy = 6;
+				resourcePanel.add(btnRemoveTool, gbc_btnRemoveTool);
+				
+				JButton btnRemovePart = new JButton("Remove");
+				GridBagConstraints gbc_btnRemovePart = new GridBagConstraints();
+				gbc_btnRemovePart.insets = new Insets(0, 0, 5, 0);
+				gbc_btnRemovePart.gridx = 3;
+				gbc_btnRemovePart.gridy = 6;
+				resourcePanel.add(btnRemovePart, gbc_btnRemovePart);
 	}
 }
