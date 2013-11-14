@@ -573,64 +573,6 @@ public class TaskInfoDialog extends JDialog
 		mtextStatus.repaint();
 	}
 	
-	private class ArrayListModel<E> extends AbstractListModel<E>
-	{
-		private ArrayList<E> list;
-		
-		public ArrayListModel()
-		{
-			list = new ArrayList<E>();
-		}
-		
-		@Override
-		public E getElementAt(int arg0)
-		{
-			return list.get(arg0);
-		}
-
-		@Override
-		public int getSize()
-		{
-			return list.size();
-		}
-
-		public void add(E e)
-		{
-			list.add(e);
-			fireIntervalAdded(this, list.size() - 1, list.size() - 1);
-		}
-		
-		public void addAll(Collection<? extends E> c)
-		{
-			int start = list.size() - 1;
-			list.addAll(c);
-			if (start != list.size() - 1)
-				fireIntervalAdded(this, start, list.size() - 1);
-		}
-		
-		public void clear()
-		{
-			list.clear();
-		}
-		
-		public int indexOf(E e)
-		{
-			return list.indexOf(e);
-		}
-		
-		public E remove(int index)
-		{
-			E value = list.remove(index);
-			fireIntervalRemoved(this, index, index);
-			return value;
-		}
-		
-		public Collection<E> toCollection()
-		{
-			return list;
-		}
-	}
-	
 	private class ListButtonEnabler implements ListSelectionListener
 	{
 		private JButton target;
