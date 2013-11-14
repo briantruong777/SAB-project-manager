@@ -1,5 +1,7 @@
 package taskModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -24,6 +26,19 @@ public class TaskManager
   public Task getTask(String taskName)
   {
     return tasks.get(taskName);
+  }
+
+  public ArrayList<Task> getAllTasks()
+  {
+    //TODO: Implement advanced sorting here or in gui
+    ArrayList<Task> values = new ArrayList<Task>(tasks.values());
+    Collections.sort(values);
+    return values;
+  }
+
+  public int getTotalNumTasks()
+  {
+    return tasks.size();
   }
 
   /**

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import taskModel.Task;
+
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
@@ -28,13 +29,13 @@ public class TaskDisplayPanel extends JPanel
 	/**
 	 * Create the panel.
 	 */
-	public TaskDisplayPanel(String s)
+	public TaskDisplayPanel(Task task)
 	{
-		//task = t;
+		this.task = task;
 		
-		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblTasknamelabel = new JLabel(s);
+		JLabel lblTasknamelabel = new JLabel(task.getName());
 //		JLabel lblTasknamelabel = new JLabel(t.getName());
 		add(lblTasknamelabel);
 		
