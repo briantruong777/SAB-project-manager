@@ -25,14 +25,10 @@ public class ResourceConstraint
 	{
 		this.amount = amount;
 	}
-	
-	public String toString()
+
+	public void setName(String name)
 	{
-		return getName();
+		this.name = name;
 	}
-	
-	public boolean equals(Object o)
-	{
-		return toString().equals(o.toString());
-	}
+
 }

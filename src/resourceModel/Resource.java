@@ -1,20 +1,24 @@
 package resourceModel;
 
+import java.util.*;
+
 public class Resource
 {
 	private String name;
 	private int max;
 	private int available;
+	private ArrayList<ResourceConstraint> constraints;
 	
 	public Resource(String name)
 	{
-		this.name = name;
+		this(name, 0);
 	}
 	
 	public Resource(String name, int max)
 	{
-		this(name);
+		this.name = name;
 		this.max = available = max;
+		constraints = new ArrayList<ResourceConstraint>();
 	}
 
 	public String getName()
@@ -25,6 +29,8 @@ public class Resource
 	public void setName(String name)
 	{
 		this.name = name;
+		for (ResourceConstraint rc: constraints)
+			rc.setName(name);
 	}
 
 	public int getMax()
@@ -45,6 +51,16 @@ public class Resource
 	public void setAvailable(int available)
 	{
 		this.available = available;
+	}
+	
+	public void addConstraint(ResourceConstraint constraint)
+	{
+		this.constraints.add(constraint);
+	}
+	
+	public void removeConstraint(ResourceConstraint constraint)
+	{
+		this.constraints.remove(constraint);
 	}
 	
 	public boolean equals(Object o)
