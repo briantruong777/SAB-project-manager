@@ -23,15 +23,12 @@ public class ResourcePanel extends JPanel
 	private JButton partsChange;
 	private JButton toolsRemove;
 	private JButton partsRemove;
-	@SuppressWarnings("unused")
-	private Inventory inv;
 	
 	/**
 	 * Create the panel.
 	 */
-	public ResourcePanel(final Inventory inv)
+	public ResourcePanel()
 	{
-		this.inv = inv;
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -249,7 +246,7 @@ public class ResourcePanel extends JPanel
 				if (i == -1)
 				{
 					toolsModel.add(newTool);
-					inv.addTool(newTool);
+					Inventory.addTool(newTool);
 				}
 				else
 				{
@@ -285,7 +282,7 @@ public class ResourcePanel extends JPanel
 				if (i == -1)
 				{
 					partsModel.add(newPart);
-					inv.addPart(newPart);
+					Inventory.addPart(newPart);
 				}
 				else
 				{
@@ -321,7 +318,7 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)toolsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					// !!!ask which tasks to pause, update inventory
+					// !!!ask which tasks to pause
 				}
 				else
 				{
@@ -329,10 +326,10 @@ public class ResourcePanel extends JPanel
 					r.setMax((Integer)toolsMaxSpinner.getValue());
 				}
 				// need to rehash tool
-				inv.removeTool(r);
+				Inventory.removeTool(r);
 				r.setName(text);
 				toolsModel.notifyChanged(toolsList.getMinSelectionIndex());
-				inv.addTool(r);
+				Inventory.addTool(r);
 			}
 		});
 		GridBagConstraints gbc_toolsChange = new GridBagConstraints();
@@ -359,7 +356,7 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)partsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					// !!!ask which tasks to pause, update inventory
+					// !!!ask which tasks to pause
 				}
 				else
 				{
@@ -367,10 +364,10 @@ public class ResourcePanel extends JPanel
 					r.setMax((Integer)partsMaxSpinner.getValue());
 				}
 				// need to rehash part
-				inv.removePart(r);
+				Inventory.removePart(r);
 				r.setName(text);
 				partsModel.notifyChanged(partsList.getMinSelectionIndex());
-				inv.addPart(r);
+				Inventory.addPart(r);
 			}
 		});
 		GridBagConstraints gbc_partsChange = new GridBagConstraints();
@@ -389,9 +386,14 @@ public class ResourcePanel extends JPanel
 			{
 				int i = toolsList.getMinSelectionIndex();
 				Resource r = toolsModel.get(i);
+				if (r.hasConstraint())
+				{
+					toolsNameText.setText("There are tasks that need this tool. Set max to 0 if all tools cannot be used");
+					return;
+				}
 				toolsList.clearSelection();
 				toolsModel.remove(i);
-				inv.removeTool(r);
+				Inventory.removeTool(r);
 			}
 		});
 		GridBagConstraints gbc_toolsRemove = new GridBagConstraints();
@@ -410,9 +412,14 @@ public class ResourcePanel extends JPanel
 			{
 				int i = partsList.getMinSelectionIndex();
 				Resource r = partsModel.get(i);
+				if (r.hasConstraint())
+				{
+					partsNameText.setText("There are tasks that need this part. Set max to 0 if all parts cannot be used");
+					return;
+				}
 				partsList.clearSelection();
 				partsModel.remove(i);
-				inv.removePart(r);
+				Inventory.removePart(r);
 			}
 		});
 		GridBagConstraints gbc_partsRemove = new GridBagConstraints();

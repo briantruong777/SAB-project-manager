@@ -12,11 +12,15 @@ import resourceModel.Widget;
 
 public class Inventory
 {
-	private static HashMap<String, Widget> tools = new HashMap<String, Widget>();
-	private static HashMap<String, Widget> parts = new HashMap<String, Widget>();
-	private HashMap<String, Resource> toolMap;
-	private HashMap<String, Resource> partMap;
+	private static HashMap<String, Resource> tools;
+	private static HashMap<String, Resource> parts;
 
+	static
+	{
+		tools = new HashMap<String, Resource>();
+		parts = new HashMap<String, Resource>();
+	}
+	
 	public static void fillMap(HashMap map, String filename)
 	{
 		//    Scanner filereader = new Scanner("tools.txt");
@@ -28,19 +32,13 @@ public class Inventory
       map.put(name, new Widget(available, max));
       //map.put((String)filereader.nextLine(), new Widget(filereader.nextInt(), filereader.nextInt()));
     }*/
-
-		tools.put("hammer", new Widget(1, 2));
-		tools.put("screwdriver", new Widget(5, 10));
-		tools.put("saw", new Widget(3, 7));
-
-		parts.put("blah", new Widget(2,2));
 	}  
 
 	public static void printMap()
 	{
 		for (String key : tools.keySet())
 		{
-			System.out.println(key + " has " + tools.get(key).num + " available out of " + tools.get(key).max + " total"); 
+			System.out.println(key + " has " + tools.get(key).getAvailable() + " available out of " + tools.get(key).getMax() + " total"); 
 		}
 	}
 
@@ -49,7 +47,7 @@ public class Inventory
 		boolean available = true;
 		for (String key : taskTools.keySet())
 		{
-			if (!tools.containsKey(key) || taskTools.get(key) > tools.get(key).num)
+			if (!tools.containsKey(key) || taskTools.get(key) > tools.get(key).getAvailable())
 				available = false;
 		}
 		return available;  
@@ -60,7 +58,7 @@ public class Inventory
 		boolean available = true;
 		for (String key : taskParts.keySet())
 		{
-			if (!parts.containsKey(key) || taskParts.get(key) > parts.get(key).num)
+			if (!parts.containsKey(key) || taskParts.get(key) > parts.get(key).getAvailable())
 				available = false;
 		}
 		return available;  
@@ -78,7 +76,7 @@ public class Inventory
 	{
 		FileInputStream fis = new FileInputStream(fileName);
 		ObjectInputStream in = new ObjectInputStream(fis);
-		tools = (HashMap<String, Widget>) in.readObject();
+		tools = (HashMap<String, Resource>) in.readObject();
 		in.close();
 	}
 	public static void writeToolsToFile(String fileName) throws IOException
@@ -95,7 +93,7 @@ public class Inventory
 	{
 		FileInputStream fis = new FileInputStream(fileName);
 		ObjectInputStream in = new ObjectInputStream(fis);
-		parts = (HashMap<String, Widget>) in.readObject();
+		parts = (HashMap<String, Resource>) in.readObject();
 		in.close();
 	}
 	public static void writePartsToFile(String fileName) throws IOException
@@ -106,29 +104,23 @@ public class Inventory
 		out.close();
 	}
 	
-	public Inventory()
+	public static void addTool(Resource tool)
 	{
-		toolMap = new HashMap<String, Resource>();
-		partMap = new HashMap<String, Resource>();
-	}
-	
-	public void addTool(Resource tool)
-	{
-		toolMap.put(tool.toString(), tool);
+		tools.put(tool.toString(), tool);
 	}
 
-	public void addPart(Resource part)
+	public static void addPart(Resource part)
 	{
-		partMap.put(part.toString(), part);
+		parts.put(part.toString(), part);
 	}
 	
-	public void removeTool(Resource tool)
+	public static void removeTool(Resource tool)
 	{
-		toolMap.remove(tool.toString());
+		tools.remove(tool.toString());
 	}
 	
-	public void removePart(Resource part)
+	public static void removePart(Resource part)
 	{
-		partMap.remove(part.toString());
+		parts.remove(part.toString());
 	}
 }

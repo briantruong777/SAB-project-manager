@@ -63,6 +63,11 @@ public class Resource
 		this.constraints.remove(constraint);
 	}
 	
+	public boolean hasConstraint()
+	{
+		return !constraints.isEmpty();
+	}
+	
 	public boolean equals(Object o)
 	{
 		return name.equals(o.toString());
