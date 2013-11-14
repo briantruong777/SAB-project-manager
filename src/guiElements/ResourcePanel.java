@@ -23,6 +23,7 @@ public class ResourcePanel extends JPanel
 	private JButton partsChange;
 	private JButton toolsRemove;
 	private JButton partsRemove;
+	@SuppressWarnings("unused")
 	private Inventory inv;
 	
 	/**
@@ -74,6 +75,19 @@ public class ResourcePanel extends JPanel
 		
 		toolsModel = new ArrayListModel<Resource>();
 		toolsList = new JList<Resource>(toolsModel);
+		toolsList.setCellRenderer(new DefaultListCellRenderer()
+		{
+			public Component getListCellRendererComponent(JList<?> list,
+                    Object value,
+                    int index,
+                    boolean isSelected,
+                    boolean cellHasFocus)
+			{
+				Resource r = (Resource)value; 
+				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + value;
+				return super.getListCellRendererComponent(list, s, index, isSelected, cellHasFocus);
+			}
+		});
 		toolsList.addListSelectionListener(new ListSelectionListener()
 		{
 			public void valueChanged(ListSelectionEvent e)
@@ -112,6 +126,19 @@ public class ResourcePanel extends JPanel
 		
 		partsModel = new ArrayListModel<Resource>();
 		partsList = new JList<Resource>(partsModel);
+		partsList.setCellRenderer(new DefaultListCellRenderer()
+		{
+			public Component getListCellRendererComponent(JList<?> list,
+                    Object value,
+                    int index,
+                    boolean isSelected,
+                    boolean cellHasFocus)
+			{
+				Resource r = (Resource)value; 
+				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + value;
+				return super.getListCellRendererComponent(list, s, index, isSelected, cellHasFocus);
+			}
+		});
 		partsList.addListSelectionListener(new ListSelectionListener()
 		{
 			public void valueChanged(ListSelectionEvent e)
@@ -228,6 +255,7 @@ public class ResourcePanel extends JPanel
 				{
 					Resource existTool = toolsModel.get(i);
 					existTool.setMax(existTool.getMax() + newTool.getMax());
+					existTool.setAvailable(existTool.getAvailable() + newTool.getMax());
 					toolsModel.notifyChanged(i);
 				}
 			}
@@ -263,6 +291,7 @@ public class ResourcePanel extends JPanel
 				{
 					Resource existPart = partsModel.get(i);
 					existPart.setMax(existPart.getMax() + newPart.getMax());
+					existPart.setAvailable(existPart.getAvailable() + newPart.getMax());
 					partsModel.notifyChanged(i);
 				}
 			}
@@ -288,14 +317,20 @@ public class ResourcePanel extends JPanel
 					toolsNameText.setText("New name conflicts with existing tool.");
 					return;
 				}
-				if (r.getAvailable() < (Integer)toolsMaxSpinner.getValue())
+				
+				int amount = r.getAvailable() + (Integer)toolsMaxSpinner.getValue() - r.getMax();
+				if (amount < 0)
 				{
 					// !!!ask which tasks to pause, update inventory
+				}
+				else
+				{
+					r.setAvailable(amount);
+					r.setMax((Integer)toolsMaxSpinner.getValue());
 				}
 				// need to rehash tool
 				inv.removeTool(r);
 				r.setName(text);
-				r.setMax((Integer)toolsMaxSpinner.getValue());
 				toolsModel.notifyChanged(toolsList.getMinSelectionIndex());
 				inv.addTool(r);
 			}
@@ -321,14 +356,19 @@ public class ResourcePanel extends JPanel
 					partsNameText.setText("New name conflicts with existing part.");
 					return;
 				}
-				if (r.getAvailable() < (Integer)partsMaxSpinner.getValue())
+				int amount = r.getAvailable() + (Integer)partsMaxSpinner.getValue() - r.getMax();
+				if (amount < 0)
 				{
 					// !!!ask which tasks to pause, update inventory
+				}
+				else
+				{
+					r.setAvailable(amount);
+					r.setMax((Integer)partsMaxSpinner.getValue());
 				}
 				// need to rehash part
 				inv.removePart(r);
 				r.setName(text);
-				r.setMax((Integer)partsMaxSpinner.getValue());
 				partsModel.notifyChanged(partsList.getMinSelectionIndex());
 				inv.addPart(r);
 			}
