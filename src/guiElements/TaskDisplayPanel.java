@@ -66,6 +66,8 @@ public class TaskDisplayPanel extends JPanel
 		
 		mradioLinkutton = new JRadioButton(new ImageIcon("res/folder.png"));
 		add(mradioLinkutton);
+
+		setMaximumSize(getMinimumSize());
 		
 //		taskStatusChange();
 	}
