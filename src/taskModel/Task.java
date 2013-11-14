@@ -11,7 +11,7 @@ import java.util.Calendar;
 import resourceModel.Inventory;
 import java.io.Serializable;
 
-public class Task implements Serializable
+public class Task implements Serializable, Comparable<Task>
 {
   private String name;
   private String builder;
@@ -30,11 +30,6 @@ public class Task implements Serializable
   public enum Status
   {
     ILLEGAL, UNAVAILABLE, INCOMPLETE, WORKING, PAUSED, COMPLETE;
-  }
-  
-  public Task()
-  {
-    
   }
   
   public Task(String s)
@@ -200,5 +195,15 @@ public class Task implements Serializable
       }
     }
     return available;
+  }
+
+  public String toString()
+  {
+    return name;
+  }
+
+  public int compareTo(Task o)
+  {
+    return name.compareTo(o.name);
   }
 }
