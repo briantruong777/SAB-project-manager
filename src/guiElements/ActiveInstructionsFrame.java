@@ -25,52 +25,66 @@ import javax.swing.JList;
 import javax.swing.Box;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
+
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JLabel;
+
 import java.awt.Color;
+
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
+
 import javax.swing.JSpinner;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+
+import taskModel.Task;
+import taskModel.TaskManager;
 
 public class ActiveInstructionsFrame extends JFrame
 {
 
 	private JPanel mcontentPane;
+	private JPanel taskListPanel;
 	private FileHandler mfileHandler;
+	private TaskManager taskManager;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					ActiveInstructionsFrame frame = new ActiveInstructionsFrame();
-					frame.setVisible(true);
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args)
+//	{
+//		EventQueue.invokeLater(new Runnable()
+//		{
+//			public void run()
+//			{
+//				try
+//				{
+//					ActiveInstructionsFrame frame = new ActiveInstructionsFrame();
+//					frame.setVisible(true);
+//				} catch (Exception e)
+//				{
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ActiveInstructionsFrame()
+	public ActiveInstructionsFrame(TaskManager taskManager)
 	{
+		this.taskManager = taskManager;
+
 		setTitle("Untitled - Active Instructions");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 400);
@@ -135,12 +149,20 @@ public class ActiveInstructionsFrame extends JFrame
 		tabbedPane.setEnabledAt(0, true);
 		taskPanel.setLayout(new BorderLayout(0, 0));
 				
+		// Task List Panel stuff
+
 				JScrollPane taskScroll = new JScrollPane();
 				taskPanel.add(taskScroll, BorderLayout.CENTER);
 				
-				JList taskList = new JList();
-				taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				taskScroll.setViewportView(taskList);
+				taskListPanel = new JPanel();
+				taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
+				for (Task t : taskManager.getAllTasks())
+				{
+					TaskDisplayPanel tp = new TaskDisplayPanel(t);
+					tp.setAlignmentX(Component.LEFT_ALIGNMENT);
+					taskListPanel.add(tp);
+				}
+				taskScroll.setViewportView(taskListPanel);
 		
 				JPanel taskViewControlPanel = new JPanel();
 				taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);

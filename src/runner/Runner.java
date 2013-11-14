@@ -13,7 +13,12 @@ public class Runner
 	public static void main(String[] args)
 	{
 		tm = new TaskManager();	
-		//ActiveInstructionsFrame aif = new ActiveInstructionsFrame();
+		tm.createNewTask("Blah1");
+		tm.createNewTask("Blah2");
+		tm.createNewTask("Blah3");
+		tm.createNewTask("Blah4");
+		ActiveInstructionsFrame aif = new ActiveInstructionsFrame(tm);
+		aif.setVisible(true);
 	}
 	
 	public static void saveTasks(String path)
