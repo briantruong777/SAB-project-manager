@@ -214,4 +214,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 		return list.toArray(a);
 	}
 
+	public void notifyChanged(int index)
+	{
+		fireContentsChanged(this, index, index);
+	}
 }

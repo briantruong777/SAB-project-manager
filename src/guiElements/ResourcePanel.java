@@ -1,27 +1,43 @@
 package guiElements;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import resourceModel.Resource;
+import javax.swing.SpinnerNumberModel;
+
+@SuppressWarnings("serial")
 public class ResourcePanel extends JPanel
 {
-	private JTextField toolsNameTextField;
-	private JTextField partsNameTextField;
+	private JTextField toolsNameText;
+	private JTextField partsNameText;
+	private JList<Resource> toolsList;
+	private JList<Resource> partsList;
+	private ArrayListModel<Resource> toolsModel;
+	private ArrayListModel<Resource> partsModel;
+	private JSpinner toolsMaxSpinner;
+	private JSpinner partsMaxSpinner;
+	private JButton toolsChange;
+	private JButton partsChange;
+	private JButton toolsRemove;
+	private JButton partsRemove;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -29,12 +45,13 @@ public class ResourcePanel extends JPanel
 	{
 		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
+				toolsList.clearSelection();
+				partsList.clearSelection();
 			}
 		});
 		
-//		JPanel panel = new JPanel();
-//		add(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -67,9 +84,30 @@ public class ResourcePanel extends JPanel
 		gbc_toolsScroll.gridy = 1;
 		add(toolsScroll, gbc_toolsScroll);
 		
-		JList toolsList = new JList();
-		toolsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent arg0) {
+		toolsModel = new ArrayListModel<Resource>();
+		toolsList = new JList<Resource>(toolsModel);
+		toolsList.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e)
+			{
+				int i = toolsList.getMinSelectionIndex();
+				// nothing is selected
+				if (i == -1)
+				{
+					toolsNameText.setText("");
+					toolsMaxSpinner.setValue(0);
+					toolsChange.setEnabled(false);
+					toolsRemove.setEnabled(false);
+				}
+				else
+				{
+					Resource r = toolsModel.get(i);
+					toolsNameText.setText(r.getName());
+					toolsMaxSpinner.setValue(r.getMax());
+					toolsChange.setEnabled(true);
+					toolsRemove.setEnabled(true);
+					partsList.clearSelection();
+				}
 			}
 		});
 		toolsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -84,9 +122,30 @@ public class ResourcePanel extends JPanel
 		gbc_partsScroll.gridy = 1;
 		add(partsScroll, gbc_partsScroll);
 		
-		JList partsList = new JList();
-		partsList.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
+		partsModel = new ArrayListModel<Resource>();
+		partsList = new JList<Resource>(partsModel);
+		partsList.addListSelectionListener(new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e)
+			{
+				int i = partsList.getMinSelectionIndex();
+				// nothing is selected
+				if (i == -1)
+				{
+					partsNameText.setText("");
+					partsMaxSpinner.setValue(0);
+					partsChange.setEnabled(false);
+					partsRemove.setEnabled(false);
+				}
+				else
+				{
+					Resource r = partsModel.get(i);
+					partsNameText.setText(r.getName());
+					partsMaxSpinner.setValue(r.getMax());
+					partsChange.setEnabled(true);
+					partsRemove.setEnabled(true);
+					toolsList.clearSelection();
+				}
 			}
 		});
 		partsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -100,14 +159,14 @@ public class ResourcePanel extends JPanel
 		gbc_toolsNameLabel.gridy = 2;
 		add(toolsNameLabel, gbc_toolsNameLabel);
 		
-		toolsNameTextField = new JTextField();
-		toolsNameTextField.setColumns(10);
-		GridBagConstraints gbc_toolsNameTextField = new GridBagConstraints();
-		gbc_toolsNameTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_toolsNameTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_toolsNameTextField.gridx = 2;
-		gbc_toolsNameTextField.gridy = 2;
-		add(toolsNameTextField, gbc_toolsNameTextField);
+		toolsNameText = new JTextField();
+		toolsNameText.setColumns(10);
+		GridBagConstraints gbc_toolsNameText = new GridBagConstraints();
+		gbc_toolsNameText.fill = GridBagConstraints.HORIZONTAL;
+		gbc_toolsNameText.insets = new Insets(0, 0, 5, 5);
+		gbc_toolsNameText.gridx = 2;
+		gbc_toolsNameText.gridy = 2;
+		add(toolsNameText, gbc_toolsNameText);
 		
 		JLabel partsNameLabel = new JLabel("Name");
 		GridBagConstraints gbc_partsNameLabel = new GridBagConstraints();
@@ -117,14 +176,14 @@ public class ResourcePanel extends JPanel
 		gbc_partsNameLabel.gridy = 2;
 		add(partsNameLabel, gbc_partsNameLabel);
 		
-		partsNameTextField = new JTextField();
-		partsNameTextField.setColumns(10);
-		GridBagConstraints gbc_partsNameTextField = new GridBagConstraints();
-		gbc_partsNameTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_partsNameTextField.insets = new Insets(0, 0, 5, 0);
-		gbc_partsNameTextField.gridx = 5;
-		gbc_partsNameTextField.gridy = 2;
-		add(partsNameTextField, gbc_partsNameTextField);
+		partsNameText = new JTextField();
+		partsNameText.setColumns(10);
+		GridBagConstraints gbc_partsNameText = new GridBagConstraints();
+		gbc_partsNameText.fill = GridBagConstraints.HORIZONTAL;
+		gbc_partsNameText.insets = new Insets(0, 0, 5, 0);
+		gbc_partsNameText.gridx = 5;
+		gbc_partsNameText.gridy = 2;
+		add(partsNameText, gbc_partsNameText);
 		
 		JLabel toolsMaxLabel = new JLabel("Max#");
 		GridBagConstraints gbc_toolsMaxLabel = new GridBagConstraints();
@@ -133,7 +192,8 @@ public class ResourcePanel extends JPanel
 		gbc_toolsMaxLabel.gridy = 3;
 		add(toolsMaxLabel, gbc_toolsMaxLabel);
 		
-		JSpinner toolsMaxSpinner = new JSpinner();
+		toolsMaxSpinner = new JSpinner();
+		toolsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_toolsMaxSpinner = new GridBagConstraints();
 		gbc_toolsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_toolsMaxSpinner.insets = new Insets(0, 0, 5, 5);
@@ -148,7 +208,8 @@ public class ResourcePanel extends JPanel
 		gbc_partsMaxLabel.gridy = 3;
 		add(partsMaxLabel, gbc_partsMaxLabel);
 		
-		JSpinner partsMaxSpinner = new JSpinner();
+		partsMaxSpinner = new JSpinner();
+		partsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_partsMaxSpinner = new GridBagConstraints();
 		gbc_partsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_partsMaxSpinner.insets = new Insets(0, 0, 5, 0);
@@ -157,8 +218,29 @@ public class ResourcePanel extends JPanel
 		add(partsMaxSpinner, gbc_partsMaxSpinner);
 		
 		JButton toolsAdd = new JButton("Add");
-		toolsAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		toolsAdd.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if ("".equals(toolsNameText.getText()))
+				{
+					toolsNameText.setText("Name of tool cannot be blank.");
+					return;
+				}
+				Resource newTool = new Resource(toolsNameText.getText(), (Integer)toolsMaxSpinner.getValue());
+				int i = toolsModel.indexOf(newTool);
+				
+				// does not contain given resource
+				if (i == -1)
+					toolsModel.add(newTool);
+				else
+				{
+					Resource existTool = toolsModel.get(i);
+					existTool.setMax(existTool.getMax() + newTool.getMax());
+					toolsModel.notifyChanged(i);
+				}
+				
+				// !!! update inventory
 			}
 		});
 		GridBagConstraints gbc_toolsAdd = new GridBagConstraints();
@@ -170,8 +252,29 @@ public class ResourcePanel extends JPanel
 		add(toolsAdd, gbc_toolsAdd);
 		
 		JButton partsAdd = new JButton("Add");
-		partsAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		partsAdd.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if ("".equals(partsNameText.getText()))
+				{
+					partsNameText.setText("Name of part cannot be blank.");
+					return;
+				}
+				Resource newPart = new Resource(partsNameText.getText(), (Integer)partsMaxSpinner.getValue());
+				int i = partsModel.indexOf(newPart);
+				
+				// does not contain given resource
+				if (i == -1)
+					partsModel.add(newPart);
+				else
+				{
+					Resource existPart = partsModel.get(i);
+					existPart.setMax(existPart.getMax() + newPart.getMax());
+					partsModel.notifyChanged(i);
+				}
+				
+				// !!! update inventory
 			}
 		});
 		GridBagConstraints gbc_partsAdd = new GridBagConstraints();
@@ -182,9 +285,26 @@ public class ResourcePanel extends JPanel
 		gbc_partsAdd.gridy = 4;
 		add(partsAdd, gbc_partsAdd);
 		
-		JButton toolsChange = new JButton("Change");
-		toolsChange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		toolsChange = new JButton("Change");
+		toolsChange.setEnabled(false);
+		toolsChange.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Resource r = toolsModel.get(toolsList.getMinSelectionIndex());
+				String text = toolsNameText.getText();
+				if (!r.getName().equals(text) && toolsModel.contains(new Resource(text)))
+				{
+					toolsNameText.setText("New name conflicts with existing tool.");
+					return;
+				}
+				if (r.getAvailable() < (Integer)toolsMaxSpinner.getValue())
+				{
+					// !!!ask which tasks to pause, update inventory
+				}
+				r.setName(text);
+				r.setMax((Integer)toolsMaxSpinner.getValue());
+				toolsModel.notifyChanged(toolsList.getMinSelectionIndex());
 			}
 		});
 		GridBagConstraints gbc_toolsChange = new GridBagConstraints();
@@ -195,9 +315,26 @@ public class ResourcePanel extends JPanel
 		gbc_toolsChange.gridy = 5;
 		add(toolsChange, gbc_toolsChange);
 		
-		JButton partsChange = new JButton("Change");
-		partsChange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		partsChange = new JButton("Change");
+		partsChange.setEnabled(false);
+		partsChange.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Resource r = partsModel.get(partsList.getMinSelectionIndex());
+				String text = partsNameText.getText();
+				if (!r.getName().equals(text) && partsModel.contains(new Resource(text)))
+				{
+					partsNameText.setText("New name conflicts with existing part.");
+					return;
+				}
+				if (r.getAvailable() < (Integer)partsMaxSpinner.getValue())
+				{
+					// !!!ask which tasks to pause, update inventory
+				}
+				r.setName(text);
+				r.setMax((Integer)partsMaxSpinner.getValue());
+				partsModel.notifyChanged(partsList.getMinSelectionIndex());
 			}
 		});
 		GridBagConstraints gbc_partsChange = new GridBagConstraints();
@@ -208,9 +345,16 @@ public class ResourcePanel extends JPanel
 		gbc_partsChange.gridy = 5;
 		add(partsChange, gbc_partsChange);
 		
-		JButton toolsRemove = new JButton("Remove");
-		toolsRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		toolsRemove = new JButton("Remove");
+		toolsRemove.setEnabled(false);
+		toolsRemove.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int i = toolsList.getMinSelectionIndex();
+				toolsList.clearSelection();
+				toolsModel.remove(i);
+				// !!! update inventory
 			}
 		});
 		GridBagConstraints gbc_toolsRemove = new GridBagConstraints();
@@ -221,9 +365,16 @@ public class ResourcePanel extends JPanel
 		gbc_toolsRemove.gridy = 6;
 		add(toolsRemove, gbc_toolsRemove);
 		
-		JButton partsRemove = new JButton("Remove");
-		partsRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		partsRemove = new JButton("Remove");
+		partsRemove.setEnabled(false);
+		partsRemove.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				int i = partsList.getMinSelectionIndex();
+				partsList.clearSelection();
+				partsModel.remove(i);
+				//!!! update inventory
 			}
 		});
 		GridBagConstraints gbc_partsRemove = new GridBagConstraints();
@@ -233,6 +384,5 @@ public class ResourcePanel extends JPanel
 		gbc_partsRemove.gridx = 4;
 		gbc_partsRemove.gridy = 6;
 		add(partsRemove, gbc_partsRemove);
-
 	}
 }
