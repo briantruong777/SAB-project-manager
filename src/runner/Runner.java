@@ -25,8 +25,6 @@ public class Runner
 	{
 		try
 		{
-			//if (tm == null)
-				//System.out.println("tm is null");
 			TaskManager.writeToFile(path);
 		}
 		catch(IOException ex)
