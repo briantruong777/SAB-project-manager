@@ -144,4 +144,21 @@ public class TaskPanel extends JPanel
 		taskControlPanel.add(glue_1);
 	}
 
+	/**
+	 * Completely clears and reloads taskList and tasks
+	 */
+	public void reloadTaskList()
+	{
+		tasks.clear();
+		taskList.removeAll();
+
+		TaskDisplayPanel tdp;
+		for (Task t : TaskManager.getSortedTasks())
+		{
+			tdp = new TaskDisplayPanel(t);
+			tasks.add(tdp);
+			taskList.add(tdp);
+		}
+		taskList.repaint();
+	}
 }

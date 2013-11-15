@@ -18,6 +18,8 @@ import taskModel.TaskManager;
 
 public class Runner 
 {
+	private static ActiveInstructionsFrame frame;
+
 	public static void main(String[] args)
 	{
 //		TaskManager.createNewTask("Blah1");
@@ -36,7 +38,7 @@ public class Runner
 			{
 				try
 				{
-					ActiveInstructionsFrame frame = new ActiveInstructionsFrame();
+					frame = new ActiveInstructionsFrame();
 					frame.setVisible(true);
 				} catch (Exception e)
 				{
@@ -101,5 +103,7 @@ public class Runner
 		System.out.println(TaskManager.getTasksMap());
 		System.out.println(Inventory.getTools());
 		System.out.println(Inventory.getParts());
+
+		frame.reloadTaskPanel();
 	}
 }
