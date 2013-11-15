@@ -126,11 +126,10 @@ public class TaskPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Task task = TaskInfoDialog.showCreateTaskDialog();
-				if (task != null)
+				if (TaskInfoDialog.showCreateTaskDialog());
 				{
-					TaskManager.addTask(task);
-					TaskDisplayPanel p = new TaskDisplayPanel(task);
+					TaskManager.addTask(TaskInfoDialog.getTask());
+					TaskDisplayPanel p = new TaskDisplayPanel(TaskInfoDialog.getTask());
 					taskList.add(p);
 					tasks.add(p);
 				}

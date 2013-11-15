@@ -35,8 +35,6 @@ import taskModel.TaskManager;
 @SuppressWarnings("serial")
 public class TaskInfoDialog extends JDialog
 {
-	private static TaskInfoDialog dialog;
-	private final JPanel mcontentPanel = new JPanel();
 	private JTextField mtextTask;
 	private JTextField mtextForeman;
 	private JTextField mtextBuilder;
@@ -70,12 +68,14 @@ public class TaskInfoDialog extends JDialog
 	private JLabel lblEndDate;
 	
 	private JFileChooser fileChooser;
-	private Task curTask;
-	private Status status;
+
+	private static TaskInfoDialog dialog;
+	private static Task task;
+	private static Status status;
 
 	private enum Status
 	{
-		CREATE, VIEW, EDIT;
+		CREATE, VIEW, EDIT, RUN;
 	}
 	static
 	{
@@ -87,16 +87,18 @@ public class TaskInfoDialog extends JDialog
 	 */
 	public TaskInfoDialog()
 	{
+		setTitle("Task Contents");
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setAlwaysOnTop(true);
 		setBounds(100, 100, 606, 511);
 		
 		getContentPane().setLayout(new BorderLayout());
+		JPanel mcontentPanel = new JPanel();
 		mcontentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(mcontentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0};
 		gbl_contentPanel.rowHeights = new int[]{0, 0, 45, 50, 30, 0, 0, 30, 0, 0, 0, 0};
 		gbl_contentPanel.columnWidths = new int[]{0, 150, 0, 0, 150};
 		mcontentPanel.setLayout(gbl_contentPanel);
@@ -223,7 +225,18 @@ public class TaskInfoDialog extends JDialog
 		}
 		{
 			btnRemoveTask = new JButton("Remove <<");
-			btnRemoveTask.addActionListener(new ListElementRemover<Task>(taskSelectList));
+			btnRemoveTask.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					if (taskSelectList.getMinSelectionIndex() >= 0)
+					{
+						taskSelectList.remove(taskSelectList.getMinSelectionIndex());
+						taskSelectList.clearSelection();
+					}
+					taskSelectList.repaint();
+				}
+			});
 			GridBagConstraints gbc_btnRemoveTask = new GridBagConstraints();
 			gbc_btnRemoveTask.gridwidth = 2;
 			gbc_btnRemoveTask.anchor = GridBagConstraints.NORTH;
@@ -336,7 +349,18 @@ public class TaskInfoDialog extends JDialog
 		}
 		{
 			btnRemoveTool = new JButton("Remove <<");
-			btnRemoveTool.addActionListener(new ListElementRemover<ResourceConstraint>(toolSelectList));
+			btnRemoveTool.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					if (toolSelectList.getMinSelectionIndex() >= 0)
+					{
+						toolSelectList.remove(toolSelectList.getMinSelectionIndex());
+						toolSelectList.clearSelection();
+					}
+					toolSelectList.repaint();
+				}
+			});
 			GridBagConstraints gbc_btnRemoveTool = new GridBagConstraints();
 			gbc_btnRemoveTool.gridwidth = 2;
 			gbc_btnRemoveTool.fill = GridBagConstraints.HORIZONTAL;
@@ -448,7 +472,18 @@ public class TaskInfoDialog extends JDialog
 		}
 		{
 			btnRemovePart = new JButton("Remove <<");
-			btnRemovePart.addActionListener(new ListElementRemover<ResourceConstraint>(partSelectList));
+			btnRemovePart.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					if (partSelectList.getMinSelectionIndex() >= 0)
+					{
+						partSelectList.remove(partSelectList.getMinSelectionIndex());
+						partSelectList.clearSelection();
+					}
+					partSelectList.repaint();
+				}
+			});
 			GridBagConstraints gbc_btnRemove = new GridBagConstraints();
 			gbc_btnRemove.fill = GridBagConstraints.HORIZONTAL;
 			gbc_btnRemove.gridwidth = 2;
@@ -501,7 +536,7 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(btnFindLink, gbc_btnFindLink);
 		}
 		{
-			lblStartDate = new JLabel("Start Date");
+			lblStartDate = new JLabel("Start Date: N/A");
 			GridBagConstraints gbc_lblStartDate = new GridBagConstraints();
 			gbc_lblStartDate.insets = new Insets(0, 0, 0, 5);
 			gbc_lblStartDate.gridx = 1;
@@ -509,15 +544,16 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(lblStartDate, gbc_lblStartDate);
 		}
 		{
-			lblTimeSpent = new JLabel("Time Spent");
+			lblTimeSpent = new JLabel("Time Spent: N/A");
 			GridBagConstraints gbc_lblTimeSpent = new GridBagConstraints();
+			gbc_lblTimeSpent.gridwidth = 2;
 			gbc_lblTimeSpent.insets = new Insets(0, 0, 0, 5);
-			gbc_lblTimeSpent.gridx = 3;
+			gbc_lblTimeSpent.gridx = 2;
 			gbc_lblTimeSpent.gridy = 11;
 			mcontentPanel.add(lblTimeSpent, gbc_lblTimeSpent);
 		}
 		{
-			lblEndDate = new JLabel("End Date");
+			lblEndDate = new JLabel("End Date: N/A");
 			GridBagConstraints gbc_lblEndDate = new GridBagConstraints();
 			gbc_lblEndDate.gridx = 4;
 			gbc_lblEndDate.gridy = 11;
@@ -533,18 +569,12 @@ public class TaskInfoDialog extends JDialog
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						if (status == Status.CREATE)
+						switch(status)
 						{
-							if ("".equals(dialog.mtextTask.getText()) || TaskManager.getTask(dialog.mtextTask.getText()) != null)
-								curTask = null;
-							else
-							{
-								curTask = new Task(dialog.mtextTask.getText());
-								curTask.setBuilder(dialog.mtextBuilder.getText());
-								curTask.setForeman(dialog.mtextForeman.getText());
-								// add dependencies, constraints
-								curTask.setInstructLoc(dialog.mtextLink.getText());
-							}
+							case CREATE:
+								break;
+							default:
+								break;
 						}
 						setVisible(false);
 					}
@@ -558,7 +588,7 @@ public class TaskInfoDialog extends JDialog
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						curTask = null;
+						task = null;
 						setVisible(false);
 					}
 				});
@@ -568,11 +598,11 @@ public class TaskInfoDialog extends JDialog
 		}
 	}
 	
-	public static Task showCreateTaskDialog()
+	public static boolean showCreateTaskDialog()
 	{
-		dialog.status = Status.CREATE;
+		status = Status.CREATE;
 		
-		dialog.taskModel.clear();
+/*		dialog.taskModel.clear();
 		dialog.taskModel.addAll(TaskManager.getTasks());
 		dialog.btnAddTask.setEnabled(false);
 		dialog.btnRemoveTask.setEnabled(false);
@@ -592,10 +622,15 @@ public class TaskInfoDialog extends JDialog
 		dialog.mtextLink.setText("");
 		dialog.lblStartDate.setText("Start Date: N/A");
 		dialog.lblTimeSpent.setText("Time Spent: N/A");
-		dialog.lblEndDate.setText("End Date: N/A");
+		dialog.lblEndDate.setText("End Date: N/A");*/
 		dialog.setVisible(true);
 		
-		return dialog.curTask;
+		return false;
+	}
+	
+	public static Task getTask()
+	{
+		return task;
 	}
 	
 	private class ListButtonEnabler implements ListSelectionListener
@@ -613,23 +648,6 @@ public class TaskInfoDialog extends JDialog
 				target.setEnabled(true);
 			else
 				target.setEnabled(false);
-			target.repaint();
-		}
-	}
-	
-	private class ListElementRemover<E> implements ActionListener
-	{
-		private JList<E> target;
-		
-		public ListElementRemover(JList<E> target)
-		{
-			this.target = target;
-		}
-		
-		public void actionPerformed(ActionEvent e)
-		{
-			if (target.getMinSelectionIndex() >= 0)
-				target.remove(target.getMinSelectionIndex());
 			target.repaint();
 		}
 	}
