@@ -1,13 +1,14 @@
 package taskModel;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 
 public class TaskManager
 {
@@ -34,6 +35,11 @@ public class TaskManager
     ArrayList<Task> values = new ArrayList<Task>(tasks.values());
     Collections.sort(values);
     return values;
+  }
+  
+  public static Collection<Task> getTasks()
+  {
+	  return tasks.values();
   }
   
   public static void clear()

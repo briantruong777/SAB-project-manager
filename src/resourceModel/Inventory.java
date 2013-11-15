@@ -1,14 +1,12 @@
 package resourceModel;
 
-import java.util.HashMap;
-import java.util.Scanner;
-import java.io.IOException;
 import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import resourceModel.Widget;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class Inventory
 {
@@ -120,6 +118,26 @@ public class Inventory
 		parts.put(part.toString(), part);
 	}
 	
+	public static Resource getTool(String name)
+	{
+		return tools.get(name);
+	}
+	
+	public static Resource getPart(String name)
+	{
+		return parts.get(name);
+	}
+	
+	public static Collection<Resource> getTools()
+	{
+		return tools.values();
+	}
+
+	public static Collection<Resource> getParts()
+	{
+		return parts.values();
+	}
+
 	public static void removeTool(Resource tool)
 	{
 		tools.remove(tool.toString());

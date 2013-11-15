@@ -13,6 +13,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import taskModel.Task;
+import taskModel.Task.Status;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 @SuppressWarnings("serial")
 public class TaskPanel extends JPanel
 {
@@ -42,6 +48,17 @@ public class TaskPanel extends JPanel
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
+				for (TaskDisplayPanel p: tasks)
+				{
+					if (p.getStatus() == Task.Status.UNAVAILABLE)
+					{
+						if (e.getStateChange() == ItemEvent.SELECTED)
+							p.setVisible(true);
+						else
+							p.setVisible(false);
+					}
+				}
+				repaint();
 			}
 		});
 		checkUnavailable.setToolTipText("View tasks whose constraints have not been met.");
@@ -52,20 +69,20 @@ public class TaskPanel extends JPanel
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
-				if (e.getStateChange() == ItemEvent.SELECTED)
+				for (TaskDisplayPanel p: tasks)
 				{
-					for (TaskDisplayPanel p: tasks)
+					switch(p.getStatus())
 					{
-						
+						case INCOMPLETE:
+						case WORKING:
+						case PAUSED:
+							if (e.getStateChange() == ItemEvent.SELECTED)
+								p.setVisible(true);
+							else
+								p.setVisible(false);
 					}
 				}
-				else
-				{
-					for (TaskDisplayPanel p: tasks)
-					{
-						
-					}
-				}
+				repaint();
 			}
 		});
 		checkIncomplete.setSelected(true);
@@ -77,6 +94,17 @@ public class TaskPanel extends JPanel
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
+				for (TaskDisplayPanel p: tasks)
+				{
+					if (p.getStatus() == Task.Status.COMPLETE)
+					{
+						if (e.getStateChange() == ItemEvent.SELECTED)
+							p.setVisible(true);
+						else
+							p.setVisible(false);
+					}
+				}
+				repaint();
 			}
 		});
 		checkComplete.setToolTipText("View completed tasks.");
@@ -86,12 +114,25 @@ public class TaskPanel extends JPanel
 		add(taskControlPanel, BorderLayout.EAST);
 
 		JButton btnNew = new JButton("New");
+		btnNew.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				
+			}
+		});
 		btnNew.setPreferredSize(new Dimension(81, 25));
 		btnNew.setMaximumSize(new Dimension(81, 25));
 		btnNew.setMinimumSize(new Dimension(81, 25));
 		taskControlPanel.add(btnNew);
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+			}
+		});
 		taskControlPanel.add(btnDelete);
 	}
 
