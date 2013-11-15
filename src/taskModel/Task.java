@@ -29,7 +29,7 @@ public class Task implements Serializable, Comparable<Task>
   
   public enum Status
   {
-    ILLEGAL, UNAVAILABLE, INCOMPLETE, WORKING, PAUSED, COMPLETE;
+    ILLEGAL, UNAVAILABLE, INCOMPLETE, PAUSED, WORKING, COMPLETE;
   }
   
   public Task(String s)

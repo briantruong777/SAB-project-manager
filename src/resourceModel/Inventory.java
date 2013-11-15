@@ -1,14 +1,6 @@
 package resourceModel;
 
 import java.util.HashMap;
-import java.util.Scanner;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-
-import resourceModel.Widget;
 
 public class Inventory
 {
@@ -23,16 +15,33 @@ public class Inventory
 	
 	public static void fillMap(HashMap map, String filename)
 	{
-		//    Scanner filereader = new Scanner("tools.txt");
+		//		Scanner filereader = new Scanner("tools.txt");
 		/*while (filereader.hasNext())
-    {
-      String name = filereader.nextLine();
-      int available = filereader.nextInt();
-      int max = filereader.nextInt();
-      map.put(name, new Widget(available, max));
-      //map.put((String)filereader.nextLine(), new Widget(filereader.nextInt(), filereader.nextInt()));
-    }*/
-	}  
+		{
+			String name = filereader.nextLine();
+			int available = filereader.nextInt();
+			int max = filereader.nextInt();
+			map.put(name, new Widget(available, max));
+			//map.put((String)filereader.nextLine(), new Widget(filereader.nextInt(), filereader.nextInt()));
+		}*/
+	}	
+
+	public static HashMap<String, Resource> getTools()
+	{
+		return tools;
+	}
+	public static HashMap<String, Resource> getParts()
+	{
+		return parts;
+	}
+	public static void setTools(HashMap<String, Resource> newTools)
+	{
+		tools = newTools;
+	}
+	public static void setParts(HashMap<String, Resource> newParts)
+	{
+		parts = newParts;
+	}
 	
 	public static void clear()
 	{
@@ -56,7 +65,7 @@ public class Inventory
 			if (!tools.containsKey(key) || taskTools.get(key) > tools.get(key).getAvailable())
 				available = false;
 		}
-		return available;  
+		return available;
 	}
 
 	public static boolean checkParts(HashMap<String, Integer> taskParts)
@@ -67,49 +76,15 @@ public class Inventory
 			if (!parts.containsKey(key) || taskParts.get(key) > parts.get(key).getAvailable())
 				available = false;
 		}
-		return available;  
+		return available;
 	}
 
 	public static boolean checkResources(HashMap<String, Integer> taskTools,
 			HashMap<String, Integer> taskParts)
 	{
-		return checkTools(taskTools) && checkParts(taskParts);  
+		return checkTools(taskTools) && checkParts(taskParts);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void readToolsFromFile(String fileName) throws IOException,
-	ClassNotFoundException
-	{
-		FileInputStream fis = new FileInputStream(fileName);
-		ObjectInputStream in = new ObjectInputStream(fis);
-		tools = (HashMap<String, Resource>) in.readObject();
-		in.close();
-	}
-	public static void writeToolsToFile(String fileName) throws IOException
-	{
-		FileOutputStream fos = new FileOutputStream(fileName);
-		ObjectOutputStream out = new ObjectOutputStream(fos);
-		out.writeObject(tools);
-		out.close();
-	}
-
-	@SuppressWarnings("unchecked")
-	public static void readPartsFromFile(String fileName) throws IOException,
-	ClassNotFoundException
-	{
-		FileInputStream fis = new FileInputStream(fileName);
-		ObjectInputStream in = new ObjectInputStream(fis);
-		parts = (HashMap<String, Resource>) in.readObject();
-		in.close();
-	}
-	public static void writePartsToFile(String fileName) throws IOException
-	{
-		FileOutputStream fos = new FileOutputStream(fileName);
-		ObjectOutputStream out = new ObjectOutputStream(fos);
-		out.writeObject(parts);
-		out.close();
-	}
-	
 	public static void addTool(Resource tool)
 	{
 		tools.put(tool.toString(), tool);

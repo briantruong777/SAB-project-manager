@@ -1,6 +1,8 @@
 package resourceModel;
 
-public class ResourceConstraint
+import java.io.Serializable;
+
+public class ResourceConstraint implements Serializable
 {
 	private String name;
 	private int amount;

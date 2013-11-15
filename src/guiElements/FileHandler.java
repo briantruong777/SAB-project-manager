@@ -93,7 +93,7 @@ public class FileHandler implements ActionListener
 	        	path = selectedFile.getAbsolutePath();
 	        	//setLastSavedLocation(selectedFile.getAbsolutePath());
 	        }
-	        Runner.loadTasks(path+"/tasks");
+	        Runner.loadProject(path);
 	        //Runner.loadTools(path+"/tools");
 		//}
 	}
@@ -120,7 +120,7 @@ public class FileHandler implements ActionListener
         	path = selectedFile.getAbsolutePath();
         	//setLastSavedLocation(selectedFile.getAbsolutePath());
         }
-        Runner.saveTasks(path);
+        Runner.saveProject(path);
 	}
 	
 	public void export()
@@ -131,7 +131,7 @@ public class FileHandler implements ActionListener
 	public void quit()
 	{
 		save();
-		System.exit(1);
+		System.exit(0);
 	}
 	/*public boolean hasBeenSaved()
 	{

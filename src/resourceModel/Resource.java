@@ -1,8 +1,9 @@
 package resourceModel;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Resource
+public class Resource implements Serializable
 {
 	private String name;
 	private int max;

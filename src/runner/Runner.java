@@ -1,84 +1,105 @@
 package runner;
 import guiElements.ActiveInstructionsFrame;
 
+import java.awt.EventQueue;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import resourceModel.Inventory;
+import resourceModel.Resource;
+import taskModel.Task;
 import taskModel.TaskManager;
 
 public class Runner 
 {
-	//static TaskManager tm;
-	
 	public static void main(String[] args)
 	{
-		//tm = new TaskManager();	
-		TaskManager.createNewTask("Blah1");
-		TaskManager.createNewTask("Blah2");
-		TaskManager.createNewTask("Blah3");
-		TaskManager.createNewTask("Blah4");
-		ActiveInstructionsFrame aif = new ActiveInstructionsFrame();
-		aif.setVisible(true);
+//		TaskManager.createNewTask("Blah1");
+//		TaskManager.createNewTask("Blah2");
+//		TaskManager.createNewTask("Blah3");
+//		TaskManager.createNewTask("Blah4");
+//		Inventory.addTool(new Resource("Hammer", 1));
+//		Inventory.addTool(new Resource("Axe", 1));
+//		Inventory.addTool(new Resource("Sword", 1));
+//		Inventory.addPart(new Resource("Wing", 1));
+//		Inventory.addPart(new Resource("Shield", 1));
+
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					ActiveInstructionsFrame frame = new ActiveInstructionsFrame();
+					frame.setVisible(true);
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
-	
-	public static void saveTasks(String path)
+
+	public static void saveProject(String path)
 	{
+		ArrayList<Serializable> saveList = new ArrayList<Serializable>();
+		saveList.add(TaskManager.getTasksMap());
+		saveList.add(Inventory.getTools());
+		saveList.add(Inventory.getParts());
+
 		try
 		{
-			TaskManager.writeToFile(path);
+			FileOutputStream fos = new FileOutputStream(path);
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(saveList);
+			out.close();
 		}
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
 		}
 	}
-	
-	public static void loadTasks(String path)
+	@SuppressWarnings("unchecked")
+	public static void loadProject(String path)
 	{
-		// Loading tasks from file	
+		ArrayList<Serializable> saveList;
+		HashMap<String, Task> tasks;
+		HashMap<String, Resource> tools;
+		HashMap<String, Resource> parts;
+
 		try
 		{
-			TaskManager.readFromFile(path);
+			FileInputStream fis = new FileInputStream(path);
+			ObjectInputStream in = new ObjectInputStream(fis);
+			saveList = (ArrayList<Serializable>) in.readObject();
+			in.close();
 		}
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
+			return;
 		}
 		catch(ClassNotFoundException ex)
 		{
 			ex.printStackTrace();
+			return;
 		}
-	}
-	
-	public static void savetools(String toolPath, String partPath)
-	{
-		// Saving tools and parts to files
-		try
-		{
-			Inventory.writeToolsToFile(toolPath);
-			Inventory.writePartsToFile(partPath);
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
-	
-	public static void loadTools(String toolPath, String partPath)
-	{
-		// Loading tools and parts from files
-		try
-		{
-			Inventory.readToolsFromFile(toolPath);
-			Inventory.readPartsFromFile(partPath);
-		}
-		catch(IOException ex)
-		{
-			ex.printStackTrace();
-		}
-		catch(ClassNotFoundException ex)
-		{
-			ex.printStackTrace();
-		}
+
+		tasks = (HashMap<String, Task>) saveList.get(0);
+		tools = (HashMap<String, Resource>) saveList.get(1);
+		parts = (HashMap<String, Resource>) saveList.get(2);
+		TaskManager.setTasksMap(tasks);
+		Inventory.setTools(tools);
+		Inventory.setParts(parts);
+
+		System.out.println(TaskManager.getTasksMap());
+		System.out.println(Inventory.getTools());
+		System.out.println(Inventory.getParts());
 	}
 }
