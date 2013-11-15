@@ -35,6 +35,11 @@ public class TaskManager
     Collections.sort(values);
     return values;
   }
+  
+  public void clear()
+  {
+	  tasks.clear();
+  }
 
   public int getTotalNumTasks()
   {
