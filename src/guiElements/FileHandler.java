@@ -2,28 +2,27 @@ package guiElements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
 import resourceModel.Inventory;
 import runner.Runner;
 
-public class FileHandler implements ActionListener
+public class FileHandler extends WindowAdapter implements ActionListener
 {
 	//public static String lastSavedLocation;
 	//private File f;
-	
+
 	public FileHandler()
 	{
 		//f = new File("");
 		//lastSavedLocation = getLastSavedLocation();
 	}
 
-	
+
 	/*public String getLastSavedLocation()
 	{
 		try
@@ -37,7 +36,7 @@ public class FileHandler implements ActionListener
 			return "";
 		}		
 	}
-	
+
 	public String setLastSavedLocation(String path)
 	{
 		try
@@ -48,11 +47,11 @@ public class FileHandler implements ActionListener
 		}
 		catch (FileNotFoundException e)
 		{
-			
+
 		}
 		return "";
 	}*/
-	
+
 	public void actionPerformed(ActionEvent arg0)
 	{
 		if (arg0.getActionCommand().equals("New"))
@@ -68,14 +67,14 @@ public class FileHandler implements ActionListener
 		if (arg0.getActionCommand().equals("Quit"))
 			quit();
 	}
-	
+
 	public void actionNew()
 	{
 		save();
 		Inventory.clear();
 		//TaskManager.clear();
 	}
-	
+
 	public void open()
 	{
 		/*if (hasBeenSaved())
@@ -84,30 +83,30 @@ public class FileHandler implements ActionListener
 		}
 		else
 		{*/
-			String path = "";
-			JFileChooser fileChooser = new JFileChooser();
-			int returnValue = fileChooser.showOpenDialog(null);
-			if (returnValue == JFileChooser.APPROVE_OPTION) 
-			{
-				File selectedFile = fileChooser.getSelectedFile();
-				path = selectedFile.getAbsolutePath();
-				//setLastSavedLocation(selectedFile.getAbsolutePath());
-			}
-			Runner.loadProject(path);
-			//Runner.loadTools(path+"/tools");
+		String path = "";
+		JFileChooser fileChooser = new JFileChooser();
+		int returnValue = fileChooser.showOpenDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) 
+		{
+			File selectedFile = fileChooser.getSelectedFile();
+			path = selectedFile.getAbsolutePath();
+			//setLastSavedLocation(selectedFile.getAbsolutePath());
+		}
+		Runner.loadProject(path);
+		//Runner.loadTools(path+"/tools");
 		//}
 	}
-	
+
 	public void save()
 	{
 		//if (!hasBeenSaved())
-			saveAs();
+		saveAs();
 		/*else
 		{
 			//Runner.saveTasks(lastSavedLocation);
 		}*/
 	}
-	
+
 	public void saveAs()
 	{
 		String path = "";
@@ -122,12 +121,12 @@ public class FileHandler implements ActionListener
 		}
 		Runner.saveProject(path);
 	}
-	
+
 	public void export()
 	{
-		
+
 	}
-	
+
 	public void quit()
 	{
 		save();
@@ -138,4 +137,10 @@ public class FileHandler implements ActionListener
 		return getLastSavedLocation().length() != 0;
 	}*/
 
+	@Override
+	public void windowClosing(WindowEvent e)
+	{
+		//!!! add code to prompt to save
+		System.exit(0);
+	}
 }

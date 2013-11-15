@@ -9,41 +9,18 @@ import javax.swing.border.*;
 @SuppressWarnings("serial")
 public class ActiveInstructionsFrame extends JFrame
 {
-
-	private JPanel mcontentPane;
-	private FileHandler mfileHandler;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args)
-//	{
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				try
-//				{
-//					ActiveInstructionsFrame frame = new ActiveInstructionsFrame();
-//					frame.setVisible(true);
-//				} catch (Exception e)
-//				{
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	/**
 	 * Create the frame.
 	 */
 	public ActiveInstructionsFrame()
 	{
+		FileHandler mfileHandler = new FileHandler();
+
+		addWindowListener(mfileHandler);
 		setTitle("Untitled - Active Instructions");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 700, 400);
 
-		mfileHandler = new FileHandler();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -90,7 +67,7 @@ public class ActiveInstructionsFrame extends JFrame
 		JMenuItem mntmQuit = new JMenuItem("Quit");
 		mntmQuit.addActionListener(mfileHandler);
 		mnFile.add(mntmQuit);
-		mcontentPane = new JPanel();
+		JPanel mcontentPane = new JPanel();
 		mcontentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mcontentPane);
 		mcontentPane.setLayout(new BorderLayout(0, 0));
