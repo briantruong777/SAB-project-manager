@@ -33,7 +33,13 @@ public class Inventory
       //map.put((String)filereader.nextLine(), new Widget(filereader.nextInt(), filereader.nextInt()));
     }*/
 	}  
-
+	
+	public static void clear()
+	{
+		tools.clear();
+		parts.clear();
+	}
+	
 	public static void printMap()
 	{
 		for (String key : tools.keySet())
