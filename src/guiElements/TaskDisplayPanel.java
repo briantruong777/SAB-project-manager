@@ -13,6 +13,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import taskModel.Task;
+import taskModel.Task.Status;
 
 public class TaskDisplayPanel extends JPanel implements ActionListener
 {
@@ -190,4 +191,5 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		
 	}*/
+	
 }

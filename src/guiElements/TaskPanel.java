@@ -1,8 +1,10 @@
 package guiElements;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -14,14 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import taskModel.Task;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import taskModel.TaskManager;
 
 @SuppressWarnings("serial")
 public class TaskPanel extends JPanel
 {
 	private ArrayList<TaskDisplayPanel> tasks;
+	private Box taskList;
 	/**
 	 * Create the panel.
 	 */
@@ -33,7 +34,7 @@ public class TaskPanel extends JPanel
 		JScrollPane taskScroll = new JScrollPane();
 		add(taskScroll, BorderLayout.CENTER);
 
-		Box taskList = Box.createVerticalBox();
+		taskList = Box.createVerticalBox();
 		taskScroll.setViewportView(taskList);
 
 		JPanel taskViewPanel = new JPanel();
@@ -49,12 +50,17 @@ public class TaskPanel extends JPanel
 			{
 				for (TaskDisplayPanel p: tasks)
 				{
-					if (p.getStatus() == Task.Status.UNAVAILABLE)
+					switch(p.getStatus())
 					{
-						if (e.getStateChange() == ItemEvent.SELECTED)
-							p.setVisible(true);
-						else
-							p.setVisible(false);
+						case UNAVAILABLE:
+						case STOPPED:
+							if (e.getStateChange() == ItemEvent.SELECTED)
+								p.setVisible(true);
+							else
+								p.setVisible(false);
+							break;
+						default:
+							break;
 					}
 				}
 				repaint();
@@ -79,6 +85,9 @@ public class TaskPanel extends JPanel
 								p.setVisible(true);
 							else
 								p.setVisible(false);
+							break;
+						default:
+							break;
 					}
 				}
 				repaint();
@@ -112,27 +121,28 @@ public class TaskPanel extends JPanel
 		Box taskControlPanel = Box.createVerticalBox();
 		add(taskControlPanel, BorderLayout.EAST);
 
-		JButton btnNew = new JButton("New");
-		btnNew.addActionListener(new ActionListener()
+		JButton btnCreateTask = new JButton("Create Task");
+		btnCreateTask.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				
+				Task task = TaskInfoDialog.showCreateTaskDialog();
+				if (task != null)
+				{
+					TaskManager.addTask(task);
+					TaskDisplayPanel p = new TaskDisplayPanel(task);
+					taskList.add(p);
+					tasks.add(p);
+				}
 			}
 		});
-		btnNew.setPreferredSize(new Dimension(81, 25));
-		btnNew.setMaximumSize(new Dimension(81, 25));
-		btnNew.setMinimumSize(new Dimension(81, 25));
-		taskControlPanel.add(btnNew);
 
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-			}
-		});
-		taskControlPanel.add(btnDelete);
+		Component glue = Box.createGlue();
+		taskControlPanel.add(glue);
+		taskControlPanel.add(btnCreateTask);
+
+		Component glue_1 = Box.createGlue();
+		taskControlPanel.add(glue_1);
 	}
 
 }

@@ -32,6 +32,11 @@ public class TaskManager
 	{
 		return tasks.get(taskName);
 	}
+	
+	public static void addTask(Task task)
+	{
+		tasks.put(task.getName(), task);
+	}
 
 	public static ArrayList<Task> getAllTasks()
 	{ 
