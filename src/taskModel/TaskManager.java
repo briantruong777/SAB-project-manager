@@ -11,37 +11,37 @@ import java.io.ObjectOutputStream;
 
 public class TaskManager
 {
-  private HashMap<String, Task> tasks;
+  private static HashMap<String, Task> tasks;
 
   public TaskManager()
   {
     tasks = new HashMap<String, Task>();
   }
 
-  public HashMap<String, Task> getTasksMap()
+  public static HashMap<String, Task> getTasksMap()
   {
     return tasks;
   }
 
-  public Task getTask(String taskName)
+  public static Task getTask(String taskName)
   {
     return tasks.get(taskName);
   }
 
-  public ArrayList<Task> getAllTasks()
-  {
+  public static ArrayList<Task> getAllTasks()
+  { 
     //TODO: Implement advanced sorting here or in gui
     ArrayList<Task> values = new ArrayList<Task>(tasks.values());
     Collections.sort(values);
     return values;
   }
   
-  public void clear()
+  public static void clear()
   {
 	  tasks.clear();
   }
 
-  public int getTotalNumTasks()
+  public static int getTotalNumTasks()
   {
     return tasks.size();
   }
@@ -55,7 +55,7 @@ public class TaskManager
    * need to create and even if it was created already, you will still be able
    * to add dependencies correctly. Returns the task it creates.
    */
-  public Task createNewTask(String taskName, String[] deps)
+  public static Task createNewTask(String taskName, String[] deps)
   {
     Task t = createNewTask(taskName);
 
@@ -79,7 +79,7 @@ public class TaskManager
   /**
    * Creates new task that doesn't have any dependencies
    */
-  public Task createNewTask(String taskName)
+  public static Task createNewTask(String taskName)
   {
     Task t;
     if (!tasks.containsKey(taskName))
@@ -96,7 +96,7 @@ public class TaskManager
   }
 
   @SuppressWarnings("unchecked")
-  public void readFromFile(String fileName) throws IOException,
+  public static void readFromFile(String fileName) throws IOException,
                                                    ClassNotFoundException
   {
     FileInputStream fis = new FileInputStream(fileName);
@@ -104,7 +104,7 @@ public class TaskManager
     tasks = (HashMap<String, Task>) in.readObject();
     in.close();
   }
-  public void writeToFile(String fileName) throws IOException
+  public static void writeToFile(String fileName) throws IOException
   {
     FileOutputStream fos = new FileOutputStream(fileName);
     ObjectOutputStream out = new ObjectOutputStream(fos);

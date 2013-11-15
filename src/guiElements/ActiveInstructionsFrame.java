@@ -55,7 +55,6 @@ public class ActiveInstructionsFrame extends JFrame
 	private JPanel mcontentPane;
 	private JPanel taskListPanel;
 	private FileHandler mfileHandler;
-	private TaskManager taskManager;
 
 	/**
 	 * Launch the application.
@@ -81,10 +80,8 @@ public class ActiveInstructionsFrame extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public ActiveInstructionsFrame(TaskManager taskManager)
+	public ActiveInstructionsFrame()
 	{
-		this.taskManager = taskManager;
-
 		setTitle("Untitled - Active Instructions");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 400);
@@ -156,7 +153,7 @@ public class ActiveInstructionsFrame extends JFrame
 				
 				taskListPanel = new JPanel();
 				taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
-				for (Task t : taskManager.getAllTasks())
+				for (Task t : TaskManager.getAllTasks())
 				{
 					TaskDisplayPanel tp = new TaskDisplayPanel(t);
 					tp.setAlignmentX(Component.LEFT_ALIGNMENT);

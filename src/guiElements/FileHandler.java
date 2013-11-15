@@ -73,6 +73,7 @@ public class FileHandler implements ActionListener
 	{
 		save();
 		Inventory.clear();
+		//TaskManager.clear();
 	}
 	
 	public void open()

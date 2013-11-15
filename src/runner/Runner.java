@@ -8,16 +8,16 @@ import taskModel.TaskManager;
 
 public class Runner 
 {
-	static TaskManager tm;
+	//static TaskManager tm;
 	
 	public static void main(String[] args)
 	{
-		tm = new TaskManager();	
-		tm.createNewTask("Blah1");
-		tm.createNewTask("Blah2");
-		tm.createNewTask("Blah3");
-		tm.createNewTask("Blah4");
-		ActiveInstructionsFrame aif = new ActiveInstructionsFrame(tm);
+		//tm = new TaskManager();	
+		TaskManager.createNewTask("Blah1");
+		TaskManager.createNewTask("Blah2");
+		TaskManager.createNewTask("Blah3");
+		TaskManager.createNewTask("Blah4");
+		ActiveInstructionsFrame aif = new ActiveInstructionsFrame();
 		aif.setVisible(true);
 	}
 	
@@ -27,7 +27,7 @@ public class Runner
 		{
 			//if (tm == null)
 				//System.out.println("tm is null");
-			tm.writeToFile(path);
+			TaskManager.writeToFile(path);
 		}
 		catch(IOException ex)
 		{
@@ -40,7 +40,7 @@ public class Runner
 		// Loading tasks from file	
 		try
 		{
-			tm.readFromFile(path);
+			TaskManager.readFromFile(path);
 		}
 		catch(IOException ex)
 		{
