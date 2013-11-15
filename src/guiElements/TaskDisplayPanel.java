@@ -34,10 +34,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	public TaskDisplayPanel(Task task)
 	{
 		this.task = task;
+		setAlignmentX(0);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		statusLabel = new JLabel("STATUS", new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
+		statusLabel = new JLabel(new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
 		add(statusLabel);
 		
 		JLabel lblTasknamelabel = new JLabel(task.getName());
