@@ -1,59 +1,16 @@
-
 package guiElements;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
-import javax.swing.Box;
-import javax.swing.ListSelectionModel;
-import javax.swing.JButton;
+import javax.swing.*;
+import javax.swing.border.*;
 
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JLabel;
-
-import java.awt.Color;
-
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.ArrayList;
-
-import javax.swing.JSpinner;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
-
-import taskModel.Task;
-import taskModel.TaskManager;
-
+@SuppressWarnings("serial")
 public class ActiveInstructionsFrame extends JFrame
 {
 
 	private JPanel mcontentPane;
-	private JPanel taskListPanel;
 	private FileHandler mfileHandler;
 
 	/**
@@ -141,58 +98,11 @@ public class ActiveInstructionsFrame extends JFrame
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		mcontentPane.add(tabbedPane);
 		
-		JPanel taskPanel = new JPanel();
+		JPanel taskPanel = new TaskPanel();
 		tabbedPane.addTab("Tasks", null, taskPanel, null);
 		tabbedPane.setEnabledAt(0, true);
-		taskPanel.setLayout(new BorderLayout(0, 0));
 				
-		// Task List Panel stuff
-
-				JScrollPane taskScroll = new JScrollPane();
-				taskPanel.add(taskScroll, BorderLayout.CENTER);
-				
-				taskListPanel = new JPanel();
-				taskListPanel.setLayout(new BoxLayout(taskListPanel, BoxLayout.Y_AXIS));
-				for (Task t : TaskManager.getAllTasks())
-				{
-					TaskDisplayPanel tp = new TaskDisplayPanel(t);
-					tp.setAlignmentX(Component.LEFT_ALIGNMENT);
-					taskListPanel.add(tp);
-				}
-				taskScroll.setViewportView(taskListPanel);
-		
-				JPanel taskViewControlPanel = new JPanel();
-				taskPanel.add(taskViewControlPanel, BorderLayout.SOUTH);
-				FlowLayout fl_taskViewControlPanel = new FlowLayout(FlowLayout.CENTER, 5, 5);
-				taskViewControlPanel.setLayout(fl_taskViewControlPanel);
-				
-				
-				JCheckBox rdbtnUnavailable = new JCheckBox("Unavailable");
-				rdbtnUnavailable.setToolTipText("View tasks whose constraints have not been met.");
-				taskViewControlPanel.add(rdbtnUnavailable);
-				
-				JCheckBox rdbtnIncomplete = new JCheckBox("Incomplete");
-				rdbtnIncomplete.setSelected(true);
-				rdbtnIncomplete.setToolTipText("View tasks that can be started or are in progress.");
-				taskViewControlPanel.add(rdbtnIncomplete);
-				
-				JCheckBox rdbtnComplete = new JCheckBox("Complete");
-				rdbtnComplete.setToolTipText("View completed tasks.");
-				taskViewControlPanel.add(rdbtnComplete);
-				
-				Box taskControlPanel = Box.createVerticalBox();
-				taskPanel.add(taskControlPanel, BorderLayout.EAST);
-				
-				JButton btnNew = new JButton("New");
-				taskControlPanel.add(btnNew);
-				
-				JButton btnDelete = new JButton("Delete");
-				taskControlPanel.add(btnDelete);
-				
-				Box verticalBox = Box.createVerticalBox();
-				taskPanel.add(verticalBox, BorderLayout.WEST);
-				
-				JPanel resourcePanel = new ResourcePanel();
-				tabbedPane.addTab("Resources", null, resourcePanel, null);
+		JPanel resourcePanel = new ResourcePanel();
+		tabbedPane.addTab("Resources", null, resourcePanel, null);
 	}
 }

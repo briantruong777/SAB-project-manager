@@ -89,9 +89,9 @@ public class ResourcePanel extends JPanel
 		{
 			public void valueChanged(ListSelectionEvent e)
 			{
-				int i = toolsList.getMinSelectionIndex();
+				Resource r = toolsList.getSelectedValue();
 				// nothing is selected
-				if (i == -1)
+				if (r == null)
 				{
 					toolsNameText.setText("");
 					toolsMaxSpinner.setValue(0);
@@ -100,7 +100,6 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
-					Resource r = toolsModel.get(i);
 					toolsNameText.setText(r.getName());
 					toolsMaxSpinner.setValue(r.getMax());
 					toolsChange.setEnabled(true);
@@ -140,9 +139,9 @@ public class ResourcePanel extends JPanel
 		{
 			public void valueChanged(ListSelectionEvent e)
 			{
-				int i = partsList.getMinSelectionIndex();
+				Resource r = partsList.getSelectedValue();
 				// nothing is selected
-				if (i == -1)
+				if (r == null)
 				{
 					partsNameText.setText("");
 					partsMaxSpinner.setValue(0);
@@ -151,7 +150,6 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
-					Resource r = partsModel.get(i);
 					partsNameText.setText(r.getName());
 					partsMaxSpinner.setValue(r.getMax());
 					partsChange.setEnabled(true);
@@ -307,7 +305,7 @@ public class ResourcePanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				Resource r = toolsModel.get(toolsList.getMinSelectionIndex());
+				Resource r = toolsList.getSelectedValue();
 				String text = toolsNameText.getText();
 				if (!r.getName().equals(text) && toolsModel.contains(new Resource(text)))
 				{
@@ -318,6 +316,8 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)toolsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
+					toolsNameText.setText("Please pause some tasks that are using this tool first.");
+					return;
 					// !!!ask which tasks to pause
 				}
 				else
@@ -346,7 +346,7 @@ public class ResourcePanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				Resource r = partsModel.get(partsList.getMinSelectionIndex());
+				Resource r = partsList.getSelectedValue();
 				String text = partsNameText.getText();
 				if (!r.getName().equals(text) && partsModel.contains(new Resource(text)))
 				{
@@ -356,6 +356,8 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)partsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
+					partsNameText.setText("Please pause some tasks that are using this part.");
+					return;
 					// !!!ask which tasks to pause
 				}
 				else
@@ -384,15 +386,14 @@ public class ResourcePanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				int i = toolsList.getMinSelectionIndex();
-				Resource r = toolsModel.get(i);
+				Resource r = toolsList.getSelectedValue();
 				if (r.hasConstraint())
 				{
 					toolsNameText.setText("There are tasks that need this tool. Set max to 0 if all tools cannot be used");
 					return;
 				}
 				toolsList.clearSelection();
-				toolsModel.remove(i);
+				toolsModel.remove(r);
 				Inventory.removeTool(r);
 			}
 		});
@@ -410,15 +411,14 @@ public class ResourcePanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				int i = partsList.getMinSelectionIndex();
-				Resource r = partsModel.get(i);
+				Resource r = partsList.getSelectedValue();
 				if (r.hasConstraint())
 				{
 					partsNameText.setText("There are tasks that need this part. Set max to 0 if all parts cannot be used");
 					return;
 				}
 				partsList.clearSelection();
-				partsModel.remove(i);
+				partsModel.remove(r);
 				Inventory.removePart(r);
 			}
 		});
