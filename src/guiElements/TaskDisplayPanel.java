@@ -120,6 +120,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			statusLabel.setIcon(new ImageIcon("res/complete.png"));
 		}
 	}
+
+  public Task.Status getStatus()
+  {
+    return task.getStatus();
+  }
 	
 /*	
 	private void taskStatusChange()

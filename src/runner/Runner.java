@@ -50,8 +50,8 @@ public class Runner
 	{
 		ArrayList<Serializable> saveList = new ArrayList<Serializable>();
 		saveList.add(TaskManager.getTasksMap());
-		saveList.add(Inventory.getTools());
-		saveList.add(Inventory.getParts());
+		saveList.add(Inventory.getToolsHash());
+		saveList.add(Inventory.getPartsHash());
 
 		try
 		{

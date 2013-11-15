@@ -32,11 +32,11 @@ public class Inventory
 		}*/
 	}	
 
-	public static HashMap<String, Resource> getTools()
+	public static HashMap<String, Resource> getToolsHash()
 	{
 		return tools;
 	}
-	public static HashMap<String, Resource> getParts()
+	public static HashMap<String, Resource> getPartsHash()
 	{
 		return parts;
 	}
