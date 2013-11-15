@@ -47,6 +47,7 @@ public class ResourcePanel extends JPanel
 		
 		JLabel toolsLabel = new JLabel("Tools (Available/Max)");
 		GridBagConstraints gbc_toolsLabel = new GridBagConstraints();
+		gbc_toolsLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_toolsLabel.gridwidth = 3;
 		gbc_toolsLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_toolsLabel.gridx = 0;
@@ -55,6 +56,7 @@ public class ResourcePanel extends JPanel
 		
 		JLabel partsLabel = new JLabel("Parts (Available/Max)");
 		GridBagConstraints gbc_partsLabel = new GridBagConstraints();
+		gbc_partsLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_partsLabel.gridwidth = 3;
 		gbc_partsLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_partsLabel.gridx = 3;
@@ -63,6 +65,7 @@ public class ResourcePanel extends JPanel
 		
 		JScrollPane toolsScroll = new JScrollPane();
 		GridBagConstraints gbc_toolsScroll = new GridBagConstraints();
+		gbc_toolsScroll.weightx = 1.0;
 		gbc_toolsScroll.fill = GridBagConstraints.BOTH;
 		gbc_toolsScroll.gridheight = 7;
 		gbc_toolsScroll.insets = new Insets(0, 0, 0, 5);
@@ -113,6 +116,7 @@ public class ResourcePanel extends JPanel
 		
 		JScrollPane partsScroll = new JScrollPane();
 		GridBagConstraints gbc_partsScroll = new GridBagConstraints();
+		gbc_partsScroll.weightx = 1.0;
 		gbc_partsScroll.fill = GridBagConstraints.BOTH;
 		gbc_partsScroll.gridheight = 7;
 		gbc_partsScroll.insets = new Insets(0, 0, 0, 5);
@@ -172,6 +176,7 @@ public class ResourcePanel extends JPanel
 		toolsNameText = new JTextField();
 		toolsNameText.setColumns(10);
 		GridBagConstraints gbc_toolsNameText = new GridBagConstraints();
+		gbc_toolsNameText.weightx = 1.0;
 		gbc_toolsNameText.fill = GridBagConstraints.HORIZONTAL;
 		gbc_toolsNameText.insets = new Insets(0, 0, 5, 5);
 		gbc_toolsNameText.gridx = 2;
@@ -189,6 +194,7 @@ public class ResourcePanel extends JPanel
 		partsNameText = new JTextField();
 		partsNameText.setColumns(10);
 		GridBagConstraints gbc_partsNameText = new GridBagConstraints();
+		gbc_partsNameText.weightx = 1.0;
 		gbc_partsNameText.fill = GridBagConstraints.HORIZONTAL;
 		gbc_partsNameText.insets = new Insets(0, 0, 5, 0);
 		gbc_partsNameText.gridx = 5;
@@ -205,6 +211,7 @@ public class ResourcePanel extends JPanel
 		toolsMaxSpinner = new JSpinner();
 		toolsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_toolsMaxSpinner = new GridBagConstraints();
+		gbc_toolsMaxSpinner.weightx = 1.0;
 		gbc_toolsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_toolsMaxSpinner.insets = new Insets(0, 0, 5, 5);
 		gbc_toolsMaxSpinner.gridx = 2;
@@ -221,6 +228,7 @@ public class ResourcePanel extends JPanel
 		partsMaxSpinner = new JSpinner();
 		partsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_partsMaxSpinner = new GridBagConstraints();
+		gbc_partsMaxSpinner.weightx = 1.0;
 		gbc_partsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
 		gbc_partsMaxSpinner.insets = new Insets(0, 0, 5, 0);
 		gbc_partsMaxSpinner.gridx = 5;
@@ -316,7 +324,7 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)toolsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					toolsNameText.setText("Please pause some tasks that are using this tool first.");
+					toolsNameText.setText("Please put on hold the tasks whose tools have issues.");
 					return;
 					// !!!ask which tasks to pause
 				}
@@ -356,7 +364,7 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)partsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					partsNameText.setText("Please pause some tasks that are using this part.");
+					partsNameText.setText("Please put on hold the task whose part has issues.");
 					return;
 					// !!!ask which tasks to pause
 				}

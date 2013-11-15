@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import taskModel.Task;
-import taskModel.Task.Status;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
