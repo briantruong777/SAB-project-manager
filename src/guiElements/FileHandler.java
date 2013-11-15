@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
 import javax.swing.JFileChooser;
+
+import resourceModel.Inventory;
 import runner.Runner;
 
 public class FileHandler implements ActionListener
@@ -25,10 +28,7 @@ public class FileHandler implements ActionListener
 	{
 		try
 		{
-			//f = new File("C:\\lastsavedlocation.txt");
-		
 			Scanner reader = new Scanner(f);
-			System.out.println("I am in the try block of getLastSavedLocation");
 			return reader.nextLine();
 		}
 		catch (FileNotFoundException e)
@@ -71,8 +71,9 @@ public class FileHandler implements ActionListener
 	
 	public void actionNew()
 	{
-		if (!hasBeenSaved())
-			save();
+		save();
+		Inventory.clear();
+		//TaskManager.clear();
 	}
 	
 	public void open()
@@ -122,7 +123,8 @@ public class FileHandler implements ActionListener
 	
 	public void quit()
 	{
-		
+		save();
+		System.exit(1);
 	}
 	public boolean hasBeenSaved()
 	{

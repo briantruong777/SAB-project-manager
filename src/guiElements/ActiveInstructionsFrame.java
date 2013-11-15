@@ -1,38 +1,17 @@
-
 package guiElements;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
+import javax.swing.*;
+import javax.swing.border.*;
 
-import resourceModel.Inventory;
-import taskModel.Task;
-import taskModel.TaskManager;
-
+@SuppressWarnings("serial")
 public class ActiveInstructionsFrame extends JFrame
 {
 
 	private JPanel mcontentPane;
-	private JPanel taskListPanel;
 	private FileHandler mfileHandler;
-	private TaskManager taskManager;
 
 	/**
 	 * Launch the application.
@@ -58,10 +37,8 @@ public class ActiveInstructionsFrame extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public ActiveInstructionsFrame(TaskManager taskManager)
+	public ActiveInstructionsFrame()
 	{
-		this.taskManager = taskManager;
-
 		setTitle("Untitled - Active Instructions");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 400);
