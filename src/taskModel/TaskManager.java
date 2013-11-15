@@ -13,7 +13,7 @@ public class TaskManager
 {
   private static HashMap<String, Task> tasks;
 
-  public TaskManager()
+  static
   {
     tasks = new HashMap<String, Task>();
   }
