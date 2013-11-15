@@ -14,17 +14,17 @@ import runner.Runner;
 
 public class FileHandler implements ActionListener
 {
-	public static String lastSavedLocation;
-	private File f;
+	//public static String lastSavedLocation;
+	//private File f;
 	
 	public FileHandler()
 	{
-		f = new File("");
-		lastSavedLocation = getLastSavedLocation();
+		//f = new File("");
+		//lastSavedLocation = getLastSavedLocation();
 	}
 
 	
-	public String getLastSavedLocation()
+	/*public String getLastSavedLocation()
 	{
 		try
 		{
@@ -51,7 +51,7 @@ public class FileHandler implements ActionListener
 			
 		}
 		return "";
-	}
+	}*/
 	
 	public void actionPerformed(ActionEvent arg0)
 	{
@@ -78,42 +78,49 @@ public class FileHandler implements ActionListener
 	
 	public void open()
 	{
-		if (hasBeenSaved())
+		/*if (hasBeenSaved())
 		{
 			Runner.loadTasks(lastSavedLocation);
 		}
 		else
-		{
+		{*/
+			String path = "";
 			JFileChooser fileChooser = new JFileChooser();
 	        int returnValue = fileChooser.showOpenDialog(null);
 	        if (returnValue == JFileChooser.APPROVE_OPTION) 
 	        {
 	        	File selectedFile = fileChooser.getSelectedFile();
-	        	setLastSavedLocation(selectedFile.getAbsolutePath());
+	        	path = selectedFile.getAbsolutePath();
+	        	//setLastSavedLocation(selectedFile.getAbsolutePath());
 	        }
-		}
+	        Runner.loadTasks(path+"/tasks");
+	        //Runner.loadTools(path+"/tools");
+		//}
 	}
 	
 	public void save()
 	{
-		if (!hasBeenSaved())
+		//if (!hasBeenSaved())
 			saveAs();
-		else
+		/*else
 		{
-			Runner.saveTasks(lastSavedLocation);
-		}
+			//Runner.saveTasks(lastSavedLocation);
+		}*/
 	}
 	
 	public void saveAs()
 	{
+		String path = "";
 		JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) 
         {
         	File selectedFile = fileChooser.getSelectedFile();
-        	setLastSavedLocation(selectedFile.getAbsolutePath());
+        	System.out.println(selectedFile.getAbsolutePath());
+        	path = selectedFile.getAbsolutePath();
+        	//setLastSavedLocation(selectedFile.getAbsolutePath());
         }
-        Runner.saveTasks(lastSavedLocation);
+        Runner.saveTasks(path);
 	}
 	
 	public void export()
@@ -126,9 +133,9 @@ public class FileHandler implements ActionListener
 		save();
 		System.exit(1);
 	}
-	public boolean hasBeenSaved()
+	/*public boolean hasBeenSaved()
 	{
 		return getLastSavedLocation().length() != 0;
-	}
+	}*/
 
 }
