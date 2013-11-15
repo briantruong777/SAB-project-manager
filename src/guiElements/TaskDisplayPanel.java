@@ -1,30 +1,31 @@
 package guiElements;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import taskModel.Task;
-
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-public class TaskDisplayPanel extends JPanel
+import taskModel.Task;
+
+public class TaskDisplayPanel extends JPanel implements ActionListener
 {
 
 	Task task;
-	JRadioButton mradioPlayButton;
-	JRadioButton mradioPausebutton;
-	JRadioButton mradioStopbutton;
+	//private JButton incompleteButton;
+	private JLabel statusLabel;
+	private JButton pauseButton;
+	private JButton completeButton;
+	private JButton workingButton;
 	private JRadioButton mradioNotesButton;
 	private JSeparator mseparator;
-	private JRadioButton mradioLinkutton;
+	private JRadioButton mradioLinkButton;
 	
 	/**
 	 * Create the panel.
@@ -35,42 +36,91 @@ public class TaskDisplayPanel extends JPanel
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
+		statusLabel = new JLabel("STATUS", new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
+		add(statusLabel);
+		
 		JLabel lblTasknamelabel = new JLabel(task.getName());
 //		JLabel lblTasknamelabel = new JLabel(t.getName());
 		add(lblTasknamelabel);
 		
 //		TaskStatusManager statusManager = new TaskStatusManager();
 		
-		mradioPlayButton = new JRadioButton(new ImageIcon("res/play.png"));
+		/*incompleteButton = new JButton(new ImageIcon("res/incomplete.png"));
 //		mradioPlayButton.addActionListener(statusManager);
-		mradioPlayButton.setActionCommand("Play");
-		add(mradioPlayButton);
+		incompleteButton.setActionCommand("Incomplete");
+		add(incompleteButton);*/
 		
-		mradioPausebutton = new JRadioButton(new ImageIcon("res/pause.png"));
-//		mradioPausebutton.addActionListener(statusManager);
-		mradioPausebutton.setActionCommand("Pause");
-		add(mradioPausebutton);
 		
-		mradioStopbutton = new JRadioButton(new ImageIcon("res/stop.png"));
-//		mradioStopbutton.addActionListener(statusManager);
-		mradioStopbutton.setActionCommand("Stop");
-		add(mradioStopbutton);
+		
+		pauseButton = new JButton(new ImageIcon("res/pause.png"));
+		pauseButton.addActionListener(this);
+		pauseButton.setActionCommand("Paused");
+		add(pauseButton);
+		
+		workingButton = new JButton(new ImageIcon("res/work.png"));
+		workingButton.addActionListener(this);
+		workingButton.setActionCommand("Working");
+		add(workingButton);
+		
+		completeButton = new JButton(new ImageIcon("res/complete.png"));
+		completeButton.addActionListener(this);
+		completeButton.setActionCommand("Complete");
+		add(completeButton);
 		
 		mseparator = new JSeparator();
 		mseparator.setOrientation(SwingConstants.VERTICAL);
 		add(mseparator);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
-		mradioStopbutton.setActionCommand("Notes");
+		mradioNotesButton.setActionCommand("Notes");
 		add(mradioNotesButton);
 		
-		mradioLinkutton = new JRadioButton(new ImageIcon("res/folder.png"));
-		add(mradioLinkutton);
+		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
+		add(mradioLinkButton);
 
 		setMaximumSize(getMinimumSize());
 		
 //		taskStatusChange();
 	}
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		String command = e.getActionCommand();
+		System.out.println(command);
+		if (command.equals("Working"))
+		{
+			//System.out.println("I have just pressed working");
+			workingButton.setEnabled(false);
+			pauseButton.setEnabled(true);
+			completeButton.setEnabled(true);
+			if (task.getStatus() == Task.Status.INCOMPLETE)
+				task.start();
+			else if (task.getStatus() == Task.Status.PAUSED || task.getStatus() == Task.Status.COMPLETE)
+				task.resume();
+			task.setStatus(Task.Status.WORKING);
+			statusLabel.setIcon(new ImageIcon("res/work.png"));
+		}
+		else if (command.equals("Paused"))
+		{
+			pauseButton.setEnabled(false);
+			workingButton.setEnabled(true);
+			completeButton.setEnabled(true);
+			task.pause();
+			task.setStatus(Task.Status.PAUSED);
+			statusLabel.setIcon(new ImageIcon("res/pause.png"));
+		}
+		else if (command.equals("Complete"))
+		{
+			completeButton.setEnabled(false);
+			workingButton.setEnabled(true);
+			pauseButton.setEnabled(true);
+			if (task.getStatus() == Task.Status.WORKING || task.getStatus() == Task.Status.PAUSED)
+				task.stop();
+			task.setStatus(Task.Status.COMPLETE);
+			statusLabel.setIcon(new ImageIcon("res/complete.png"));
+		}
+	}
+	
 /*	
 	private void taskStatusChange()
 	{
