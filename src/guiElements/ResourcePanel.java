@@ -97,7 +97,7 @@ public class ResourcePanel extends JPanel
 				if (r == null)
 				{
 					toolsNameText.setText("");
-					toolsMaxSpinner.setValue(0);
+					toolsMaxSpinner.setValue(1);
 					toolsChange.setEnabled(false);
 					toolsRemove.setEnabled(false);
 				}
@@ -148,7 +148,7 @@ public class ResourcePanel extends JPanel
 				if (r == null)
 				{
 					partsNameText.setText("");
-					partsMaxSpinner.setValue(0);
+					partsMaxSpinner.setValue(1);
 					partsChange.setEnabled(false);
 					partsRemove.setEnabled(false);
 				}
@@ -209,7 +209,7 @@ public class ResourcePanel extends JPanel
 		add(toolsMaxLabel, gbc_toolsMaxLabel);
 		
 		toolsMaxSpinner = new JSpinner();
-		toolsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		toolsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_toolsMaxSpinner = new GridBagConstraints();
 		gbc_toolsMaxSpinner.weightx = 1.0;
 		gbc_toolsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -226,7 +226,7 @@ public class ResourcePanel extends JPanel
 		add(partsMaxLabel, gbc_partsMaxLabel);
 		
 		partsMaxSpinner = new JSpinner();
-		partsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		partsMaxSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
 		GridBagConstraints gbc_partsMaxSpinner = new GridBagConstraints();
 		gbc_partsMaxSpinner.weightx = 1.0;
 		gbc_partsMaxSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -242,7 +242,7 @@ public class ResourcePanel extends JPanel
 			{
 				if ("".equals(toolsNameText.getText()))
 				{
-					toolsNameText.setText("Name of tool cannot be blank.");
+					JOptionPane.showMessageDialog(null, "Tool is not named.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 				}
 				Resource newTool = new Resource(toolsNameText.getText(), (Integer)toolsMaxSpinner.getValue());
@@ -278,7 +278,8 @@ public class ResourcePanel extends JPanel
 			{
 				if ("".equals(partsNameText.getText()))
 				{
-					partsNameText.setText("Name of part cannot be blank.");
+					
+					JOptionPane.showMessageDialog(null, "Part is not named.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 				}
 				Resource newPart = new Resource(partsNameText.getText(), (Integer)partsMaxSpinner.getValue());
@@ -317,14 +318,15 @@ public class ResourcePanel extends JPanel
 				String text = toolsNameText.getText();
 				if (!r.getName().equals(text) && toolsModel.contains(new Resource(text)))
 				{
-					toolsNameText.setText("New name conflicts with existing tool.");
+					JOptionPane.showMessageDialog(null, "There is already a tool with that name.", "", JOptionPane.PLAIN_MESSAGE);
+					toolsNameText.setText(r.getName());
 					return;
 				}
 				
 				int amount = r.getAvailable() + (Integer)toolsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					toolsNameText.setText("Please put on hold the tasks whose tools have issues.");
+					JOptionPane.showMessageDialog(null, "Please stop the task whose tool has issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 					// !!!ask which tasks to pause
 				}
@@ -358,13 +360,14 @@ public class ResourcePanel extends JPanel
 				String text = partsNameText.getText();
 				if (!r.getName().equals(text) && partsModel.contains(new Resource(text)))
 				{
-					partsNameText.setText("New name conflicts with existing part.");
+					JOptionPane.showMessageDialog(null, "There is already a part with that name.", "", JOptionPane.PLAIN_MESSAGE);
+					partsNameText.setText(r.getName());
 					return;
 				}
 				int amount = r.getAvailable() + (Integer)partsMaxSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					partsNameText.setText("Please put on hold the task whose part has issues.");
+					JOptionPane.showMessageDialog(null, "Please stop the task whose part has issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 					// !!!ask which tasks to pause
 				}
@@ -397,7 +400,7 @@ public class ResourcePanel extends JPanel
 				Resource r = toolsList.getSelectedValue();
 				if (r.hasConstraint())
 				{
-					toolsNameText.setText("There are tasks that need this tool. Set max to 0 if all tools cannot be used");
+					JOptionPane.showMessageDialog(null, "There are tasks that need this tool. Change max# to 0 if all tools of this type have issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 				}
 				toolsList.clearSelection();
@@ -422,7 +425,7 @@ public class ResourcePanel extends JPanel
 				Resource r = partsList.getSelectedValue();
 				if (r.hasConstraint())
 				{
-					partsNameText.setText("There are tasks that need this part. Set max to 0 if all parts cannot be used");
+					JOptionPane.showMessageDialog(null, "There are tasks that need this part. Change max# to 0 if all parts of this type have issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 				}
 				partsList.clearSelection();
