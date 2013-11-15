@@ -40,10 +40,10 @@ public class TaskManager
 		Collections.sort(values);
 		return values;
 	}
-  public static Collection<Task> getTasks()
-  {
-	  return tasks.values();
-  }
+	public static Collection<Task> getTasks()
+	{
+		return tasks.values();
+	}
 	
 	public static void clear()
 	{

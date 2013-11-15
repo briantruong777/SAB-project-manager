@@ -121,10 +121,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 	}
 
-  public Task.Status getStatus()
-  {
-    return task.getStatus();
-  }
+	public Task.Status getStatus()
+	{
+		return task.getStatus();
+	}
 	
 /*	
 	private void taskStatusChange()

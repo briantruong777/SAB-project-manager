@@ -86,15 +86,15 @@ public class FileHandler implements ActionListener
 		{*/
 			String path = "";
 			JFileChooser fileChooser = new JFileChooser();
-	        int returnValue = fileChooser.showOpenDialog(null);
-	        if (returnValue == JFileChooser.APPROVE_OPTION) 
-	        {
-	        	File selectedFile = fileChooser.getSelectedFile();
-	        	path = selectedFile.getAbsolutePath();
-	        	//setLastSavedLocation(selectedFile.getAbsolutePath());
-	        }
-	        Runner.loadProject(path);
-	        //Runner.loadTools(path+"/tools");
+			int returnValue = fileChooser.showOpenDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION) 
+			{
+				File selectedFile = fileChooser.getSelectedFile();
+				path = selectedFile.getAbsolutePath();
+				//setLastSavedLocation(selectedFile.getAbsolutePath());
+			}
+			Runner.loadProject(path);
+			//Runner.loadTools(path+"/tools");
 		//}
 	}
 	
@@ -112,15 +112,15 @@ public class FileHandler implements ActionListener
 	{
 		String path = "";
 		JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showSaveDialog(null);
-        if (returnValue == JFileChooser.APPROVE_OPTION) 
-        {
-        	File selectedFile = fileChooser.getSelectedFile();
-        	System.out.println(selectedFile.getAbsolutePath());
-        	path = selectedFile.getAbsolutePath();
-        	//setLastSavedLocation(selectedFile.getAbsolutePath());
-        }
-        Runner.saveProject(path);
+		int returnValue = fileChooser.showSaveDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) 
+		{
+			File selectedFile = fileChooser.getSelectedFile();
+			System.out.println(selectedFile.getAbsolutePath());
+			path = selectedFile.getAbsolutePath();
+			//setLastSavedLocation(selectedFile.getAbsolutePath());
+		}
+		Runner.saveProject(path);
 	}
 	
 	public void export()
