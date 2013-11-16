@@ -582,11 +582,10 @@ public class TaskInfoDialog extends JDialog
 						switch(status)
 						{
 							case CREATE:
-								
-								break;
-							case EDIT:
 								break;
 							case RUN:
+								break;
+							case EDIT:
 								break;
 							case VIEW:
 								task = null;
@@ -637,6 +636,7 @@ public class TaskInfoDialog extends JDialog
 		// cannot change dependencies when trying to start task
 		enableLists(false);
 		enableButtons(false);
+		task = t;
 		dialog.setVisible(true);
 		return change;
 	}
@@ -660,6 +660,7 @@ public class TaskInfoDialog extends JDialog
 				enableLists(false);
 				break;
 		}
+		task = t;
 		dialog.setVisible(true);
 		return change;
 	}
