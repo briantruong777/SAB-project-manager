@@ -19,10 +19,13 @@ import taskModel.Task;
 import taskModel.TaskManager;
 
 @SuppressWarnings("serial")
-public class TaskPanel extends JPanel
+public class TaskPanel extends JPanel implements ItemListener
 {
 	private ArrayList<TaskDisplayPanel> tasks;
 	private Box taskList;
+	private JCheckBox checkUnavailable;
+	private JCheckBox checkIncomplete;
+	private JCheckBox checkComplete;
 	/**
 	 * Create the panel.
 	 */
@@ -43,8 +46,8 @@ public class TaskPanel extends JPanel
 		taskViewPanel.setLayout(fl_taskViewPanel);
 
 
-		JCheckBox checkUnavailable = new JCheckBox("Unavailable");
-		checkUnavailable.addItemListener(new ItemListener()
+		checkUnavailable = new JCheckBox("Unavailable");
+		checkUnavailable.addItemListener(/*new ItemListener()
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
@@ -65,12 +68,12 @@ public class TaskPanel extends JPanel
 				}
 				repaint();
 			}
-		});
+		}*/this);
 		checkUnavailable.setToolTipText("View tasks whose constraints have not been met.");
 		taskViewPanel.add(checkUnavailable);
 
-		JCheckBox checkIncomplete = new JCheckBox("Incomplete");
-		checkIncomplete.addItemListener(new ItemListener()
+		checkIncomplete = new JCheckBox("Incomplete");
+		checkIncomplete.addItemListener(/*new ItemListener()
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
@@ -92,13 +95,13 @@ public class TaskPanel extends JPanel
 				}
 				repaint();
 			}
-		});
+		}*/this);
 		checkIncomplete.setSelected(true);
 		checkIncomplete.setToolTipText("View tasks that can be started or are in progress.");
 		taskViewPanel.add(checkIncomplete);
 
-		JCheckBox checkComplete = new JCheckBox("Complete");
-		checkComplete.addItemListener(new ItemListener()
+		checkComplete = new JCheckBox("Complete");
+		checkComplete.addItemListener(/*new ItemListener()
 		{
 			public void itemStateChanged(ItemEvent e)
 			{
@@ -114,7 +117,7 @@ public class TaskPanel extends JPanel
 				}
 				repaint();
 			}
-		});
+		}*/this);
 		checkComplete.setToolTipText("View completed tasks.");
 		taskViewPanel.add(checkComplete);
 
@@ -160,5 +163,38 @@ public class TaskPanel extends JPanel
 			taskList.add(tdp);
 		}
 		taskList.repaint();
+	}
+	
+	public void itemStateChanged(ItemEvent e)
+	{
+		for (TaskDisplayPanel p: tasks)
+		{
+			switch(p.getStatus())
+			{
+				case UNAVAILABLE:
+				case STOPPED:
+					if (checkUnavailable.isSelected())
+						p.setVisible(true);
+					else
+						p.setVisible(false);
+					break;
+				case INCOMPLETE:
+				case WORKING:
+				case PAUSED:
+					if (checkIncomplete.isSelected())
+						p.setVisible(true);
+					else
+						p.setVisible(false);
+					break;
+				case COMPLETE:
+					if (checkComplete.isSelected())
+						p.setVisible(true);
+					else
+						p.setVisible(false);
+				default:
+					break;
+			}
+		}
+		repaint();
 	}
 }

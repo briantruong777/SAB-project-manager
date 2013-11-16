@@ -95,10 +95,13 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		String command = e.getActionCommand();
 		System.out.println(command);
-
 		if (task.getStatus() == Task.Status.INCOMPLETE)
 		{
 			task.begin();
+		}
+		if (command.equals("Stopped") || command.equals("Paused") || command.equals("Working") || command.equals("Complete"))
+		{
+			
 		}
 		if (command.equals("Stopped"))
 		{
