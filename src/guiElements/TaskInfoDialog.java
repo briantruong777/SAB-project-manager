@@ -51,6 +51,7 @@ public class TaskInfoDialog extends JDialog
 	private JButton btnAddPart;
 	private JButton btnRemovePart;
 	private JButton btnFindLink;
+	private JButton deleteButton;
 
 	private JList<Task> taskList;
 	private JList<Task> taskSelectList;
@@ -79,7 +80,7 @@ public class TaskInfoDialog extends JDialog
 
 	private enum Status
 	{
-		CREATE, RUN, EDIT, VIEW;
+		CREATE, EDIT, VIEW;
 	}
 	
 	static
@@ -589,27 +590,63 @@ public class TaskInfoDialog extends JDialog
 								task = new Task(mtextTask.getText());
 								task.setBuilder(mtextBuilder.getText());
 								task.setForeman(mtextForeman.getText());
-								for (Task t: taskModel)
-									task.addDependency(t);
-								for (ResourceConstraint tool: toolSelectModel)
-								{
-									Inventory.getTool(tool.getName()).addConstraint(tool);
-									task.addTool(tool);
-								}
-								for (ResourceConstraint part: partSelectModel)
-								{
-									Inventory.getPart(part.getName()).addConstraint(part);
-									task.addPart(part);
-								}
+								task.addDependencies(taskModel);
+								task.addTools(toolSelectModel);
+								task.addParts(partSelectModel);
 								task.setPath(mtextLink.getText());
+								if (task.meetDependencies() && task.meetResources())
+									task.setStatus(Task.Status.INCOMPLETE);
+								else
+									task.setStatus(Task.Status.UNAVAILABLE);
 								change = true;
 								break;
-							case RUN:
-								if (!task.getName().equals(mtextTask.getText()))
-									if (checkTaskName(mtextTask.getText()))
-										task.setName(mtextTask.getText());
-								break;
 							case EDIT:
+								change = !task.getName().equals(mtextTask.getText());
+								if (change && !checkNameLink() || !checkBuilderForeman())
+									return;
+								if (change)
+									task.setName(mtextTask.getText());
+								if (!task.getBuilder().equals(mtextBuilder.getText()))
+								{
+									change = true;
+									task.setBuilder(mtextBuilder.getText());
+								}
+								if (!task.getForeman().equals(mtextForeman.getText()))
+								{
+									change = true;
+									task.setForeman(mtextForeman.getText());
+								}
+								if (!task.getParts().equals(mtextLink.getText()))
+								{
+									change = true;
+									task.setPath(mtextLink.getText());
+								}
+								
+								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.INCOMPLETE)
+								{
+									if (!task.getDependencies().containsAll(taskSelectModel) || !taskSelectModel.containsAll(task.getDependencies()))
+									{
+										change = true;
+										task.clearDependencies();
+										task.addDependencies(taskModel);
+									}
+									if (!task.getTools().containsAll(toolSelectModel) || !toolSelectModel.containsAll(task.getTools()))
+									{
+										change = true;
+										task.clearTools();
+										task.addTools(toolSelectModel);
+									}
+									if (!task.getParts().containsAll(partSelectModel) || !partSelectModel.containsAll(task.getParts()))
+									{
+										change = true;
+										task.clearParts();
+										task.addParts(partSelectModel);
+									}
+									if (task.meetDependencies() && task.meetResources())
+										task.setStatus(Task.Status.INCOMPLETE);
+									else
+										task.setStatus(Task.Status.UNAVAILABLE);
+								}
 								break;
 							case VIEW:
 								task = null;
@@ -635,6 +672,24 @@ public class TaskInfoDialog extends JDialog
 						setVisible(false);
 					}
 				});
+				{
+					deleteButton = new JButton("Delete");
+					deleteButton.addActionListener(new ActionListener()
+					{
+						public void actionPerformed(ActionEvent arg0)
+						{
+							task.clearDependencies();
+							task.clearParts();
+							task.clearTools();
+							TaskManager.removeTask(task);
+							change = false;
+							task = null;
+							setVisible(false);
+						}
+					});
+					deleteButton.setVisible(false);
+					buttonPane.add(deleteButton);
+				}
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -643,10 +698,11 @@ public class TaskInfoDialog extends JDialog
 
 	private boolean checkNameLink()
 	{
-		String name = mtextTask.getName();
+		String name = mtextTask.getText(), path = mtextLink.getText();
 		if (name == null || "".equals(name))
 		{
 			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.PLAIN_MESSAGE);
+			mtextTask.setText("!!!");
 			return false;			
 		}
 		else if (TaskManager.getTask(name) != null)
@@ -654,7 +710,7 @@ public class TaskInfoDialog extends JDialog
 			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.PLAIN_MESSAGE);
 			return false;
 		}
-		else if (!(new File(mtextLink.getName()).isDirectory()))
+		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
 		{
 			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.PLAIN_MESSAGE);
 			return false;
@@ -662,20 +718,20 @@ public class TaskInfoDialog extends JDialog
 		return true;
 	}
 	
-	private boolean checkFile(String s)
+	private boolean checkBuilderForeman()
 	{
-		File f = new File(s);
-		if (f == null)
+		String builder = mtextBuilder.getText(), foreman = mtextForeman.getText();
+		if (builder == null || "".equals(builder))
 		{
+			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.PLAIN_MESSAGE);
 			return false;
 		}
-		if (f.isDirectory())
-			return true;
-		else
+		if (foreman == null || "".equals(foreman))
 		{
-			JOptionPane.showMessageDialog(null, "Cannot find the specified folder. Try again.", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please enter a foreman before running the task", "", JOptionPane.PLAIN_MESSAGE);
 			return false;
 		}
+		return true;
 	}
 	
 	public static boolean showCreateDialog()
@@ -685,19 +741,7 @@ public class TaskInfoDialog extends JDialog
 		enableText(true);
 		enableLists(true);
 		enableButtons(false);
-		dialog.setVisible(true);
-		return change;
-	}
-	
-	public static boolean showRunDialog(Task t)
-	{
-		status = Status.RUN;
-		loadTask(t);
-		enableText(true);
-		// cannot change dependencies when trying to start task
-		enableLists(false);
-		enableButtons(false);
-		task = t;
+		dialog.deleteButton.setVisible(false);
 		dialog.setVisible(true);
 		return change;
 	}
@@ -713,12 +757,14 @@ public class TaskInfoDialog extends JDialog
 			case UNAVAILABLE:
 			case INCOMPLETE:
 				enableLists(true);
+				dialog.deleteButton.setVisible(true);
 				break;
 			case STOPPED:
 			case WORKING:
 			case PAUSED:
 			case COMPLETE:
 				enableLists(false);
+				dialog.deleteButton.setVisible(false);
 				break;
 		}
 		task = t;
@@ -732,6 +778,7 @@ public class TaskInfoDialog extends JDialog
 		loadTask(t);
 		enableText(false);
 		enableLists(false);
+		dialog.deleteButton.setVisible(false);
 		enableButtons(false);
 		dialog.setVisible(true);
 	}

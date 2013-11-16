@@ -103,11 +103,13 @@ public class Task implements Serializable, Comparable<Task>
 	}
 	public void addTool(ResourceConstraint tool)
 	{
-		this.tools.put(tool.getName(), tool);
+		Inventory.getTool(tool.getName()).addConstraint(tool);
+		tools.put(tool.getName(), tool);
+		
 	}
 	public void removeTool(String name)
 	{
-		this.tools.remove(name);
+		Inventory.getTool(name).removeConstraint(tools.remove(name));
 	}
 	
 	public Collection<ResourceConstraint> getParts()
@@ -116,11 +118,12 @@ public class Task implements Serializable, Comparable<Task>
 	}
 	public void addPart(ResourceConstraint part)
 	{
-		this.parts.put(part.getName(), part);
+		Inventory.getPart(part.getName()).addConstraint(part);
+		parts.put(part.getName(), part);
 	}
 	public void removePart(String name)
 	{
-		this.parts.remove(name);
+		Inventory.getPart(name).removeConstraint(parts.remove(name));
 	}
 	
 	public ArrayList<Task> getDependencies()
@@ -203,24 +206,21 @@ public class Task implements Serializable, Comparable<Task>
 		}
 	}
 	
-	public boolean checkResources()
+	public boolean meetResources()
 	{
 		//tools in Task HashMap tools available in tools in Inventory HashMap tools
 		//parts in Task HashMap parts available in tools in Inventory HashMap parts
 		return Inventory.checkResources(tools.values(), parts.values());
 	}
 	
-	public boolean checkDependencies()
+	public boolean meetDependencies()
 	{
-		boolean available = true;
 		for (Task t : dependencies)
 		{
-			if (t.taskStatus != Status.COMPLETE)
-			{
-				available = false;
-			}
+			if (t.getStatus() != Status.COMPLETE)
+				return false;
 		}
-		return available;
+		return true;
 	}
 
 	public String toString()
@@ -231,5 +231,47 @@ public class Task implements Serializable, Comparable<Task>
 	public int compareTo(Task o)
 	{
 		return name.compareTo(o.name);
+	}
+	
+	public void clearDependencies()
+	{
+		dependencies.clear();
+	}
+	
+	public void clearTools()
+	{
+		for (ResourceConstraint toolRC: tools.values())
+			Inventory.getTool(toolRC.getName()).removeConstraint(toolRC);
+		tools.clear();
+	}
+	
+	public void clearParts()
+	{
+		for (ResourceConstraint partRC: parts.values())
+			Inventory.getPart(partRC.getName()).removeConstraint(partRC);
+		parts.clear();
+	}
+	
+	public void addDependencies(Collection<Task> tasks)
+	{
+		dependencies.addAll(tasks);
+	}
+	
+	public void addTools(Collection<ResourceConstraint> toolRCs)
+	{
+		for (ResourceConstraint toolRC: toolRCs)
+		{
+			Inventory.getTool(toolRC.getName()).addConstraint(toolRC);
+			tools.put(toolRC.getName(), toolRC);
+		}
+	}
+
+	public void addParts(Collection<ResourceConstraint> partRCs)
+	{
+		for (ResourceConstraint partRC: partRCs)
+		{
+			Inventory.getPart(partRC.getName()).addConstraint(partRC);
+			tools.put(partRC.getName(), partRC);
+		}
 	}
 }

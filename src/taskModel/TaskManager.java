@@ -37,6 +37,11 @@ public class TaskManager
 	{
 		tasks.put(task.getName(), task);
 	}
+	
+	public static void removeTask(Task task)
+	{
+		tasks.remove(task.getName());
+	}
 
 	public static ArrayList<Task> getSortedTasks()
 	{ 
