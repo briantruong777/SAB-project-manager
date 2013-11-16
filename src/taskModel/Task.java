@@ -33,7 +33,7 @@ public class Task implements Serializable, Comparable<Task>
 	
 	public enum Status
 	{
-		UNAVAILABLE, STOPPED, INCOMPLETE, WORKING, PAUSED, COMPLETE;
+		UNAVAILABLE, STOPPED, UNSTARTED, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -41,7 +41,7 @@ public class Task implements Serializable, Comparable<Task>
 		this.name = s;
 		builder = "No Builder";
 		foreman = "No Foreman";
-		taskStatus = Status.INCOMPLETE;
+		taskStatus = Status.UNSTARTED;
 		tools = new HashMap<String, ResourceConstraint>();
 		parts = new HashMap<String, ResourceConstraint>();
 		dependencies = new ArrayList<Task>();

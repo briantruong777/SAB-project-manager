@@ -595,7 +595,7 @@ public class TaskInfoDialog extends JDialog
 								task.addParts(partSelectModel);
 								task.setPath(mtextLink.getText());
 								if (task.meetDependencies() && task.meetResources())
-									task.setStatus(Task.Status.INCOMPLETE);
+									task.setStatus(Task.Status.UNSTARTED);
 								else
 									task.setStatus(Task.Status.UNAVAILABLE);
 								change = true;
@@ -622,7 +622,7 @@ public class TaskInfoDialog extends JDialog
 									task.setPath(mtextLink.getText());
 								}
 								
-								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.INCOMPLETE)
+								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.UNSTARTED)
 								{
 									if (!task.getDependencies().containsAll(taskSelectModel) || !taskSelectModel.containsAll(task.getDependencies()))
 									{
@@ -643,7 +643,7 @@ public class TaskInfoDialog extends JDialog
 										task.addParts(partSelectModel);
 									}
 									if (task.meetDependencies() && task.meetResources())
-										task.setStatus(Task.Status.INCOMPLETE);
+										task.setStatus(Task.Status.UNSTARTED);
 									else
 										task.setStatus(Task.Status.UNAVAILABLE);
 								}
@@ -755,7 +755,7 @@ public class TaskInfoDialog extends JDialog
 		switch(t.getStatus())
 		{
 			case UNAVAILABLE:
-			case INCOMPLETE:
+			case UNSTARTED:
 				enableLists(true);
 				dialog.deleteButton.setVisible(true);
 				break;

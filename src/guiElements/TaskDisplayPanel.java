@@ -3,6 +3,7 @@ package guiElements;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -87,6 +88,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(mradioNotesButton);
 		
 		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
+		mradioLinkButton .addActionListener(this);
+		mradioLinkButton .setActionCommand("File");
 		add(mradioLinkButton);
 		
 		editButton = new JButton("Edit");
@@ -95,6 +98,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(editButton);
 
 		setMaximumSize(getMinimumSize());
+
+		enableButtons();
 		
 //		taskStatusChange();
 	}
@@ -103,7 +108,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		String command = e.getActionCommand();
 		System.out.println(command);
-		if (task.getStatus() == Task.Status.INCOMPLETE)
+		if (task.getStatus() == Task.Status.UNSTARTED)
 		{
 			task.begin();
 		}
@@ -119,29 +124,26 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.pause();
 			task.setStatus(Task.Status.STOPPED);
-			statusLabel.setIcon(new ImageIcon("res/stop.png"));
 		}
 		else if (command.equals("Paused"))
 		{
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.INCOMPLETE)
+					task.getStatus() == Task.Status.UNSTARTED)
 				task.start();
 
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
-			statusLabel.setIcon(new ImageIcon("res/pause.png"));
 		}
 		else if (command.equals("Working"))
 		{
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.INCOMPLETE)
+					task.getStatus() == Task.Status.UNSTARTED)
 				task.start();
 
 			task.resume();
 			task.setStatus(Task.Status.WORKING);
-			statusLabel.setIcon(new ImageIcon("res/work.png"));
 		}
 		else if (command.equals("Complete"))
 		{
@@ -151,63 +153,78 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
-			statusLabel.setIcon(new ImageIcon("res/complete.png"));
 		}
 		else if (command.equals("Notes"))
 		{
 			String text = task.getNotes();
 			 
-			  JTextArea textArea = new JTextArea(text);
-			  textArea.setColumns(30);
-			  textArea.setLineWrap( true );
-			  textArea.setWrapStyleWord( true );
-			  JScrollPane scroll = new JScrollPane(textArea);
-			  JOptionPane.showMessageDialog(null, scroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
-			  task.setNotes(textArea.getText());
+				JTextArea textArea = new JTextArea(text);
+				textArea.setColumns(30);
+				textArea.setLineWrap( true );
+				textArea.setWrapStyleWord( true );
+				JScrollPane scroll = new JScrollPane(textArea);
+				JOptionPane.showMessageDialog(null, scroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
+				task.setNotes(textArea.getText());
+		}
+		else if (command.equals("File"))
+		{
+			try
+			{
+				Runtime.getRuntime().exec("explorer /select," + task.getPath());
+			} catch (IOException ex)
+			{
+				ex.printStackTrace();
+			}
 		}
 		else if (command.equals("Edit"))
 		{
 			boolean edited = TaskInfoDialog.showEditDialog(task);
 		}
+
 		enableButtons();
 	}
 	
 	/**
-	 * Enables buttons based on current status
+	 * Enables buttons and sets icon based on current status
 	 */
 	private void enableButtons()
 	{
 		switch (task.getStatus())
 		{
-			case INCOMPLETE:
+			case UNSTARTED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
 				break;
 			case STOPPED:
 				stopButton.setEnabled(false);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/stop.png"));
 				break;
 			case PAUSED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(false);
+				statusLabel.setIcon(new ImageIcon("res/complete.png"));
 				break;
 			default:
 				break;
@@ -236,7 +253,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				mradioStopbutton.setEnabled(false);
 				setBackground(Color.DARK_GRAY);
 				break;
-			case INCOMPLETE:
+			case UNSTARTED:
 				mradioPlayButton.setEnabled(true);
 				mradioPausebutton.setEnabled(false);
 				mradioStopbutton.setEnabled(false);

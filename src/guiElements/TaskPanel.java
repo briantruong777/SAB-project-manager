@@ -81,7 +81,7 @@ public class TaskPanel extends JPanel implements ItemListener
 				{
 					switch(p.getStatus())
 					{
-						case INCOMPLETE:
+						case UNSTARTED:
 						case WORKING:
 						case PAUSED:
 							if (e.getStateChange() == ItemEvent.SELECTED)
@@ -178,7 +178,7 @@ public class TaskPanel extends JPanel implements ItemListener
 					else
 						p.setVisible(false);
 					break;
-				case INCOMPLETE:
+				case UNSTARTED:
 				case WORKING:
 				case PAUSED:
 					if (checkIncomplete.isSelected())
