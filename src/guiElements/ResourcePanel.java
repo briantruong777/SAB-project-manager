@@ -2,6 +2,7 @@ package guiElements;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Map.Entry;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -440,5 +441,19 @@ public class ResourcePanel extends JPanel
 		gbc_partsRemove.gridx = 4;
 		gbc_partsRemove.gridy = 6;
 		add(partsRemove, gbc_partsRemove);
+	}
+	
+	public void reloadInventory()
+	{
+		toolsModel.clear();
+		partsModel.clear();
+		for (Entry<String, Resource> entry : Inventory.getToolsHash().entrySet()) 
+		{
+			toolsModel.add(entry.getValue());
+		}
+		for (Entry<String, Resource> entry : Inventory.getPartsHash().entrySet())
+		{
+			partsModel.add(entry.getValue());
+		}
 	}
 }

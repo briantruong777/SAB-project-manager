@@ -27,6 +27,7 @@ public class Task implements Serializable, Comparable<Task>
 	private Calendar endDate;
 	private long timeSpent;
 	private String path;
+	private String notes;
 
 	private long lastResumeTime;
 	
@@ -233,6 +234,7 @@ public class Task implements Serializable, Comparable<Task>
 		return name.compareTo(o.name);
 	}
 	
+<<<<<<< HEAD
 	public void clearDependencies()
 	{
 		dependencies.clear();
@@ -273,5 +275,15 @@ public class Task implements Serializable, Comparable<Task>
 			Inventory.getPart(partRC.getName()).addConstraint(partRC);
 			tools.put(partRC.getName(), partRC);
 		}
+=======
+	public String getNotes()
+	{
+		return notes;
+	}
+	
+	public void setNotes(String s)
+	{
+		notes = s;
+>>>>>>> a6123e80c4268c9bb9741755795eb76687d4bca9
 	}
 }

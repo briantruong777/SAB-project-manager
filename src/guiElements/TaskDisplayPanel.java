@@ -7,13 +7,13 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import taskModel.Task;
-import taskModel.Task.Status;
 
 public class TaskDisplayPanel extends JPanel implements ActionListener
 {
@@ -79,6 +79,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(mseparator);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
+		mradioNotesButton.addActionListener(this);
 		mradioNotesButton.setActionCommand("Notes");
 		add(mradioNotesButton);
 		
@@ -141,7 +142,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			task.setStatus(Task.Status.COMPLETE);
 			statusLabel.setIcon(new ImageIcon("res/complete.png"));
 		}
-
+		else if (command.equals("Notes"))
+		{
+			task.setNotes(JOptionPane.showInputDialog("Enter notes about this task:", task.getNotes()));
+		}
 		enableButtons();
 	}
 	
