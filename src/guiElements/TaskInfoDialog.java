@@ -15,7 +15,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -583,6 +582,15 @@ public class TaskInfoDialog extends JDialog
 						switch(status)
 						{
 							case CREATE:
+								
+								break;
+							case EDIT:
+								break;
+							case RUN:
+								break;
+							case VIEW:
+								task = null;
+								change = false;
 								break;
 							default:
 								break;
@@ -600,6 +608,7 @@ public class TaskInfoDialog extends JDialog
 					public void actionPerformed(ActionEvent e)
 					{
 						task = null;
+						change = false;
 						setVisible(false);
 					}
 				});

@@ -8,6 +8,7 @@ import java.util.ListIterator;
 
 import javax.swing.AbstractListModel;
 
+@SuppressWarnings("serial")
 public class ArrayListModel<E> extends AbstractListModel<E> implements
 		List<E>
 {
