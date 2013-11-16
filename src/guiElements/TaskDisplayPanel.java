@@ -88,6 +88,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		
 		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
 		add(mradioLinkButton);
+		
+		editButton = new JButton("Edit");
+		editButton.addActionListener(this);
+		editButton.setActionCommand("Edit");
+		add(editButton);
 
 		setMaximumSize(getMinimumSize());
 		
@@ -150,21 +155,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Notes"))
 		{
-			/*task.setNotes(JOptionPane.showConfirmDialog(new JTextArea(task.getNotes()),"Enter notes about this task:"));
-			JTextArea textArea = new JTextArea();//task.getNotes());
-			int okCxl = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this), textArea, "Enter Data", JOptionPane.OK_CANCEL_OPTION);
-            if (okCxl == JOptionPane.OK_OPTION) 
-            {
-            	task.setNotes(textArea.getText());
-// Process text.
-            }
-			JTextArea textArea = new JTextArea();
-			JPanel pnl = new JPanel(new BorderLayout());
-
-			pnl.add(new JLabel("Please enter some data:"), BorderLayout.NORTH);
-			pnl.add(textArea, BorderLayout.CENTER);*/
-			
-			 //String text = "\n\n\n\n";
 			String text = task.getNotes();
 			 
 			  JTextArea textArea = new JTextArea(text);
@@ -174,6 +164,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			  JScrollPane scroll = new JScrollPane(textArea);
 			  JOptionPane.showMessageDialog(null, scroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
 			  task.setNotes(textArea.getText());
+		}
+		else if (command.equals("Edit"))
+		{
+			boolean edited = TaskInfoDialog.showEditDialog(task);
 		}
 		enableButtons();
 	}
