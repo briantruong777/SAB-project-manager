@@ -23,6 +23,7 @@ public class Task implements Serializable, Comparable<Task>
 	private HashMap<String, ResourceConstraint> tools;
 	private HashMap<String, ResourceConstraint> parts;
 	private ArrayList<Task> dependencies;
+	private ArrayList<Task> dependers;
 	private Calendar startDate;
 	private Calendar endDate;
 	private long timeSpent;
@@ -134,12 +135,44 @@ public class Task implements Serializable, Comparable<Task>
 	}
 	public void addDependency(Task t)
 	{
-		this.dependencies.add(t);
+		dependencies.add(t);
+		t.addDepender(this);
 	}
 	public void removeDependency(Task t)
 	{
-		this.dependencies.remove(t);
+		dependencies.remove(t);
+		t.removeDepender(t);
 	}
+	
+	public ArrayList<Task> getDependers()
+	{
+		return dependers;
+	}
+
+	public void clearDependencies()
+	{
+		for (Task t: dependencies)
+			t.removeDepender(this);
+		dependencies.clear();
+	}
+
+	public void addDependencies(Collection<Task> tasks)
+	{
+		for (Task t: tasks)
+			t.
+		dependencies.addAll(tasks);
+	}
+
+	private void addDepender(Task t)
+	{
+		dependers.add(t);
+	}
+	
+	public void removeDepender(Task t)
+	{
+		dependers.remove(t);
+	}
+
 
 	/**
 	 * Run only once when Task is begun. Sets the startDate.
@@ -235,11 +268,6 @@ public class Task implements Serializable, Comparable<Task>
 		return name.compareTo(o.name);
 	}
 	
-	public void clearDependencies()
-	{
-		dependencies.clear();
-	}
-	
 	public void clearTools()
 	{
 		for (ResourceConstraint toolRC: tools.values())
@@ -252,11 +280,6 @@ public class Task implements Serializable, Comparable<Task>
 		for (ResourceConstraint partRC: parts.values())
 			Inventory.getPart(partRC.getName()).removeConstraint(partRC);
 		parts.clear();
-	}
-	
-	public void addDependencies(Collection<Task> tasks)
-	{
-		dependencies.addAll(tasks);
 	}
 	
 	public void addTools(Collection<ResourceConstraint> toolRCs)
