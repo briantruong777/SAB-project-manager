@@ -54,7 +54,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 	{
 		if (list.addAll(c))
 		{
-			fireIntervalAdded(this, list.size() - c.size(), list.size() - 1);
+			if (!this.isEmpty())
+				fireIntervalAdded(this, list.size() - c.size(), list.size() - 1);
 			return true;
 		}
 		else
@@ -66,7 +67,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 	{
 		if (list.addAll(index, c))
 		{
-			fireIntervalAdded(this, index, index + c.size());
+			if (!this.isEmpty())
+				fireIntervalAdded(this, index, index + c.size());
 			return true;
 		}
 		else
@@ -78,7 +80,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 	{
 		int last = list.size() - 1;
 		list.clear();
-		fireIntervalRemoved(this, 0, last);
+		if (last >= 0)
+			fireIntervalRemoved(this, 0, last);
 	}
 
 	@Override
@@ -162,7 +165,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 		int last = list.size() - 1;
 		if (removeAll(c))
 		{
-			fireIntervalRemoved(this, 0, last);
+			if (last >= 0)
+				fireIntervalRemoved(this, 0, last);
 			return true;
 		}
 		else
@@ -175,7 +179,8 @@ public class ArrayListModel<E> extends AbstractListModel<E> implements
 		int last = list.size() - 1;
 		if (retainAll(c))
 		{
-			fireIntervalRemoved(this, 0, last);
+			if (last >= 0)
+				fireIntervalRemoved(this, 0, last);
 			return true;
 		}
 		else

@@ -15,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -79,6 +80,7 @@ public class TaskInfoDialog extends JDialog
 	{
 		CREATE, RUN, EDIT, VIEW;
 	}
+	
 	static
 	{
 		dialog = new TaskInfoDialog();
@@ -219,7 +221,8 @@ public class TaskInfoDialog extends JDialog
 			gbc_taskSelectScroll.gridy = 2;
 			mcontentPanel.add(taskSelectScroll, gbc_taskSelectScroll);
 			{
-				taskSelectList = new JList<Task>(new ArrayListModel<Task>());
+				taskSelectModel = new ArrayListModel<Task>();
+				taskSelectList = new JList<Task>(taskSelectModel);
 				taskSelectList.addListSelectionListener(new ListButtonEnabler(btnRemoveTask));
 				taskSelectScroll.setViewportView(taskSelectList);
 				taskSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -267,7 +270,8 @@ public class TaskInfoDialog extends JDialog
 			gbc_toolScroll.gridy = 4;
 			mcontentPanel.add(toolScroll, gbc_toolScroll);
 			{
-				JList<Resource> toolList = new JList<Resource>(new ArrayListModel<Resource>());
+				toolModel = new ArrayListModel<Resource>();
+				toolList = new JList<Resource>(toolModel);
 				toolList.addListSelectionListener(new ListButtonEnabler(btnAddTool));
 				toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				toolList.setCellRenderer(new DefaultListCellRenderer()
@@ -327,7 +331,8 @@ public class TaskInfoDialog extends JDialog
 				gbc_toolSelectScroll.gridy = 4;
 				mcontentPanel.add(toolSelectScroll, gbc_toolSelectScroll);
 				{
-					toolSelectList = new JList<ResourceConstraint>(new ArrayListModel<ResourceConstraint>());
+					toolSelectModel = new ArrayListModel<ResourceConstraint>();
+					toolSelectList = new JList<ResourceConstraint>(toolSelectModel);
 					toolSelectList.addListSelectionListener(new ListButtonEnabler(btnRemoveTool));
 					toolSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					toolSelectList.setCellRenderer(new DefaultListCellRenderer()
@@ -391,7 +396,8 @@ public class TaskInfoDialog extends JDialog
 			gbc_partScroll.gridy = 7;
 			mcontentPanel.add(partScroll, gbc_partScroll);
 			{
-				partList = new JList<Resource>(new ArrayListModel<Resource>());
+				partModel = new ArrayListModel<Resource>();
+				partList = new JList<Resource>(partModel);
 				partList.addListSelectionListener(new ListButtonEnabler(btnAddPart));
 				partList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				partList.setCellRenderer(new DefaultListCellRenderer()
@@ -436,7 +442,8 @@ public class TaskInfoDialog extends JDialog
 			gbc_partSelectScroll.gridy = 7;
 			mcontentPanel.add(partSelectScroll, gbc_partSelectScroll);
 			{
-				partSelectList = new JList<ResourceConstraint>(new ArrayListModel<ResourceConstraint>());
+				partSelectModel = new ArrayListModel<ResourceConstraint>();
+				partSelectList = new JList<ResourceConstraint>(partSelectModel);
 				partSelectList.addListSelectionListener(new ListButtonEnabler(btnRemovePart));
 				partSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				partSelectList.setCellRenderer(new DefaultListCellRenderer()
@@ -660,21 +667,21 @@ public class TaskInfoDialog extends JDialog
 	
 	private static void loadTask(Task t)
 	{
+		dialog.taskList.clearSelection();
+		dialog.taskSelectList.clearSelection();
 		dialog.taskModel.clear();
 		dialog.taskModel.addAll(TaskManager.getTasks());
-		dialog.taskList.clearSelection();
 		dialog.taskSelectModel.clear();
-		dialog.taskSelectList.clearSelection();
+		dialog.toolList.clearSelection();
+		dialog.toolSelectList.clearSelection();
 		dialog.toolModel.clear();
 		dialog.toolModel.addAll(Inventory.getTools());
-		dialog.toolList.clearSelection();
 		dialog.toolSelectModel.clear();
-		dialog.toolSelectList.clearSelection();
+		dialog.partList.clearSelection();
+		dialog.partSelectList.clearSelection();
 		dialog.partModel.clear();
 		dialog.partModel.addAll(Inventory.getParts());
-		dialog.partList.clearSelection();
 		dialog.partSelectModel.clear();
-		dialog.partSelectList.clearSelection();
 		dialog.toolNumSpinner.setValue(1);
 		dialog.toolNumSpinner.setValue(1);
 		
