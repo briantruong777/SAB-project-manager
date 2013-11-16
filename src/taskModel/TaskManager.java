@@ -38,7 +38,7 @@ public class TaskManager
 		tasks.put(task.getName(), task);
 	}
 
-	public static ArrayList<Task> getAllTasks()
+	public static ArrayList<Task> getSortedTasks()
 	{ 
 		//TODO: Implement advanced sorting here or in gui
 		ArrayList<Task> values = new ArrayList<Task>(tasks.values());

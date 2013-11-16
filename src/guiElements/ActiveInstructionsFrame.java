@@ -9,6 +9,7 @@ import javax.swing.border.*;
 @SuppressWarnings("serial")
 public class ActiveInstructionsFrame extends JFrame
 {
+	private TaskPanel taskPanel;
 	/**
 	 * Create the frame.
 	 */
@@ -75,11 +76,16 @@ public class ActiveInstructionsFrame extends JFrame
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		mcontentPane.add(tabbedPane);
 		
-		JPanel taskPanel = new TaskPanel();
+		taskPanel = new TaskPanel();
 		tabbedPane.addTab("Tasks", null, taskPanel, null);
 		tabbedPane.setEnabledAt(0, true);
 				
 		JPanel resourcePanel = new ResourcePanel();
 		tabbedPane.addTab("Resources", null, resourcePanel, null);
+	}
+
+	public void reloadTaskPanel()
+	{
+		taskPanel.reloadTaskList();
 	}
 }
