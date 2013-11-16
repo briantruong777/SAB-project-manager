@@ -26,13 +26,13 @@ public class Task implements Serializable, Comparable<Task>
 	private Calendar startDate;
 	private Calendar endDate;
 	private long timeSpent;
-	private String instructLoc;
+	private String path;
 
 	private long lastResumeTime;
 	
 	public enum Status
 	{
-		UNAVAILABLE, INCOMPLETE, STOPPED, PAUSED, WORKING, COMPLETE;
+		UNAVAILABLE, STOPPED, INCOMPLETE, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -49,7 +49,7 @@ public class Task implements Serializable, Comparable<Task>
 		endDate = Calendar.getInstance();
 		endDate.clear();
 		timeSpent = 0; // In milliseconds
-		instructLoc = "No included instructions";
+		path= "";
 
 		lastResumeTime = -1; // -1 when paused
 	}
@@ -79,13 +79,13 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		foreman = str;
 	}
-	public String getInstructLoc()
+	public String getPath()
 	{
-		return instructLoc;
+		return path;
 	}
-	public void setInstructLoc(String str)
+	public void setPath(String str)
 	{
-		instructLoc = str;
+		path= str;
 	}
 	
 	public Status getStatus()

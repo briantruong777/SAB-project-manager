@@ -48,6 +48,7 @@ public class TaskInfoDialog extends JDialog
 	private JButton btnRemoveTool;
 	private JButton btnAddPart;
 	private JButton btnRemovePart;
+	private JButton btnFindLink;
 
 	private JList<Task> taskList;
 	private JList<Task> taskSelectList;
@@ -72,14 +73,15 @@ public class TaskInfoDialog extends JDialog
 	private static TaskInfoDialog dialog;
 	private static Task task;
 	private static Status status;
+	private static boolean change;
 
 	private enum Status
 	{
-		CREATE, VIEW, EDIT, RUN;
+		CREATE, RUN, EDIT, VIEW;
 	}
 	static
 	{
-//		dialog = new TaskInfoDialog();
+		dialog = new TaskInfoDialog();
 	}
 	
 	/**
@@ -291,6 +293,7 @@ public class TaskInfoDialog extends JDialog
 		{
 			toolNumSpinner = new JSpinner();
 			toolNumSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+			toolNumSpinner.setValue(1);
 			toolNumSpinner.setToolTipText("Enter number of tools needed.");
 			GridBagConstraints gbc_toolNumSpinner = new GridBagConstraints();
 			gbc_toolNumSpinner.fill = GridBagConstraints.HORIZONTAL;
@@ -414,6 +417,7 @@ public class TaskInfoDialog extends JDialog
 		{
 			partNumSpinner = new JSpinner();
 			partNumSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+			partNumSpinner.setValue(1);
 			partNumSpinner.setToolTipText("Enter number of parts needed.");
 			GridBagConstraints gbc_partNumSpinner = new GridBagConstraints();
 			gbc_partNumSpinner.insets = new Insets(0, 0, 5, 5);
@@ -515,7 +519,7 @@ public class TaskInfoDialog extends JDialog
 		{
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			JButton btnFindLink = new JButton("Find...");
+			btnFindLink = new JButton("Find...");
 			btnFindLink.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
@@ -598,34 +602,145 @@ public class TaskInfoDialog extends JDialog
 		}
 	}
 	
-	public static boolean showCreateTaskDialog()
+	public static boolean showCreateDialog()
 	{
 		status = Status.CREATE;
-		
-/*		dialog.taskModel.clear();
+		loadTask(null);
+		enableText(true);
+		enableLists(true);
+		enableButtons(false);
+		dialog.setVisible(true);
+		return change;
+	}
+	
+	public static boolean showRunDialog(Task t)
+	{
+		status = Status.RUN;
+		loadTask(t);
+		enableText(true);
+		// cannot change dependencies when trying to start task
+		enableLists(false);
+		enableButtons(false);
+		dialog.setVisible(true);
+		return change;
+	}
+	
+	public static boolean showEditDialog(Task t)
+	{
+		status = Status.EDIT;
+		loadTask(t);
+		enableText(true);
+		enableButtons(false);
+		switch(t.getStatus())
+		{
+			case UNAVAILABLE:
+			case INCOMPLETE:
+				enableLists(true);
+				break;
+			case STOPPED:
+			case WORKING:
+			case PAUSED:
+			case COMPLETE:
+				enableLists(false);
+				break;
+		}
+		dialog.setVisible(true);
+		return change;
+	}
+	
+	public static void showViewDialog(Task t)
+	{
+		status = Status.VIEW;
+		loadTask(t);
+		enableText(false);
+		enableLists(false);
+		enableButtons(false);
+		dialog.setVisible(true);
+	}
+	
+	private static void loadTask(Task t)
+	{
+		dialog.taskModel.clear();
 		dialog.taskModel.addAll(TaskManager.getTasks());
-		dialog.btnAddTask.setEnabled(false);
-		dialog.btnRemoveTask.setEnabled(false);
-		
+		dialog.taskList.clearSelection();
+		dialog.taskSelectModel.clear();
+		dialog.taskSelectList.clearSelection();
 		dialog.toolModel.clear();
 		dialog.toolModel.addAll(Inventory.getTools());
-		dialog.toolNumSpinner.setValue(0);
-		dialog.btnAddTool.setEnabled(false);
-		dialog.btnRemoveTool.setEnabled(false);
-
+		dialog.toolList.clearSelection();
+		dialog.toolSelectModel.clear();
+		dialog.toolSelectList.clearSelection();
 		dialog.partModel.clear();
 		dialog.partModel.addAll(Inventory.getParts());
-		dialog.partNumSpinner.setValue(0);
-		dialog.btnAddPart.setEnabled(false);
-		dialog.btnRemovePart.setEnabled(false);
+		dialog.partList.clearSelection();
+		dialog.partSelectModel.clear();
+		dialog.partSelectList.clearSelection();
+		dialog.toolNumSpinner.setValue(1);
+		dialog.toolNumSpinner.setValue(1);
 		
-		dialog.mtextLink.setText("");
-		dialog.lblStartDate.setText("Start Date: N/A");
-		dialog.lblTimeSpent.setText("Time Spent: N/A");
-		dialog.lblEndDate.setText("End Date: N/A");*/
-		dialog.setVisible(true);
-		
-		return false;
+		if (t == null)
+		{
+			dialog.mtextTask.setText("");
+			dialog.mtextBuilder.setText("");
+			dialog.mtextBuilder.setText("");
+			dialog.mtextLink.setText("");
+			dialog.lblStartDate.setText("Start Date: N/A");
+			dialog.lblTimeSpent.setText("Time Spent: N/A");
+			dialog.lblEndDate.setText("End Date: N/A");
+		}
+		else
+		{
+			dialog.mtextTask.setText(t.getName());
+			if (t.getBuilder() == null)
+				dialog.mtextBuilder.setText("");
+			else
+				dialog.mtextBuilder.setText(t.getBuilder());
+			if (t.getForeman() == null)
+				dialog.mtextBuilder.setText("");
+			else
+				dialog.mtextBuilder.setText(t.getForeman());
+			if (t.getPath() == null)
+				dialog.mtextLink.setText("");
+			else
+				dialog.mtextLink.setText(t.getPath());
+			
+			dialog.taskSelectModel.addAll(t.getDependencies());
+			dialog.toolSelectModel.addAll(t.getTools());
+			dialog.partSelectModel.addAll(t.getParts());
+			
+			//!!! set date/time
+		}
+	}
+	
+	private static void enableText(boolean b)
+	{
+		dialog.mtextBuilder.setEditable(b);
+		dialog.mtextForeman.setEditable(b);
+		dialog.mtextLink.setEditable(b);
+		dialog.mtextTask.setEditable(b);
+		dialog.btnFindLink.setEnabled(b);
+	}
+	
+	private static void enableLists(boolean b)
+	{
+		dialog.taskList.setEnabled(b);
+		dialog.taskSelectList.setEnabled(b);
+		dialog.toolList.setEnabled(b);
+		dialog.toolSelectList.setEnabled(b);
+		dialog.toolNumSpinner.setEnabled(b);
+		dialog.partList.setEnabled(b);
+		dialog.partSelectList.setEnabled(b);
+		dialog.partNumSpinner.setEnabled(b);
+	}
+	
+	private static void enableButtons(boolean b)
+	{
+		dialog.btnAddPart.setEnabled(b);
+		dialog.btnAddTask.setEnabled(b);
+		dialog.btnAddTool.setEnabled(b);
+		dialog.btnRemovePart.setEnabled(b);
+		dialog.btnRemoveTask.setEnabled(b);
+		dialog.btnRemoveTool.setEnabled(b);
 	}
 	
 	public static Task getTask()
