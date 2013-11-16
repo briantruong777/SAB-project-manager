@@ -21,9 +21,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	Task task;
 	//private JButton incompleteButton;
 	private JLabel statusLabel;
+	private JButton stopButton;
 	private JButton pauseButton;
-	private JButton completeButton;
 	private JButton workingButton;
+	private JButton completeButton;
 	private JRadioButton mradioNotesButton;
 	private JSeparator mseparator;
 	private JRadioButton mradioLinkButton;
@@ -52,7 +53,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		incompleteButton.setActionCommand("Incomplete");
 		add(incompleteButton);*/
 		
-		
+//		stopButton = new JButton(new ImageIcon("res/stop.png"));
+		stopButton = new JButton("Stop");
+		stopButton.addActionListener(this);
+		stopButton.setActionCommand("Stopped");
+		add(stopButton);
 		
 		pauseButton = new JButton(new ImageIcon("res/pause.png"));
 		pauseButton.addActionListener(this);
@@ -89,40 +94,99 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		String command = e.getActionCommand();
 		System.out.println(command);
-		if (command.equals("Working"))
+
+		if (task.getStatus() == Task.Status.INCOMPLETE)
 		{
-			//System.out.println("I have just pressed working");
-			workingButton.setEnabled(false);
-			pauseButton.setEnabled(true);
-			completeButton.setEnabled(true);
-			if (task.getStatus() == Task.Status.INCOMPLETE)
-				task.start();
-			else if (task.getStatus() == Task.Status.PAUSED || task.getStatus() == Task.Status.COMPLETE)
-				task.resume();
-			task.setStatus(Task.Status.WORKING);
-			statusLabel.setIcon(new ImageIcon("res/work.png"));
+			task.begin();
+		}
+		if (command.equals("Stopped"))
+		{
+			if (task.getStatus() == Task.Status.PAUSED ||
+					task.getStatus() == Task.Status.WORKING)
+				task.stop();
+
+			task.pause();
+			task.setStatus(Task.Status.STOPPED);
+			statusLabel.setIcon(new ImageIcon("res/incomplete.png"));
 		}
 		else if (command.equals("Paused"))
 		{
-			pauseButton.setEnabled(false);
-			workingButton.setEnabled(true);
-			completeButton.setEnabled(true);
+			if (task.getStatus() == Task.Status.STOPPED ||
+					task.getStatus() == Task.Status.COMPLETE ||
+					task.getStatus() == Task.Status.INCOMPLETE)
+				task.start();
+
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
 			statusLabel.setIcon(new ImageIcon("res/pause.png"));
 		}
+		else if (command.equals("Working"))
+		{
+			if (task.getStatus() == Task.Status.STOPPED ||
+					task.getStatus() == Task.Status.COMPLETE ||
+					task.getStatus() == Task.Status.INCOMPLETE)
+				task.start();
+
+			task.resume();
+			task.setStatus(Task.Status.WORKING);
+			statusLabel.setIcon(new ImageIcon("res/work.png"));
+		}
 		else if (command.equals("Complete"))
 		{
-			completeButton.setEnabled(false);
-			workingButton.setEnabled(true);
-			pauseButton.setEnabled(true);
-			if (task.getStatus() == Task.Status.WORKING || task.getStatus() == Task.Status.PAUSED)
+			if (task.getStatus() == Task.Status.PAUSED ||
+					task.getStatus() == Task.Status.WORKING)
 				task.stop();
+
+			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
 			statusLabel.setIcon(new ImageIcon("res/complete.png"));
 		}
-	}
 
+		enableButtons();
+	}
+	
+	/**
+	 * Enables buttons based on current status
+	 */
+	private void enableButtons()
+	{
+		switch (task.getStatus())
+		{
+			case INCOMPLETE:
+				stopButton.setEnabled(true);
+				pauseButton.setEnabled(true);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(true);
+				break;
+			case STOPPED:
+				stopButton.setEnabled(false);
+				pauseButton.setEnabled(true);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(true);
+				break;
+			case PAUSED:
+				stopButton.setEnabled(true);
+				pauseButton.setEnabled(false);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(true);
+				break;
+			case WORKING:
+				stopButton.setEnabled(true);
+				pauseButton.setEnabled(true);
+				workingButton.setEnabled(false);
+				completeButton.setEnabled(true);
+				break;
+			case COMPLETE:
+				stopButton.setEnabled(true);
+				pauseButton.setEnabled(true);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(false);
+				break;
+			default:
+				break;
+		}
+	}
+	
 	public Task.Status getStatus()
 	{
 		return task.getStatus();
