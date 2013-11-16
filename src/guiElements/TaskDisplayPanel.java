@@ -3,6 +3,7 @@ package guiElements;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -83,6 +84,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(mradioNotesButton);
 		
 		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
+		mradioLinkButton.addActionListener(this);
+		mradioLinkButton.setActionCommand("File");
 		add(mradioLinkButton);
 
 		setMaximumSize(getMinimumSize());
@@ -138,6 +141,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
+		}
+		else if (command.equals("File"))
+		{
+			try
+			{
+				Runtime.getRuntime().exec("explorer /select," + task.getPath());
+			} catch (IOException ex)
+			{
+				ex.printStackTrace();
+			}
 		}
 
 		enableButtons();
