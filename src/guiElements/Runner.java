@@ -1,20 +1,11 @@
-package runner;
-import guiElements.ActiveInstructionsFrame;
+package guiElements;
 
-import java.awt.EventQueue;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.*;
+import java.util.*;
 
-import resourceModel.Inventory;
-import resourceModel.Resource;
-import taskModel.Task;
-import taskModel.TaskManager;
+import guiElements.*;
+import resourceModel.*;
+import taskModel.*;
 
 public class Runner 
 {
@@ -22,7 +13,7 @@ public class Runner
 
 	public static void main(String[] args)
 	{
-		TaskManager.createNewTask("Blah1");
+/*		TaskManager.createNewTask("Blah1");
 		TaskManager.createNewTask("Blah2");
 		TaskManager.createNewTask("Blah3");
 		TaskManager.createNewTask("Blah4");
@@ -30,23 +21,11 @@ public class Runner
 		Inventory.addTool(new Resource("Axe", 1));
 		Inventory.addTool(new Resource("Sword", 1));
 		Inventory.addPart(new Resource("Wing", 1));
-		Inventory.addPart(new Resource("Shield", 1));
+		Inventory.addPart(new Resource("Shield", 1));*/
 
-		EventQueue.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try
-				{
-					frame = new ActiveInstructionsFrame();
-					frame.setVisible(true);
-					frame.reloadTaskPanel();
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		});
+		frame = new ActiveInstructionsFrame();
+		frame.setVisible(true);
+//		frame.reloadTaskPanel();
 	}
 
 	public static void saveProject(String path)
@@ -106,5 +85,10 @@ public class Runner
 		System.out.println(Inventory.getParts());
 
 		frame.reloadTaskPanel();
+	}
+	
+	public static void notifyChange()
+	{
+		frame.notifyChange();
 	}
 }
