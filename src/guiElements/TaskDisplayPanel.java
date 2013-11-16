@@ -172,7 +172,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			  textArea.setLineWrap( true );
 			  textArea.setWrapStyleWord( true );
 			  JScrollPane scroll = new JScrollPane(textArea);
-			  JOptionPane.showMessageDialog(null, scroll, "Not Truncated!", JOptionPane.PLAIN_MESSAGE);		
+			  JOptionPane.showMessageDialog(null, scroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
 			  task.setNotes(textArea.getText());
 		}
 		enableButtons();
