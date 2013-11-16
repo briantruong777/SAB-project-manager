@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -582,8 +584,30 @@ public class TaskInfoDialog extends JDialog
 						switch(status)
 						{
 							case CREATE:
+								if (!checkNameLink())
+									return;
+								task = new Task(mtextTask.getText());
+								task.setBuilder(mtextBuilder.getText());
+								task.setForeman(mtextForeman.getText());
+								for (Task t: taskModel)
+									task.addDependency(t);
+								for (ResourceConstraint tool: toolSelectModel)
+								{
+									Inventory.getTool(tool.getName()).addConstraint(tool);
+									task.addTool(tool);
+								}
+								for (ResourceConstraint part: partSelectModel)
+								{
+									Inventory.getPart(part.getName()).addConstraint(part);
+									task.addPart(part);
+								}
+								task.setPath(mtextLink.getText());
+								change = true;
 								break;
 							case RUN:
+								if (!task.getName().equals(mtextTask.getText()))
+									if (checkTaskName(mtextTask.getText()))
+										task.setName(mtextTask.getText());
 								break;
 							case EDIT:
 								break;
@@ -614,6 +638,43 @@ public class TaskInfoDialog extends JDialog
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+		}
+	}
+
+	private boolean checkNameLink()
+	{
+		String name = mtextTask.getName();
+		if (name == null || "".equals(name))
+		{
+			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.PLAIN_MESSAGE);
+			return false;			
+		}
+		else if (TaskManager.getTask(name) != null)
+		{
+			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.PLAIN_MESSAGE);
+			return false;
+		}
+		else if (!(new File(mtextLink.getName()).isDirectory()))
+		{
+			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.PLAIN_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean checkFile(String s)
+	{
+		File f = new File(s);
+		if (f == null)
+		{
+			return false;
+		}
+		if (f.isDirectory())
+			return true;
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Cannot find the specified folder. Try again.", "", JOptionPane.PLAIN_MESSAGE);
+			return false;
 		}
 	}
 	
