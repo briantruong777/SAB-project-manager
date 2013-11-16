@@ -133,16 +133,32 @@ public class Task implements Serializable, Comparable<Task>
 		this.dependencies.remove(t);
 	}
 
-	public void start()
+	/**
+	 * Run only once when Task is begun. Sets the startDate.
+	 */
+	public void begin()
 	{
 		startDate = Calendar.getInstance();
-		resume();
+	}
+	/**
+	 * Run when task is finished. Sets the endDate.
+	 */
+	public void finish()
+	{
+		endDate = Calendar.getInstance();
+	}
+
+	//NOTE:We could also check resources from an outside class since that
+	//is more likely to avoid bugs
+	public void start()
+	{
+		//TODO:Remove required resources from Inventory
 	}
 	public void stop()
 	{
-		endDate = Calendar.getInstance();
-		pause();
+		//TODO:Add back required resources to Inventory
 	}
+
 	public Calendar getStartDate()
 	{
 		return startDate;
@@ -160,6 +176,10 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		this.timeSpent = timeSpent;
 	}
+
+	/**
+	 * Resumes counting working time. Can be called multiple times safely.
+	 */
 	public void resume()
 	{
 		if (lastResumeTime == -1) // Check if paused
@@ -167,6 +187,9 @@ public class Task implements Serializable, Comparable<Task>
 			lastResumeTime = Calendar.getInstance().getTimeInMillis();
 		}
 	}
+	/**
+	 * Pauses counting working time. Can be called multiple times safely.
+	 */
 	public void pause()
 	{
 		if (lastResumeTime != -1) // Check for valid last resume time

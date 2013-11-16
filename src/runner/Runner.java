@@ -22,15 +22,15 @@ public class Runner
 
 	public static void main(String[] args)
 	{
-//		TaskManager.createNewTask("Blah1");
-//		TaskManager.createNewTask("Blah2");
-//		TaskManager.createNewTask("Blah3");
-//		TaskManager.createNewTask("Blah4");
-//		Inventory.addTool(new Resource("Hammer", 1));
-//		Inventory.addTool(new Resource("Axe", 1));
-//		Inventory.addTool(new Resource("Sword", 1));
-//		Inventory.addPart(new Resource("Wing", 1));
-//		Inventory.addPart(new Resource("Shield", 1));
+		TaskManager.createNewTask("Blah1");
+		TaskManager.createNewTask("Blah2");
+		TaskManager.createNewTask("Blah3");
+		TaskManager.createNewTask("Blah4");
+		Inventory.addTool(new Resource("Hammer", 1));
+		Inventory.addTool(new Resource("Axe", 1));
+		Inventory.addTool(new Resource("Sword", 1));
+		Inventory.addPart(new Resource("Wing", 1));
+		Inventory.addPart(new Resource("Shield", 1));
 
 		EventQueue.invokeLater(new Runnable()
 		{
@@ -40,6 +40,7 @@ public class Runner
 				{
 					frame = new ActiveInstructionsFrame();
 					frame.setVisible(true);
+					frame.reloadTaskPanel();
 				} catch (Exception e)
 				{
 					e.printStackTrace();
