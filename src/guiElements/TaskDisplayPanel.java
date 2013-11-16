@@ -86,6 +86,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(mradioLinkButton);
 
 		setMaximumSize(getMinimumSize());
+
+		enableButtons();
 		
 //		taskStatusChange();
 	}
@@ -107,7 +109,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.pause();
 			task.setStatus(Task.Status.STOPPED);
-			statusLabel.setIcon(new ImageIcon("res/stop.png"));
 		}
 		else if (command.equals("Paused"))
 		{
@@ -118,7 +119,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
-			statusLabel.setIcon(new ImageIcon("res/pause.png"));
 		}
 		else if (command.equals("Working"))
 		{
@@ -129,7 +129,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.resume();
 			task.setStatus(Task.Status.WORKING);
-			statusLabel.setIcon(new ImageIcon("res/work.png"));
 		}
 		else if (command.equals("Complete"))
 		{
@@ -139,14 +138,13 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
-			statusLabel.setIcon(new ImageIcon("res/complete.png"));
 		}
 
 		enableButtons();
 	}
 	
 	/**
-	 * Enables buttons based on current status
+	 * Enables buttons and sets icon based on current status
 	 */
 	private void enableButtons()
 	{
@@ -157,30 +155,35 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
 				break;
 			case STOPPED:
 				stopButton.setEnabled(false);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/stop.png"));
 				break;
 			case PAUSED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(true);
+				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(false);
+				statusLabel.setIcon(new ImageIcon("res/complete.png"));
 				break;
 			default:
 				break;
