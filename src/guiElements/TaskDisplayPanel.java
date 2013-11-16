@@ -54,7 +54,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(incompleteButton);*/
 		
 //		stopButton = new JButton(new ImageIcon("res/stop.png"));
-		stopButton = new JButton("Stop");
+		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton.addActionListener(this);
 		stopButton.setActionCommand("Stopped");
 		add(stopButton);
@@ -107,7 +107,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 			task.pause();
 			task.setStatus(Task.Status.STOPPED);
-			statusLabel.setIcon(new ImageIcon("res/incomplete.png"));
+			statusLabel.setIcon(new ImageIcon("res/stop.png"));
 		}
 		else if (command.equals("Paused"))
 		{
