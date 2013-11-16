@@ -27,6 +27,7 @@ public class Task implements Serializable, Comparable<Task>
 	private Calendar endDate;
 	private long timeSpent;
 	private String path;
+	private String notes;
 
 	private long lastResumeTime;
 	
@@ -231,5 +232,15 @@ public class Task implements Serializable, Comparable<Task>
 	public int compareTo(Task o)
 	{
 		return name.compareTo(o.name);
+	}
+	
+	public String getNotes()
+	{
+		return notes;
+	}
+	
+	public void setNotes(String s)
+	{
+		notes = s;
 	}
 }
