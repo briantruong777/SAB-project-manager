@@ -63,30 +63,28 @@ public class Inventory
 		}
 	}
 
-	public static boolean checkTools(HashMap<String, Integer> taskTools)
+	public static boolean checkTools(Collection<ResourceConstraint> taskTools)
 	{
-		boolean available = true;
-		for (String key : taskTools.keySet())
+		for (ResourceConstraint tool : taskTools)
 		{
-			if (!tools.containsKey(key) || taskTools.get(key) > tools.get(key).getAvailable())
-				available = false;
+			if (!tools.containsKey(tool.getName()) || tool.getAmount() > tools.get(tool.getName()).getAvailable())
+				return false;
 		}
-		return available;
+		return true;
 	}
 
-	public static boolean checkParts(HashMap<String, Integer> taskParts)
+	public static boolean checkParts(Collection<ResourceConstraint> taskParts)
 	{
-		boolean available = true;
-		for (String key : taskParts.keySet())
+		for (ResourceConstraint part : taskParts)
 		{
-			if (!parts.containsKey(key) || taskParts.get(key) > parts.get(key).getAvailable())
-				available = false;
+			if (!parts.containsKey(part.getName()) || part.getAmount() > tools.get(part.getName()).getAvailable())
+				return false;
 		}
-		return available;
+		return true;
 	}
 
-	public static boolean checkResources(HashMap<String, Integer> taskTools,
-			HashMap<String, Integer> taskParts)
+	public static boolean checkResources(Collection<ResourceConstraint> taskTools,
+			Collection<ResourceConstraint> taskParts)
 	{
 		return checkTools(taskTools) && checkParts(taskParts);
 	}

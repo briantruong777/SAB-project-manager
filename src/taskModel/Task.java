@@ -5,11 +5,14 @@
  */
 
 package taskModel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Calendar;
-import resourceModel.Inventory;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+
+import resourceModel.Inventory;
+import resourceModel.ResourceConstraint;
 
 public class Task implements Serializable, Comparable<Task>
 {
@@ -17,19 +20,19 @@ public class Task implements Serializable, Comparable<Task>
 	private String builder;
 	private String foreman;
 	private Status taskStatus;
-	private HashMap<String, Integer> tools;
-	private HashMap<String, Integer> parts;
+	private HashMap<String, ResourceConstraint> tools;
+	private HashMap<String, ResourceConstraint> parts;
 	private ArrayList<Task> dependencies;
 	private Calendar startDate;
 	private Calendar endDate;
 	private long timeSpent;
-	private String instructLoc;
+	private String path;
 
 	private long lastResumeTime;
 	
 	public enum Status
 	{
-		UNAVAILABLE, INCOMPLETE, STOPPED, PAUSED, WORKING, COMPLETE;
+		UNAVAILABLE, STOPPED, INCOMPLETE, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -38,15 +41,15 @@ public class Task implements Serializable, Comparable<Task>
 		builder = "No Builder";
 		foreman = "No Foreman";
 		taskStatus = Status.INCOMPLETE;
-		tools = new HashMap<String, Integer>();
-		parts = new HashMap<String, Integer>();
+		tools = new HashMap<String, ResourceConstraint>();
+		parts = new HashMap<String, ResourceConstraint>();
 		dependencies = new ArrayList<Task>();
 		startDate = Calendar.getInstance();
 		startDate.clear(); // Invalidates value
 		endDate = Calendar.getInstance();
 		endDate.clear();
 		timeSpent = 0; // In milliseconds
-		instructLoc = "No included instructions";
+		path= "";
 
 		lastResumeTime = -1; // -1 when paused
 	}
@@ -76,13 +79,13 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		foreman = str;
 	}
-	public String getInstructLoc()
+	public String getPath()
 	{
-		return instructLoc;
+		return path;
 	}
-	public void setInstructLoc(String str)
+	public void setPath(String str)
 	{
-		instructLoc = str;
+		path= str;
 	}
 	
 	public Status getStatus()
@@ -94,26 +97,26 @@ public class Task implements Serializable, Comparable<Task>
 		this.taskStatus = s;
 	}
 	
-	public HashMap<String, Integer> getTools()
+	public Collection<ResourceConstraint> getTools()
 	{
-		return tools;
+		return tools.values();
 	}
-	public void addTool(String name, int numNeeded)
+	public void addTool(ResourceConstraint tool)
 	{
-		this.tools.put(name, new Integer(numNeeded));
+		this.tools.put(tool.getName(), tool);
 	}
 	public void removeTool(String name)
 	{
 		this.tools.remove(name);
 	}
 	
-	public HashMap<String, Integer> getParts()
+	public Collection<ResourceConstraint> getParts()
 	{
-		return parts;
+		return parts.values();
 	}
-	public void addPart(String name, int numNeeded)
+	public void addPart(ResourceConstraint part)
 	{
-		this.parts.put(name, new Integer(numNeeded));
+		this.parts.put(part.getName(), part);
 	}
 	public void removePart(String name)
 	{
@@ -204,7 +207,7 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		//tools in Task HashMap tools available in tools in Inventory HashMap tools
 		//parts in Task HashMap parts available in tools in Inventory HashMap parts
-		return Inventory.checkResources(tools, parts);
+		return Inventory.checkResources(tools.values(), parts.values());
 	}
 	
 	public boolean checkDependencies()
