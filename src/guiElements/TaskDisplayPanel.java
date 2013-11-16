@@ -10,7 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import taskModel.Task;
@@ -28,6 +30,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	private JRadioButton mradioNotesButton;
 	private JSeparator mseparator;
 	private JRadioButton mradioLinkButton;
+	private JButton editButton;
 	
 	/**
 	 * Create the panel.
@@ -147,7 +150,30 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Notes"))
 		{
-			task.setNotes(JOptionPane.showInputDialog("Enter notes about this task:", task.getNotes()));
+			/*task.setNotes(JOptionPane.showConfirmDialog(new JTextArea(task.getNotes()),"Enter notes about this task:"));
+			JTextArea textArea = new JTextArea();//task.getNotes());
+			int okCxl = JOptionPane.showConfirmDialog(SwingUtilities.getWindowAncestor(this), textArea, "Enter Data", JOptionPane.OK_CANCEL_OPTION);
+            if (okCxl == JOptionPane.OK_OPTION) 
+            {
+            	task.setNotes(textArea.getText());
+// Process text.
+            }
+			JTextArea textArea = new JTextArea();
+			JPanel pnl = new JPanel(new BorderLayout());
+
+			pnl.add(new JLabel("Please enter some data:"), BorderLayout.NORTH);
+			pnl.add(textArea, BorderLayout.CENTER);*/
+			
+			 //String text = "\n\n\n\n";
+			String text = task.getNotes();
+			 
+			  JTextArea textArea = new JTextArea(text);
+			  textArea.setColumns(30);
+			  textArea.setLineWrap( true );
+			  textArea.setWrapStyleWord( true );
+			  JScrollPane scroll = new JScrollPane(textArea);
+			  JOptionPane.showMessageDialog(null, scroll, "Not Truncated!", JOptionPane.PLAIN_MESSAGE);		
+			  task.setNotes(textArea.getText());
 		}
 		enableButtons();
 	}
