@@ -95,7 +95,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		String command = e.getActionCommand();
 		System.out.println(command);
 
-		if (task.getStatus() == Task.Status.INCOMPLETE)
+		if (task.getStatus() == Task.Status.UNSTARTED)
 		{
 			task.begin();
 		}
@@ -113,7 +113,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		{
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.INCOMPLETE)
+					task.getStatus() == Task.Status.UNSTARTED)
 				task.start();
 
 			task.pause();
@@ -124,7 +124,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		{
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.INCOMPLETE)
+					task.getStatus() == Task.Status.UNSTARTED)
 				task.start();
 
 			task.resume();
@@ -152,7 +152,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		switch (task.getStatus())
 		{
-			case INCOMPLETE:
+			case UNSTARTED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
@@ -209,7 +209,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				mradioStopbutton.setEnabled(false);
 				setBackground(Color.DARK_GRAY);
 				break;
-			case INCOMPLETE:
+			case UNSTARTED:
 				mradioPlayButton.setEnabled(true);
 				mradioPausebutton.setEnabled(false);
 				mradioStopbutton.setEnabled(false);

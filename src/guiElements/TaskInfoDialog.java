@@ -650,7 +650,7 @@ public class TaskInfoDialog extends JDialog
 		switch(t.getStatus())
 		{
 			case UNAVAILABLE:
-			case INCOMPLETE:
+			case UNSTARTED:
 				enableLists(true);
 				break;
 			case STOPPED:

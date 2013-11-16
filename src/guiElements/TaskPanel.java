@@ -78,7 +78,7 @@ public class TaskPanel extends JPanel
 				{
 					switch(p.getStatus())
 					{
-						case INCOMPLETE:
+						case UNSTARTED:
 						case WORKING:
 						case PAUSED:
 							if (e.getStateChange() == ItemEvent.SELECTED)
