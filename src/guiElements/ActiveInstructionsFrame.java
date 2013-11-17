@@ -97,6 +97,13 @@ public class ActiveInstructionsFrame extends JFrame
 		status = FileStatus.CHANGED;
 	}
 
+	public void clearTaskPanel()
+	{
+		mntmSave.setEnabled(false);
+		taskPanel.clearTaskList();
+		resourcePanel.clearInventory();
+	}
+
 	public void reloadTaskPanel()
 	{
 		mntmSave.setEnabled(false);
@@ -115,7 +122,6 @@ public class ActiveInstructionsFrame extends JFrame
 			file = new File("");
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			
 			//lastSavedLocation = getLastSavedLocation();
 		}
 
@@ -154,12 +160,12 @@ public class ActiveInstructionsFrame extends JFrame
 			switch(e.getActionCommand())
 			{
 				case "New":
-					if (!checkSaved())
+					if (!savedChanges())
 						return;
 					actionNew();
 					break;
 				case "Open":
-					if (!checkSaved())
+					if (!savedChanges())
 						return;
 					open();
 					break;
@@ -173,39 +179,43 @@ public class ActiveInstructionsFrame extends JFrame
 					export();
 					break;
 				case "Quit":
-					if (!checkSaved())
+					if (!savedChanges())
 						return;
-					quit();
+					System.exit(0);
 					break;
 			}
 		}
 		
-		// returns whether the project is saved, asks whether to save
-		public boolean checkSaved()
+		// returns whether to continue after asking for unsaved changes
+		public boolean savedChanges()
 		{
 			if (status == FileStatus.UNCHANGED)
 				return true;
 			else
 			{
-				int option = JOptionPane.showConfirmDialog(null, "Save changes?", "", JOptionPane.YES_NO_OPTION);
-				if (option != JOptionPane.YES_OPTION)
-					return false;
-				else
+				switch(JOptionPane.showConfirmDialog(null, "Save changes?", "", JOptionPane.YES_NO_CANCEL_OPTION))
 				{
-					if (file.isFile())
-						save();
-					else if (!saveAs())
+					case JOptionPane.YES_OPTION:
+						if (file.isFile())
+							save();
+						else if (!saveAs())
+							return false;
+						return true;
+					case JOptionPane.NO_OPTION:
+						return true;
+					default:
 						return false;
-					return true;
 				}
 			}
 		}
 
 		public void actionNew()
 		{
+			setTitle("Untitled - Active Instructions");
 			Inventory.clear();
 			TaskManager.clear();
-			reloadTaskPanel();
+			clearTaskPanel();
+			status = FileStatus.UNCHANGED;
 		}
 
 		public void open()
@@ -216,15 +226,17 @@ public class ActiveInstructionsFrame extends JFrame
 			}
 			else
 			{*/
-			String path = "";
 			int returnValue = fileChooser.showOpenDialog(null);
-			if (returnValue == JFileChooser.APPROVE_OPTION) 
-			{
-				File selectedFile = fileChooser.getSelectedFile();
-				path = selectedFile.getAbsolutePath();
+			if (returnValue != JFileChooser.APPROVE_OPTION)
+				return;
+			
+			// !!!assuming this file is correct
+			file = fileChooser.getSelectedFile();
+			setTitle(file.getName() + " - Active Instructions");
+			Runner.loadProject(file.getAbsolutePath());
+			status = FileStatus.UNCHANGED;
+			
 				//setLastSavedLocation(selectedFile.getAbsolutePath());
-			}
-			Runner.loadProject(path);
 			//Runner.loadTools(path+"/tools");
 			//}
 		}
@@ -232,7 +244,8 @@ public class ActiveInstructionsFrame extends JFrame
 		public void save()
 		{
 			//if (!hasBeenSaved())
-			Runner.saveProject(file.getPath());
+			Runner.saveProject(file.getAbsolutePath());
+			status = FileStatus.UNCHANGED;
 			/*else
 			{
 				//Runner.saveTasks(lastSavedLocation);
@@ -241,30 +254,25 @@ public class ActiveInstructionsFrame extends JFrame
 
 		public boolean saveAs()
 		{
-			String path = "";
 			JFileChooser fileChooser = new JFileChooser();
 			int returnValue = fileChooser.showSaveDialog(null);
-			if (returnValue == JFileChooser.APPROVE_OPTION) 
-			{
-				File selectedFile = fileChooser.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath());
-				path = selectedFile.getAbsolutePath();
+			if (returnValue != JFileChooser.APPROVE_OPTION)
+				return false;
+
+			file = fileChooser.getSelectedFile();
+//			System.out.println(selectedFile.getAbsolutePath());
 				//setLastSavedLocation(selectedFile.getAbsolutePath());
-			}
-			Runner.saveProject(path);
+			Runner.saveProject(file.getAbsolutePath());
+			setTitle(file.getName() + " - Active Instructions");
+			status = FileStatus.UNCHANGED;
 			return true;
 		}
 
 		public void export()
 		{
-
+			// Excel???
 		}
 
-		public void quit()
-		{
-			save();
-			System.exit(0);
-		}
 		/*public boolean hasBeenSaved()
 		{
 			return getLastSavedLocation().length() != 0;
@@ -273,7 +281,8 @@ public class ActiveInstructionsFrame extends JFrame
 		@Override
 		public void windowClosing(WindowEvent e)
 		{
-			//!!! add code to prompt to save
+			if (!savedChanges())
+				return;
 			System.exit(0);
 		}
 	}

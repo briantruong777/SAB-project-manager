@@ -97,21 +97,9 @@ public class ResourcePanel extends JPanel
 				Resource r = toolList.getSelectedValue();
 				// nothing is selected
 				if (r == null)
-				{
-					toolName.setText("");
-					toolSpinner.setValue(1);
-					toolChange.setEnabled(false);
-					toolRemove.setEnabled(false);
-				}
+					unpickTool();
 				else
-				{
-					toolName.setText(r.getName());
-					toolSpinner.setValue(r.getMax());
-					toolChange.setEnabled(true);
-					toolRemove.setEnabled(true);
-					partList.clearSelection();
-				}
-				repaint();
+					pickTool(r);
 			}
 		});
 		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -149,21 +137,9 @@ public class ResourcePanel extends JPanel
 				Resource r = partList.getSelectedValue();
 				// nothing is selected
 				if (r == null)
-				{
-					partName.setText("");
-					partSpinner.setValue(1);
-					partChange.setEnabled(false);
-					partRemove.setEnabled(false);
-				}
+					unpickPart();
 				else
-				{
-					partName.setText(r.getName());
-					partSpinner.setValue(r.getMax());
-					partChange.setEnabled(true);
-					partRemove.setEnabled(true);
-					toolList.clearSelection();
-				}
-				repaint();
+					pickPart(r);
 			}
 		});
 		partList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -266,6 +242,8 @@ public class ResourcePanel extends JPanel
 					toolModel.notifyChanged(i);
 				}
 				toolList.clearSelection();
+				unpickTool();
+				Runner.notifyChange();
 			}
 		});
 		GridBagConstraints gbc_toolAdd = new GridBagConstraints();
@@ -303,6 +281,8 @@ public class ResourcePanel extends JPanel
 					partModel.notifyChanged(i);
 				}
 				partList.clearSelection();
+				unpickPart();
+				Runner.notifyChange();
 			}
 		});
 		GridBagConstraints gbc_partAdd = new GridBagConstraints();
@@ -344,6 +324,7 @@ public class ResourcePanel extends JPanel
 					toolModel.notifyChanged(toolList.getMinSelectionIndex());
 					Inventory.addTool(r);
 					repaint();
+					Runner.notifyChange();
 				}
 			}
 		});
@@ -385,6 +366,7 @@ public class ResourcePanel extends JPanel
 					partModel.notifyChanged(partList.getMinSelectionIndex());
 					Inventory.addPart(r);
 					repaint();
+					Runner.notifyChange();
 				}
 			}
 		});
@@ -411,6 +393,7 @@ public class ResourcePanel extends JPanel
 				toolList.clearSelection();
 				toolModel.remove(r);
 				Inventory.removeTool(r);
+				Runner.notifyChange();
 			}
 		});
 		GridBagConstraints gbc_toolRemove = new GridBagConstraints();
@@ -436,6 +419,7 @@ public class ResourcePanel extends JPanel
 				partList.clearSelection();
 				partModel.remove(r);
 				Inventory.removePart(r);
+				Runner.notifyChange();
 			}
 		});
 		GridBagConstraints gbc_partRemove = new GridBagConstraints();
@@ -447,6 +431,44 @@ public class ResourcePanel extends JPanel
 		add(partRemove, gbc_partRemove);
 	}
 	
+	private void unpickTool()
+	{
+		toolName.setText("");
+		toolSpinner.setValue(1);
+		toolChange.setEnabled(false);
+		toolRemove.setEnabled(false);
+		repaint();
+	}
+	
+	private void pickTool(Resource r)
+	{
+		toolName.setText(r.getName());
+		toolSpinner.setValue(r.getMax());
+		toolChange.setEnabled(true);
+		toolRemove.setEnabled(true);
+		partList.clearSelection();
+		repaint();
+	}
+	
+	private void unpickPart()
+	{
+		partName.setText("");
+		partSpinner.setValue(1);
+		partChange.setEnabled(false);
+		partRemove.setEnabled(false);
+		repaint();
+	}
+	
+	private void pickPart(Resource r)
+	{
+		partName.setText(r.getName());
+		partSpinner.setValue(r.getMax());
+		partChange.setEnabled(true);
+		partRemove.setEnabled(true);
+		toolList.clearSelection();
+		repaint();
+	}
+
 	public void clearInventory()
 	{
 		toolList.clearSelection();
