@@ -38,57 +38,66 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	private Component mhorizontalStrut;
 	private Component mhorizontalStrut_1;
 	private Component mhorizontalStrut_2;
-	
+	private JScrollPane textScroll;
+	private JTextArea textArea;
+
 	/**
 	 * Create the panel.
 	 */
 	public TaskDisplayPanel(Task task, TaskPanel panel)
 	{
+		textArea = new JTextArea();
+		textArea.setColumns(30);
+		textArea.setRows(10);
+		textArea.setLineWrap( true );
+		textArea.setWrapStyleWord( true );
+		textScroll = new JScrollPane(textArea);
+
 		setMaximumSize(new Dimension(32767, 40));
 		this.panel = panel;
 		this.task = task;
 		setAlignmentX(0);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		
+
 		mhorizontalStrut_1 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_1);
-		
+
 		statusLabel = new JLabel(new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
 		add(statusLabel);
-		
+
 		mhorizontalStrut = Box.createHorizontalStrut(10);
 		add(mhorizontalStrut);
-		
+
 		JLabel lblTasknamelabel = new JLabel(task.getName());
-//		JLabel lblTasknamelabel = new JLabel(t.getName());
+		//		JLabel lblTasknamelabel = new JLabel(t.getName());
 		add(lblTasknamelabel);
-		
-//		TaskStatusManager statusManager = new TaskStatusManager();
-		
+
+		//		TaskStatusManager statusManager = new TaskStatusManager();
+
 		/*incompleteButton = new JButton(new ImageIcon("res/incomplete.png"));
 //		mradioPlayButton.addActionListener(statusManager);
 		incompleteButton.setActionCommand("Incomplete");
 		add(incompleteButton);*/
-		
-//		stopButton = new JButton(new ImageIcon("res/stop.png"));
+
+		//		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton.addActionListener(this);
-		
+
 		mhorizontalGlue = Box.createHorizontalGlue();
 		add(mhorizontalGlue);
 		stopButton.setActionCommand("Stopped");
 		add(stopButton);
-		
+
 		pauseButton = new JButton(new ImageIcon("res/pause.png"));
 		pauseButton.addActionListener(this);
 		pauseButton.setActionCommand("Paused");
 		add(pauseButton);
-		
+
 		workingButton = new JButton(new ImageIcon("res/work.png"));
 		workingButton.addActionListener(this);
 		workingButton.setActionCommand("Working");
 		add(workingButton);
-		
+
 		completeButton = new JButton(new ImageIcon("res/complete.png"));
 		completeButton.addActionListener(this);
 		completeButton.setActionCommand("Complete");
@@ -98,25 +107,25 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		mradioNotesButton.addActionListener(this);
 		mradioNotesButton.setActionCommand("Notes");
 		add(mradioNotesButton);
-		
+
 		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
 		mradioLinkButton .addActionListener(this);
 		mradioLinkButton .setActionCommand("File");
 		add(mradioLinkButton);
-		
+
 		editButton = new JButton("Edit");
 		editButton.addActionListener(this);
 		editButton.setActionCommand("Edit");
 		add(editButton);
-		
+
 		mhorizontalStrut_2 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_2);
 
 		refreshTaskStatus();
-		
-//		taskStatusChange();
+
+		//		taskStatusChange();
 	}
-	
+
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
@@ -196,14 +205,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		else if (command.equals("Notes"))
 		{
 			String text = task.getNotes();
-			 
-				JTextArea textArea = new JTextArea(text);
-				textArea.setColumns(30);
-				textArea.setLineWrap( true );
-				textArea.setWrapStyleWord( true );
-				JScrollPane scroll = new JScrollPane(textArea);
-				JOptionPane.showMessageDialog(null, scroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
-				task.setNotes(textArea.getText());
+			textArea.setText(text);
+			JOptionPane.showMessageDialog(this, textScroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
+			task.setNotes(textArea.getText());
 		}
 		else if (command.equals("File"))
 		{
@@ -227,7 +231,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 		enableButtons();
 	}
-	
+
 	/**
 	 * Enables buttons and sets icon based on current status
 	 */
@@ -297,7 +301,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				break;
 		}
 	}
-	
+
 	public Task.Status getStatus()
 	{
 		return task.getStatus();
@@ -308,8 +312,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		task.refreshStatus();
 		enableButtons();
 	}
-	
-/*	
+
+	/*	
 	private void taskStatusChange()
 	{
 		switch (task.getStatus())
@@ -371,7 +375,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			}
 			taskStatusChange();
 		}
-		
+
 	}*/
-	
+
 }
