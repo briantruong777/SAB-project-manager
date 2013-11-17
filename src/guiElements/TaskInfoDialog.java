@@ -675,7 +675,7 @@ public class TaskInfoDialog extends JDialog
 								task = new Task(taskName.getText());
 								task.setBuilder(builderName.getText());
 								task.setForeman(foremanName.getText());
-								task.addDependencies(taskModel);
+								task.addDependencies(taskCstrModel);
 								task.addTools(toolCstrModel);
 								task.addParts(partCstrModel);
 								task.setPath(folderPath.getText());
