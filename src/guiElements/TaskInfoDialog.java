@@ -781,17 +781,17 @@ public class TaskInfoDialog extends JDialog
 		String name = taskName.getText(), path = folderPath.getText();
 		if (name == null || "".equals(name))
 		{
-			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Task name cannot be empty.", "", JOptionPane.ERROR_MESSAGE);
 			return false;			
 		}
 		else if (TaskManager.getTask(name) != null)
 		{
-			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
 		{
-			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
