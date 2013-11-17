@@ -141,7 +141,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				task.begin();
 			}
-			if (task.getStatus() != Task.Status.WORKING)
+			if (task.getStatus() != Task.Status.PAUSED)
 				task.start();
 
 			task.resume();

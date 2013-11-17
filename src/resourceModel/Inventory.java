@@ -19,19 +19,6 @@ public class Inventory
 		parts = new HashMap<String, Resource>();
 	}
 	
-	public static void fillMap(HashMap map, String filename)
-	{
-		//		Scanner filereader = new Scanner("tools.txt");
-		/*while (filereader.hasNext())
-		{
-			String name = filereader.nextLine();
-			int available = filereader.nextInt();
-			int max = filereader.nextInt();
-			map.put(name, new Widget(available, max));
-			//map.put((String)filereader.nextLine(), new Widget(filereader.nextInt(), filereader.nextInt()));
-		}*/
-	}	
-
 	public static HashMap<String, Resource> getToolsHash()
 	{
 		return tools;
@@ -87,6 +74,38 @@ public class Inventory
 			Collection<ResourceConstraint> taskParts)
 	{
 		return checkTools(taskTools) && checkParts(taskParts);
+	}
+
+	public static void takeResources(Collection<ResourceConstraint> taskTools,
+			Collection<ResourceConstraint> taskParts)
+	{
+		Resource r;
+		for (ResourceConstraint t : taskTools)
+		{
+			r = tools.get(t.getName());
+			r.setAvailable(r.getAvailable() - t.getAmount());
+		}
+		for (ResourceConstraint t : taskParts)
+		{
+			r = parts.get(t.getName());
+			r.setAvailable(r.getAvailable() - t.getAmount());
+		}
+	}
+
+	public static void releaseResources(Collection<ResourceConstraint> taskTools,
+			Collection<ResourceConstraint> taskParts)
+	{
+		Resource r;
+		for (ResourceConstraint t : taskTools)
+		{
+			r = tools.get(t.getName());
+			r.setAvailable(r.getAvailable() + t.getAmount());
+		}
+		for (ResourceConstraint t : taskParts)
+		{
+			r = parts.get(t.getName());
+			r.setAvailable(r.getAvailable() + t.getAmount());
+		}
 	}
 
 	public static void addTool(Resource tool)
