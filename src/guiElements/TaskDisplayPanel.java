@@ -41,7 +41,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		this.panel = panel;
 		this.task = task;
-		refreshTaskStatus();
 		setAlignmentX(0);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -102,7 +101,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 
 		setMaximumSize(getMinimumSize());
 
-		enableButtons();
+		refreshTaskStatus();
 		
 //		taskStatusChange();
 	}
@@ -130,9 +129,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				task.begin();
 			}
-			if (task.getStatus() == Task.Status.STOPPED ||
-					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.UNSTARTED)
+			if (task.getStatus() != Task.Status.WORKING)
 				task.start();
 
 			task.pause();
@@ -144,9 +141,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				task.begin();
 			}
-			if (task.getStatus() == Task.Status.STOPPED ||
-					task.getStatus() == Task.Status.COMPLETE ||
-					task.getStatus() == Task.Status.UNSTARTED)
+			if (task.getStatus() != Task.Status.WORKING)
 				task.start();
 
 			task.resume();
@@ -262,6 +257,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	public void refreshTaskStatus()
 	{
 		task.refreshStatus();
+		enableButtons();
 	}
 	
 /*	
