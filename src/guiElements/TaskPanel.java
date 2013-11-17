@@ -15,11 +15,13 @@ public class TaskPanel extends JPanel implements ItemListener
 	private JCheckBox checkUnavailable;
 	private JCheckBox checkIncomplete;
 	private JCheckBox checkComplete;
+	private TaskPanel self;
 	/**
 	 * Create the panel.
 	 */
 	public TaskPanel()
 	{
+		self = this;
 		tasks = new HashMap<Task, TaskDisplayPanel>();
 		setLayout(new BorderLayout(0, 0));
 
@@ -63,7 +65,7 @@ public class TaskPanel extends JPanel implements ItemListener
 				{
 					Task t = TaskInfoDialog.getTask();
 					TaskManager.addTask(t);
-					TaskDisplayPanel tdp = new TaskDisplayPanel(t);
+					TaskDisplayPanel tdp = new TaskDisplayPanel(t, self);
 					tasks.put(t, tdp);
 					taskList.add(tdp);
 					updateUI();
@@ -101,11 +103,18 @@ public class TaskPanel extends JPanel implements ItemListener
 		TaskDisplayPanel tdp;
 		for (Task t : TaskManager.getSortedTasks())
 		{
-			tdp = new TaskDisplayPanel(t);
+			tdp = new TaskDisplayPanel(t, this);
 			tasks.put(t, tdp);
 			taskList.add(tdp);
 		}
 		taskList.repaint();
+	}
+	
+	public void removeTask(Task t)
+	{
+		taskList.remove(tasks.get(t));
+		tasks.remove(t);
+		updateUI();
 	}
 	
 	public void itemStateChanged(ItemEvent e)

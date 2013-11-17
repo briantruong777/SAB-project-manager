@@ -32,12 +32,14 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	private JSeparator mseparator;
 	private JRadioButton mradioLinkButton;
 	private JButton editButton;
+	private TaskPanel panel;
 	
 	/**
 	 * Create the panel.
 	 */
-	public TaskDisplayPanel(Task task)
+	public TaskDisplayPanel(Task task, TaskPanel panel)
 	{
+		this.panel = panel;
 		this.task = task;
 		setAlignmentX(0);
 		
@@ -178,7 +180,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Edit"))
 		{
-			boolean edited = TaskInfoDialog.showEditDialog(task);
+			if (TaskInfoDialog.showEditDialog(task))
+			{
+				if (TaskInfoDialog.getTask() == null)
+					panel.removeTask(task);
+			}
 		}
 
 		enableButtons();
