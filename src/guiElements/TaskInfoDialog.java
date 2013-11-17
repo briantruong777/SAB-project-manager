@@ -101,14 +101,15 @@ public class TaskInfoDialog extends JDialog
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 606, 511);
+		setBounds(100, 100, 704, 550);
 		
 		getContentPane().setLayout(new BorderLayout());
 		JPanel mcontentPanel = new JPanel();
 		mcontentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(mcontentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 1.0};
 		gbl_contentPanel.rowHeights = new int[]{0, 0, 45, 50, 30, 0, 0, 30, 0, 0, 0, 0};
 		gbl_contentPanel.columnWidths = new int[]{0, 150, 0, 0, 150};
 		mcontentPanel.setLayout(gbl_contentPanel);
@@ -219,9 +220,9 @@ public class TaskInfoDialog extends JDialog
 				}
 			});
 			GridBagConstraints gbc_addTask = new GridBagConstraints();
+			gbc_addTask.fill = GridBagConstraints.HORIZONTAL;
 			gbc_addTask.gridwidth = 2;
 			gbc_addTask.anchor = GridBagConstraints.SOUTH;
-			gbc_addTask.fill = GridBagConstraints.HORIZONTAL;
 			gbc_addTask.insets = new Insets(0, 0, 5, 5);
 			gbc_addTask.gridx = 2;
 			gbc_addTask.gridy = 2;
@@ -328,7 +329,7 @@ public class TaskInfoDialog extends JDialog
 			JLabel toolAmount = new JLabel("Needed#");
 			GridBagConstraints gbc_toolAmount = new GridBagConstraints();
 			gbc_toolAmount.insets = new Insets(0, 0, 5, 5);
-			gbc_toolAmount.anchor = GridBagConstraints.EAST;
+			gbc_toolAmount.anchor = GridBagConstraints.SOUTHEAST;
 			gbc_toolAmount.gridx = 2;
 			gbc_toolAmount.gridy = 4;
 			mcontentPanel.add(toolAmount, gbc_toolAmount);
@@ -339,6 +340,7 @@ public class TaskInfoDialog extends JDialog
 			toolSpinner.setValue(1);
 			toolSpinner.setToolTipText("Enter number of tools needed.");
 			GridBagConstraints gbc_toolSpinner = new GridBagConstraints();
+			gbc_toolSpinner.anchor = GridBagConstraints.SOUTH;
 			gbc_toolSpinner.fill = GridBagConstraints.HORIZONTAL;
 			gbc_toolSpinner.insets = new Insets(0, 0, 5, 5);
 			gbc_toolSpinner.gridx = 3;
@@ -425,6 +427,7 @@ public class TaskInfoDialog extends JDialog
 				}
 			});
 			GridBagConstraints gbc_removeTool = new GridBagConstraints();
+			gbc_removeTool.anchor = GridBagConstraints.NORTH;
 			gbc_removeTool.gridwidth = 2;
 			gbc_removeTool.fill = GridBagConstraints.HORIZONTAL;
 			gbc_removeTool.insets = new Insets(0, 0, 5, 5);
@@ -481,7 +484,7 @@ public class TaskInfoDialog extends JDialog
 			JLabel partAmount = new JLabel("Needed#");
 			GridBagConstraints gbc_partAmount = new GridBagConstraints();
 			gbc_partAmount.insets = new Insets(0, 0, 5, 5);
-			gbc_partAmount.anchor = GridBagConstraints.EAST;
+			gbc_partAmount.anchor = GridBagConstraints.SOUTHEAST;
 			gbc_partAmount.gridx = 2;
 			gbc_partAmount.gridy = 7;
 			mcontentPanel.add(partAmount, gbc_partAmount);
@@ -492,6 +495,7 @@ public class TaskInfoDialog extends JDialog
 			partSpinner.setValue(1);
 			partSpinner.setToolTipText("Enter number of parts needed.");
 			GridBagConstraints gbc_partSpinner = new GridBagConstraints();
+			gbc_partSpinner.anchor = GridBagConstraints.SOUTH;
 			gbc_partSpinner.insets = new Insets(0, 0, 5, 5);
 			gbc_partSpinner.fill = GridBagConstraints.HORIZONTAL;
 			gbc_partSpinner.gridx = 3;
@@ -578,6 +582,7 @@ public class TaskInfoDialog extends JDialog
 				}
 			});
 			GridBagConstraints gbc_removePart = new GridBagConstraints();
+			gbc_removePart.anchor = GridBagConstraints.NORTH;
 			gbc_removePart.fill = GridBagConstraints.HORIZONTAL;
 			gbc_removePart.gridwidth = 2;
 			gbc_removePart.insets = new Insets(0, 0, 5, 5);
@@ -629,7 +634,7 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(find, gbc_find);
 		}
 		{
-			startDate = new JLabel("Start Date: N/A");
+			startDate = new JLabel("Start: N/A");
 			GridBagConstraints gbc_startDate = new GridBagConstraints();
 			gbc_startDate.insets = new Insets(0, 0, 0, 5);
 			gbc_startDate.gridx = 1;
@@ -637,7 +642,7 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(startDate, gbc_startDate);
 		}
 		{
-			timeSpent = new JLabel("Time Spent: N/A");
+			timeSpent = new JLabel("Time: N/A");
 			GridBagConstraints gbc_timeSpent = new GridBagConstraints();
 			gbc_timeSpent.gridwidth = 2;
 			gbc_timeSpent.insets = new Insets(0, 0, 0, 5);
@@ -646,7 +651,7 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(timeSpent, gbc_timeSpent);
 		}
 		{
-			endDate = new JLabel("End Date: N/A");
+			endDate = new JLabel("End: N/A");
 			GridBagConstraints gbc_endDate = new GridBagConstraints();
 			gbc_endDate.gridx = 4;
 			gbc_endDate.gridy = 11;
@@ -708,7 +713,7 @@ public class TaskInfoDialog extends JDialog
 									{
 										change = true;
 										task.clearDependencies();
-										task.addDependencies(taskModel);
+										task.addDependencies(taskCstrModel);
 									}
 									if (!task.getTools().containsAll(toolCstrModel) || !toolCstrModel.containsAll(task.getTools()))
 									{
@@ -835,17 +840,6 @@ public class TaskInfoDialog extends JDialog
 		return change;
 	}
 	
-	public static void showViewDialog(Task t)
-	{
-		status = Status.VIEW;
-		loadTask(t);
-		enableText(false);
-		enableLists(false);
-		dialog.deleteButton.setVisible(false);
-		enableButtons(false);
-		dialog.setVisible(true);
-	}
-	
 	private static void loadTask(Task t)
 	{
 		dialog.taskList.clearSelection();
@@ -872,9 +866,9 @@ public class TaskInfoDialog extends JDialog
 			dialog.builderName.setText("");
 			dialog.builderName.setText("");
 			dialog.folderPath.setText("");
-			dialog.startDate.setText("Start Date: N/A");
-			dialog.timeSpent.setText("Time Spent: N/A");
-			dialog.endDate.setText("End Date: N/A");
+			dialog.startDate.setText("Start: N/A");
+			dialog.timeSpent.setText("Time: N/A");
+			dialog.endDate.setText("End: N/A");
 		}
 		else
 		{
@@ -896,25 +890,25 @@ public class TaskInfoDialog extends JDialog
 			dialog.toolCstrModel.addAll(t.getTools());
 			dialog.partCstrModel.addAll(t.getParts());
 			
-			if (t.getStartDate().isSet(Calendar.HOUR))
-				dialog.startDate.setText("Start Date: " + format.format(t.getStartDate()));
+			if (t.getStartDate().isSet(Calendar.MINUTE))
+				dialog.startDate.setText("Start: " + format.format(t.getStartDate().getTime()));
 			else
-				dialog.startDate.setText("Start Date: N/A");
+				dialog.startDate.setText("Start: N/A");
 			
 			if (t.getTimeSpent() != 0)
 			{
 				long hrs = t.getTimeSpent() / 1000 / 60 / 60;
 				long days = hrs / 24;
 				hrs %= 24;
-				dialog.timeSpent.setText("Time Spent: " + days + " days, " + hrs + "hours");
+				dialog.timeSpent.setText("Time: " + days + " days, " + hrs + "hours");
 			}
 			else
-				dialog.timeSpent.setText("Time Spent: N/A");
+				dialog.timeSpent.setText("Time: N/A");
 			
-			if (t.getEndDate().isSet(Calendar.HOUR))
-				dialog.endDate.setText("End Date: " + format.format(t.getEndDate()));
+			if (t.getEndDate().isSet(Calendar.MINUTE))
+				dialog.endDate.setText("End: " + format.format(t.getEndDate().getTime()));
 			else
-				dialog.endDate.setText("End Date: N/A");
+				dialog.endDate.setText("End: N/A");
 		}
 	}
 	
