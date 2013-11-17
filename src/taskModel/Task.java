@@ -353,7 +353,7 @@ public class Task implements Serializable, Comparable<Task>
 		for (ResourceConstraint partRC: partRCs)
 		{
 			Inventory.getPart(partRC.getName()).addDepender(this);
-			tools.put(partRC.getName(), partRC);
+			parts.put(partRC.getName(), partRC);
 		}
 	}
 	

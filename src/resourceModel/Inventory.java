@@ -59,7 +59,7 @@ public class Inventory
 	{
 		for (ResourceConstraint part : taskParts)
 		{
-			if (!parts.containsKey(part.getName()) || part.getAmount() > tools.get(part.getName()).getAvailable())
+			if (!parts.containsKey(part.getName()) || part.getAmount() > parts.get(part.getName()).getAvailable())
 				return false;
 		}
 		return true;
