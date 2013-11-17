@@ -758,7 +758,7 @@ public class TaskInfoDialog extends JDialog
 							task.clearParts();
 							task.clearTools();
 							TaskManager.removeTask(task);
-							change = false;
+							change = true;
 							task = null;
 							setVisible(false);
 						}

@@ -159,7 +159,7 @@ public class Task implements Serializable, Comparable<Task>
 	public void addDependencies(Collection<Task> tasks)
 	{
 		for (Task t: tasks)
-			t.
+			t.addDepender(t);
 		dependencies.addAll(tasks);
 	}
 
