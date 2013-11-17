@@ -777,18 +777,18 @@ public class TaskInfoDialog extends JDialog
 		String name = taskName.getText(), path = folderPath.getText();
 		if (name == null || "".equals(name))
 		{
-			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.ERROR_MESSAGE);
 			taskName.setText("!!!");
 			return false;			
 		}
 		else if (TaskManager.getTask(name) != null)
 		{
-			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
 		{
-			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -799,12 +799,12 @@ public class TaskInfoDialog extends JDialog
 		String builder = builderName.getText(), foreman = foremanName.getText();
 		if (builder == null || "".equals(builder))
 		{
-			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		if (foreman == null || "".equals(foreman))
 		{
-			JOptionPane.showMessageDialog(null, "Please enter a foreman before running the task", "", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please enter a foreman before running the task", "", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		return true;
