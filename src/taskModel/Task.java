@@ -46,7 +46,7 @@ public class Task implements Serializable, Comparable<Task>
 		tools = new HashMap<String, ResourceConstraint>();
 		parts = new HashMap<String, ResourceConstraint>();
 		dependencies = new ArrayList<Task>();
-		dependers new ArrayList<Task>();
+		dependers = new ArrayList<Task>();
 		startDate = Calendar.getInstance();
 		startDate.clear(); // Invalidates value
 		endDate = Calendar.getInstance();
