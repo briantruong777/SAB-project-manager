@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import resourceModel.*;
+import taskModel.Task;
 
 @SuppressWarnings("serial")
 public class ResourcePanel extends JPanel
@@ -319,6 +320,8 @@ public class ResourcePanel extends JPanel
 				{
 					Inventory.removeTool(r);
 					r.setName(text);
+					for (Task t: r.getDependers())
+						t.renameTool(r.getName(), text);
 					r.setMax((Integer)toolSpinner.getValue());
 					r.setAvailable(amount);
 					toolModel.notifyChanged(toolList.getMinSelectionIndex());
@@ -360,6 +363,8 @@ public class ResourcePanel extends JPanel
 				else
 				{
 					Inventory.removePart(r);
+					for (Task t: r.getDependers())
+						t.renamePart(r.getName(), text);
 					r.setName(text);
 					r.setMax((Integer)partSpinner.getValue());
 					r.setAvailable(amount);
@@ -385,7 +390,7 @@ public class ResourcePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Resource r = toolList.getSelectedValue();
-				if (r.hasConstraint())
+				if (r.hasDepender())
 				{
 					JOptionPane.showMessageDialog(null, "There are tasks that need this tool. Change max# to 0 if all tools of this type have issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
@@ -411,7 +416,7 @@ public class ResourcePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Resource r = partList.getSelectedValue();
-				if (r.hasConstraint())
+				if (r.hasDepender())
 				{
 					JOptionPane.showMessageDialog(null, "There are tasks that need this part. Change max# to 0 if all parts of this type have issues.", "", JOptionPane.PLAIN_MESSAGE);
 					return;

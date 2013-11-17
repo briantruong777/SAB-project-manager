@@ -2,13 +2,17 @@ package resourceModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
+import taskModel.Task;
+
+@SuppressWarnings("serial")
 public class Resource implements Serializable
 {
 	private String name;
 	private int max;
 	private int available;
-	private ArrayList<ResourceConstraint> constraints;
+	private ArrayList<Task> dependers;
 	
 	public Resource(String name)
 	{
@@ -19,7 +23,7 @@ public class Resource implements Serializable
 	{
 		this.name = name;
 		this.max = available = max;
-		constraints = new ArrayList<ResourceConstraint>();
+		dependers = new ArrayList<Task>();
 	}
 
 	public String getName()
@@ -30,8 +34,6 @@ public class Resource implements Serializable
 	public void setName(String name)
 	{
 		this.name = name;
-		for (ResourceConstraint rc: constraints)
-			rc.setName(name);
 	}
 
 	public int getMax()
@@ -54,19 +56,24 @@ public class Resource implements Serializable
 		this.available = available;
 	}
 	
-	public void addConstraint(ResourceConstraint constraint)
+	public void addDepender(Task t)
 	{
-		this.constraints.add(constraint);
+		dependers.add(t);
 	}
 	
-	public void removeConstraint(ResourceConstraint constraint)
+	public void removeDepender(Task t)
 	{
-		this.constraints.remove(constraint);
+		dependers.remove(t);
 	}
 	
-	public boolean hasConstraint()
+	public boolean hasDepender()
 	{
-		return !constraints.isEmpty();
+		return !dependers.isEmpty();
+	}
+	
+	public Collection<Task> getDependers()
+	{
+		return dependers;
 	}
 	
 	public boolean equals(Object o)

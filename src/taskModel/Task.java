@@ -14,6 +14,7 @@ import java.util.HashMap;
 import resourceModel.Inventory;
 import resourceModel.ResourceConstraint;
 
+@SuppressWarnings("serial")
 public class Task implements Serializable, Comparable<Task>
 {
 	private String name;
@@ -105,29 +106,57 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		return tools.values();
 	}
+	
+	public void renameTool(String oldName, String newName)
+	{
+		ResourceConstraint rc = tools.remove(oldName);
+		rc.setName(newName);
+		tools.put(newName, rc);
+	}
+	
+	public ResourceConstraint getTool(String name)
+	{
+		return tools.get(name);
+	}
+	
 	public void addTool(ResourceConstraint tool)
 	{
-		Inventory.getTool(tool.getName()).addConstraint(tool);
+		Inventory.getTool(tool.getName()).addDepender(this);
 		tools.put(tool.getName(), tool);
 		
 	}
 	public void removeTool(String name)
 	{
-		Inventory.getTool(name).removeConstraint(tools.remove(name));
+		Inventory.getTool(name).removeDepender(this);
+		tools.remove(name);
 	}
 	
 	public Collection<ResourceConstraint> getParts()
 	{
 		return parts.values();
 	}
+	
+	public void renamePart(String oldName, String newName)
+	{
+		ResourceConstraint rc = parts.remove(oldName);
+		rc.setName(newName);
+		parts.put(newName, rc);
+	}
+
+	public ResourceConstraint getPart(String name)
+	{
+		return parts.get(name);
+	}
+	
 	public void addPart(ResourceConstraint part)
 	{
-		Inventory.getPart(part.getName()).addConstraint(part);
+		Inventory.getPart(part.getName()).addDepender(this);
 		parts.put(part.getName(), part);
 	}
 	public void removePart(String name)
 	{
-		Inventory.getPart(name).removeConstraint(parts.remove(name));
+		parts.remove(name);
+		Inventory.getPart(name).removeDepender(this);
 	}
 	
 	public ArrayList<Task> getDependencies()
@@ -301,14 +330,14 @@ public class Task implements Serializable, Comparable<Task>
 	public void clearTools()
 	{
 		for (ResourceConstraint toolRC: tools.values())
-			Inventory.getTool(toolRC.getName()).removeConstraint(toolRC);
+			Inventory.getTool(toolRC.getName()).removeDepender(this);
 		tools.clear();
 	}
 	
 	public void clearParts()
 	{
 		for (ResourceConstraint partRC: parts.values())
-			Inventory.getPart(partRC.getName()).removeConstraint(partRC);
+			Inventory.getPart(partRC.getName()).removeDepender(this);
 		parts.clear();
 	}
 	
@@ -316,7 +345,7 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		for (ResourceConstraint toolRC: toolRCs)
 		{
-			Inventory.getTool(toolRC.getName()).addConstraint(toolRC);
+			Inventory.getTool(toolRC.getName()).addDepender(this);
 			tools.put(toolRC.getName(), toolRC);
 		}
 	}
@@ -325,7 +354,7 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		for (ResourceConstraint partRC: partRCs)
 		{
-			Inventory.getPart(partRC.getName()).addConstraint(partRC);
+			Inventory.getPart(partRC.getName()).addDepender(this);
 			tools.put(partRC.getName(), partRC);
 		}
 	}
