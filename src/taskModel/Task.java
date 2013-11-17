@@ -270,7 +270,7 @@ public class Task implements Serializable, Comparable<Task>
 
 		if (meetDependencies() && meetResources())
 		{
-			if (startDate.isSet())
+			if (startDate.isSet(Calendar.MINUTE))
 			{
 				taskStatus = Status.STOPPED;
 			}
