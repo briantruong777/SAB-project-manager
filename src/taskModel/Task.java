@@ -46,6 +46,7 @@ public class Task implements Serializable, Comparable<Task>
 		tools = new HashMap<String, ResourceConstraint>();
 		parts = new HashMap<String, ResourceConstraint>();
 		dependencies = new ArrayList<Task>();
+		dependers = new ArrayList<Task>();
 		startDate = Calendar.getInstance();
 		startDate.clear(); // Invalidates value
 		endDate = Calendar.getInstance();
@@ -159,7 +160,7 @@ public class Task implements Serializable, Comparable<Task>
 	public void addDependencies(Collection<Task> tasks)
 	{
 		for (Task t: tasks)
-			t.addDepender(t);
+			t.addDepender(this);
 		dependencies.addAll(tasks);
 	}
 
@@ -187,6 +188,7 @@ public class Task implements Serializable, Comparable<Task>
 	public void finish()
 	{
 		endDate = Calendar.getInstance();
+		//TODO: Tell dependers that this task is done
 	}
 
 	//NOTE:We could also check resources from an outside class since that
@@ -194,10 +196,12 @@ public class Task implements Serializable, Comparable<Task>
 	public void start()
 	{
 		//TODO:Remove required resources from Inventory
+		//TODO:Have all tasks check whether there are still enough resources
 	}
 	public void stop()
 	{
 		//TODO:Add back required resources to Inventory
+		//TODO:Have all tasks check whether there are still enough resources
 	}
 
 	public Calendar getStartDate()
@@ -256,6 +260,32 @@ public class Task implements Serializable, Comparable<Task>
 				return false;
 		}
 		return true;
+	}
+
+	public void refreshStatus()
+	{
+		if (taskStatus == Status.WORKING ||
+				taskStatus == Status.PAUSED ||
+				taskStatus == Status.COMPLETE)
+		{
+			return;
+		}
+
+		if (meetDependencies() && meetResources())
+		{
+			if (startDate.isSet(Calendar.MINUTE))
+			{
+				taskStatus = Status.STOPPED;
+			}
+			else
+			{
+				taskStatus = Status.UNSTARTED;
+			}
+		}
+		else
+		{
+			taskStatus = Status.UNAVAILABLE;
+		}
 	}
 
 	public String toString()

@@ -41,6 +41,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		this.panel = panel;
 		this.task = task;
+		refreshTaskStatus();
 		setAlignmentX(0);
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -113,10 +114,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		if (task.getStatus() == Task.Status.UNSTARTED)
 		{
 			task.begin();
-		}
-		if (command.equals("Stopped") || command.equals("Paused") || command.equals("Working") || command.equals("Complete"))
-		{
-			
 		}
 		if (command.equals("Stopped"))
 		{
@@ -197,6 +194,12 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		switch (task.getStatus())
 		{
+			case UNAVAILABLE:
+				stopButton.setEnabled(false);
+				pauseButton.setEnabled(false);
+				workingButton.setEnabled(false);
+				completeButton.setEnabled(false);
+				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
 			case UNSTARTED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
@@ -240,6 +243,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	public Task.Status getStatus()
 	{
 		return task.getStatus();
+	}
+
+	public void refreshTaskStatus()
+	{
+		task.refreshStatus();
 	}
 	
 /*	
