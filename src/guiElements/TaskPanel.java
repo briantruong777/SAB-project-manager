@@ -109,6 +109,14 @@ public class TaskPanel extends JPanel implements ItemListener
 		}
 		taskList.repaint();
 	}
+
+	public void refreshTasks(Collection<Task> refreshTasks)
+	{
+		for (Task t : refreshTasks)
+		{
+			tasks.get(t).refreshTaskStatus();
+		}
+	}
 	
 	public void removeTask(Task t)
 	{

@@ -120,56 +120,78 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
+		Task.Status curTaskStatus = task.getStatus();
 		System.out.println(command);
 		if (command.equals("Stopped"))
 		{
-			if (task.getStatus() == Task.Status.UNSTARTED)
+			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
-			if (task.getStatus() == Task.Status.PAUSED ||
-					task.getStatus() == Task.Status.WORKING)
+			else if (curTaskStatus == Task.Status.PAUSED ||
+							 curTaskStatus == Task.Status.WORKING)
+			{
 				task.stop();
+			}
 
 			task.pause();
 			task.setStatus(Task.Status.STOPPED);
+			if (curTaskStatus == Task.Status.COMPLETE)
+			{
+				panel.refreshTasks(task.getDependers());
+			}
 		}
 		else if (command.equals("Paused"))
 		{
-			if (task.getStatus() == Task.Status.UNSTARTED)
+			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
-			if (task.getStatus() != Task.Status.WORKING)
+			if (curTaskStatus != Task.Status.WORKING)
+			{
 				task.start();
+			}
 
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
+			if (curTaskStatus == Task.Status.COMPLETE)
+			{
+				panel.refreshTasks(task.getDependers());
+			}
 		}
 		else if (command.equals("Working"))
 		{
-			if (task.getStatus() == Task.Status.UNSTARTED)
+			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
-			if (task.getStatus() != Task.Status.PAUSED)
+			if (curTaskStatus != Task.Status.PAUSED)
+			{
 				task.start();
+			}
 
 			task.resume();
 			task.setStatus(Task.Status.WORKING);
+			if (curTaskStatus == Task.Status.COMPLETE)
+			{
+				panel.refreshTasks(task.getDependers());
+			}
 		}
 		else if (command.equals("Complete"))
 		{
-			if (task.getStatus() == Task.Status.UNSTARTED)
+			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
-			if (task.getStatus() == Task.Status.PAUSED ||
-					task.getStatus() == Task.Status.WORKING)
+			else if (curTaskStatus == Task.Status.PAUSED ||
+					curTaskStatus == Task.Status.WORKING)
+			{
 				task.stop();
+			}
 
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
+			panel.refreshTasks(task.getDependers());
 		}
 		else if (command.equals("Notes"))
 		{
@@ -229,8 +251,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				break;
 			case STOPPED:
 				stopButton.setEnabled(false);
-				pauseButton.setEnabled(true);
-				workingButton.setEnabled(true);
+				if (task.meetDependencies())
+				{
+					pauseButton.setEnabled(true);
+					workingButton.setEnabled(true);
+				}
+				else
+				{
+					pauseButton.setEnabled(false);
+					workingButton.setEnabled(false);
+				}
 				completeButton.setEnabled(true);
 				statusLabel.setIcon(new ImageIcon("res/stop.png"));
 				break;
@@ -250,8 +280,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				break;
 			case COMPLETE:
 				stopButton.setEnabled(true);
-				pauseButton.setEnabled(true);
-				workingButton.setEnabled(true);
+				if (task.meetDependencies())
+				{
+					pauseButton.setEnabled(true);
+					workingButton.setEnabled(true);
+				}
+				else
+				{
+					pauseButton.setEnabled(false);
+					workingButton.setEnabled(false);
+				}
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/complete.png"));
 				break;

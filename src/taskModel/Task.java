@@ -54,7 +54,7 @@ public class Task implements Serializable, Comparable<Task>
 		endDate.clear();
 		timeSpent = 0; // In milliseconds
 		path= "";
-		notes = "\n\n\n\n";
+		notes = "";
 
 		lastResumeTime = -1; // -1 when paused
 	}
@@ -291,10 +291,16 @@ public class Task implements Serializable, Comparable<Task>
 
 	public void refreshStatus()
 	{
-		if (taskStatus == Status.WORKING ||
-				taskStatus == Status.PAUSED ||
-				taskStatus == Status.COMPLETE)
+		if (taskStatus == Status.COMPLETE ||
+						 taskStatus == Status.PAUSED ||
+						 taskStatus == Status.WORKING)
 		{
+			if (!meetDependencies())
+			{
+				stop();
+				pause();
+				setStatus(Status.UNAVAILABLE);
+			}
 			return;
 		}
 
