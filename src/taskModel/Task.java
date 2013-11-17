@@ -54,7 +54,7 @@ public class Task implements Serializable, Comparable<Task>
 		endDate.clear();
 		timeSpent = 0; // In milliseconds
 		path= "";
-		notes = "\n\n\n\n";
+		notes = "";
 
 		lastResumeTime = -1; // -1 when paused
 	}
