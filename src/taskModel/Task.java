@@ -35,7 +35,7 @@ public class Task implements Serializable, Comparable<Task>
 	
 	public enum Status
 	{
-		UNAVAILABLE, STOPPED, UNSTARTED, WORKING, PAUSED, COMPLETE;
+		UNAVAILABLE, UNSTARTED, STOPPED, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -292,15 +292,9 @@ public class Task implements Serializable, Comparable<Task>
 	public void refreshStatus()
 	{
 		if (taskStatus == Status.COMPLETE ||
-						 taskStatus == Status.PAUSED ||
-						 taskStatus == Status.WORKING)
+				taskStatus == Status.PAUSED ||
+				taskStatus == Status.WORKING)
 		{
-			if (!meetDependencies())
-			{
-				stop();
-				pause();
-				setStatus(Status.UNAVAILABLE);
-			}
 			return;
 		}
 

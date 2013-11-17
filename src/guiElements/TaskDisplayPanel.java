@@ -148,6 +148,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			if (curTaskStatus == Task.Status.COMPLETE)
 			{
 				panel.refreshTasks(task.getDependers());
+				refreshTaskStatus();
 			}
 		}
 		else if (command.equals("Paused"))
@@ -255,31 +256,39 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				break;
 			case STOPPED:
 				stopButton.setEnabled(false);
-				if (task.meetDependencies())
-				{
-					pauseButton.setEnabled(true);
-					workingButton.setEnabled(true);
-				}
-				else
-				{
-					pauseButton.setEnabled(false);
-					workingButton.setEnabled(false);
-				}
+				pauseButton.setEnabled(true);
+				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
 				statusLabel.setIcon(new ImageIcon("res/stop.png"));
 				break;
 			case PAUSED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-				workingButton.setEnabled(true);
-				completeButton.setEnabled(true);
+				if (task.meetDependencies())
+				{
+					workingButton.setEnabled(true);
+					completeButton.setEnabled(true);
+				}
+				else
+				{
+					workingButton.setEnabled(false);
+					completeButton.setEnabled(false);
+				}
 				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
 				stopButton.setEnabled(true);
-				pauseButton.setEnabled(true);
+				if (task.meetDependencies())
+				{
+					pauseButton.setEnabled(true);
+					completeButton.setEnabled(true);
+				}
+				else
+				{
+					pauseButton.setEnabled(false);
+					completeButton.setEnabled(false);
+				}
 				workingButton.setEnabled(false);
-				completeButton.setEnabled(true);
 				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:

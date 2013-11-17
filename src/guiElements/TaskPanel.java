@@ -132,13 +132,13 @@ public class TaskPanel extends JPanel implements ItemListener
 			switch(p.getStatus())
 			{
 				case UNAVAILABLE:
-				case STOPPED:
 					if (checkUnavailable.isSelected())
 						p.setVisible(true);
 					else
 						p.setVisible(false);
 					break;
 				case UNSTARTED:
+				case STOPPED:
 				case WORKING:
 				case PAUSED:
 					if (checkIncomplete.isSelected())
