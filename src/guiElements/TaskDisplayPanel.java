@@ -17,6 +17,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import taskModel.Task;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 
 public class TaskDisplayPanel extends JPanel implements ActionListener
 {
@@ -29,24 +33,33 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	private JButton workingButton;
 	private JButton completeButton;
 	private JRadioButton mradioNotesButton;
-	private JSeparator mseparator;
 	private JRadioButton mradioLinkButton;
 	private JButton editButton;
 	private TaskPanel panel;
+	private Component mhorizontalGlue;
+	private Component mhorizontalStrut;
+	private Component mhorizontalStrut_1;
+	private Component mhorizontalStrut_2;
 	
 	/**
 	 * Create the panel.
 	 */
 	public TaskDisplayPanel(Task task, TaskPanel panel)
 	{
+		setMaximumSize(new Dimension(32767, 40));
 		this.panel = panel;
 		this.task = task;
 		setAlignmentX(0);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
-		setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		mhorizontalStrut_1 = Box.createHorizontalStrut(5);
+		add(mhorizontalStrut_1);
 		
 		statusLabel = new JLabel(new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
 		add(statusLabel);
+		
+		mhorizontalStrut = Box.createHorizontalStrut(10);
+		add(mhorizontalStrut);
 		
 		JLabel lblTasknamelabel = new JLabel(task.getName());
 //		JLabel lblTasknamelabel = new JLabel(t.getName());
@@ -62,6 +75,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 //		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton.addActionListener(this);
+		
+		mhorizontalGlue = Box.createHorizontalGlue();
+		add(mhorizontalGlue);
 		stopButton.setActionCommand("Stopped");
 		add(stopButton);
 		
@@ -79,10 +95,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		completeButton.addActionListener(this);
 		completeButton.setActionCommand("Complete");
 		add(completeButton);
-		
-		mseparator = new JSeparator();
-		mseparator.setOrientation(SwingConstants.VERTICAL);
-		add(mseparator);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
 		mradioNotesButton.addActionListener(this);
@@ -98,8 +110,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		editButton.addActionListener(this);
 		editButton.setActionCommand("Edit");
 		add(editButton);
-
-		setMaximumSize(getMinimumSize());
+		
+		mhorizontalStrut_2 = Box.createHorizontalStrut(5);
+		add(mhorizontalStrut_2);
 
 		refreshTaskStatus();
 		
