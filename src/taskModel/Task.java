@@ -166,6 +166,7 @@ public class Task implements Serializable, Comparable<Task>
 		Inventory.getPart(part.getName()).addDepender(this);
 		parts.put(part.getName(), part);
 	}
+	
 	public void removePart(String name)
 	{
 		parts.remove(name);
@@ -176,6 +177,7 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		return dependencies;
 	}
+	
 	public void addDependency(Task t)
 	{
 		dependencies.add(t);
@@ -215,35 +217,6 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		dependers.remove(t);
 	}
-
-
-	/**
-	 * Run only once when Task is begun. Sets the startDate.
-	 */
-	public void begin()
-	{
-		startDate = Calendar.getInstance();
-	}
-	/**
-	 * Run when task is finished. Sets the endDate.
-	 */
-	public void finish()
-	{
-		endDate = Calendar.getInstance();
-		//TODO: Tell dependers that this task is done
-	}
-
-	public void start()
-	{
-		Inventory.takeResources(tools.values(), parts.values());
-		//TODO:Have all tasks check whether there are still enough resources
-	}
-	public void stop()
-	{
-		Inventory.releaseResources(tools.values(), parts.values());
-		//TODO:Have all tasks check whether there are still enough resources
-	}
-
 	public Calendar getStartDate()
 	{
 		return startDate;
@@ -262,28 +235,6 @@ public class Task implements Serializable, Comparable<Task>
 		this.timeSpent = timeSpent;
 	}
 
-	/**
-	 * Resumes counting working time. Can be called multiple times safely.
-	 */
-	public void resume()
-	{
-		if (lastResumeTime == -1) // Check if paused
-		{
-			lastResumeTime = Calendar.getInstance().getTimeInMillis();
-		}
-	}
-	/**
-	 * Pauses counting working time. Can be called multiple times safely.
-	 */
-	public void pause()
-	{
-		if (lastResumeTime != -1) // Check for valid last resume time
-		{
-			long curTime = Calendar.getInstance().getTimeInMillis();
-			timeSpent += curTime - lastResumeTime;
-			lastResumeTime = -1;
-		}
-	}
 	
 	public boolean meetResources()
 	{
@@ -383,5 +334,59 @@ public class Task implements Serializable, Comparable<Task>
 	public int hashCode()
 	{
 		return name.hashCode();
+	}
+
+	/**
+	 * Run only once when Task is begun. Sets the startDate.
+	 */
+	public void begin()
+	{
+		startDate = Calendar.getInstance();
+		taskStatus = Status.WORKING;
+	}
+	/**
+	 * Run when task is finished. Sets the endDate.
+	 */
+	public void finish()
+	{
+		endDate = Calendar.getInstance();
+		taskStatus = Status.COMPLETE;
+		for (Task t: dependers)
+			t.refreshStatus();
+		//TODO: Tell dependers that this task is done
+	}
+
+	public void start()
+	{
+		Inventory.takeResources(tools.values(), parts.values());
+		//TODO:Have all tasks check whether there are still enough resources
+	}
+	public void stop()
+	{
+		Inventory.releaseResources(tools.values(), parts.values());
+		//TODO:Have all tasks check whether there are still enough resources
+	}
+
+	/**
+	 * Resumes counting working time. Can be called multiple times safely.
+	 */
+	public void resume()
+	{
+		if (lastResumeTime == -1) // Check if paused
+		{
+			lastResumeTime = Calendar.getInstance().getTimeInMillis();
+		}
+	}
+	/**
+	 * Pauses counting working time. Can be called multiple times safely.
+	 */
+	public void pause()
+	{
+		if (lastResumeTime != -1) // Check for valid last resume time
+		{
+			long curTime = Calendar.getInstance().getTimeInMillis();
+			timeSpent += curTime - lastResumeTime;
+			lastResumeTime = -1;
+		}
 	}
 }

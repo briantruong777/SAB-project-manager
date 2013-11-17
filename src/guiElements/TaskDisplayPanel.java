@@ -207,8 +207,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		{
 			String text = task.getNotes();
 			textArea.setText(text);
-			JOptionPane.showMessageDialog(this, textScroll, "Task Notes", JOptionPane.PLAIN_MESSAGE);		
-			task.setNotes(textArea.getText());
+			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Notes", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			if (option == JOptionPane.OK_OPTION)
+				task.setNotes(textArea.getText());
 		}
 		else if (command.equals("File"))
 		{
