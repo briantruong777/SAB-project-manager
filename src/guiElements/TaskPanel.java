@@ -59,7 +59,7 @@ public class TaskPanel extends JPanel implements ItemListener
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if (TaskInfoDialog.showCreateDialog());
+				if (TaskInfoDialog.showCreateDialog())
 				{
 					Task t = TaskInfoDialog.getTask();
 					TaskManager.addTask(t);

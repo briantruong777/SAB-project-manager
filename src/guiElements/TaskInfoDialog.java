@@ -743,8 +743,8 @@ public class TaskInfoDialog extends JDialog
 				{
 					public void actionPerformed(ActionEvent e)
 					{
-						task = null;
 						change = false;
+						task = null;
 						setVisible(false);
 					}
 				});
