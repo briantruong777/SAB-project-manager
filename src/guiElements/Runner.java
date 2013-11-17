@@ -1,11 +1,20 @@
 package guiElements;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import guiElements.*;
-import resourceModel.*;
-import taskModel.*;
+import javax.swing.JOptionPane;
+
+import resourceModel.Inventory;
+import resourceModel.Resource;
+import taskModel.Task;
+import taskModel.TaskManager;
 
 public class Runner 
 {
@@ -64,6 +73,8 @@ public class Runner
 		}
 		catch(IOException ex)
 		{
+			JOptionPane loadFailed = new JOptionPane(JOptionPane.ERROR_MESSAGE);
+			loadFailed.showMessageDialog(null, "File could not be loaded.");
 			ex.printStackTrace();
 			return;
 		}
