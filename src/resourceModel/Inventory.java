@@ -1,10 +1,5 @@
 package resourceModel;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -19,7 +14,7 @@ public class Inventory
 		parts = new HashMap<String, Resource>();
 	}
 	
-	public static void fillMap(HashMap map, String filename)
+//	public static void fillMap(HashMap map, String filename)
 	{
 		//		Scanner filereader = new Scanner("tools.txt");
 		/*while (filereader.hasNext())
