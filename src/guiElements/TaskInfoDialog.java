@@ -682,7 +682,7 @@ public class TaskInfoDialog extends JDialog
 								break;
 							case EDIT:
 								change = !task.getName().equals(taskName.getText());
-								if (change && !checkNameLink() || !checkBuilderForeman())
+								if (change && !checkNameLink())
 									return;
 								if (change)
 									task.setName(taskName.getText());
@@ -792,22 +792,6 @@ public class TaskInfoDialog extends JDialog
 		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
 		{
 			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
-	}
-	
-	private boolean checkBuilderForeman()
-	{
-		String builder = builderName.getText(), foreman = foremanName.getText();
-		if (builder == null || "".equals(builder))
-		{
-			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if (foreman == null || "".equals(foreman))
-		{
-			JOptionPane.showMessageDialog(null, "Please enter a foreman before running the task", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
