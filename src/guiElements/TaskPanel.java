@@ -66,7 +66,7 @@ public class TaskPanel extends JPanel implements ItemListener
 					TaskDisplayPanel tdp = new TaskDisplayPanel(t);
 					tasks.put(t, tdp);
 					taskList.add(tdp);
-					taskList.repaint();
+					updateUI();
 					Runner.notifyChange();
 				}
 			}
