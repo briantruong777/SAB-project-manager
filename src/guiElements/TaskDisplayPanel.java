@@ -111,12 +111,12 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		String command = e.getActionCommand();
 		System.out.println(command);
-		if (task.getStatus() == Task.Status.UNSTARTED)
-		{
-			task.begin();
-		}
 		if (command.equals("Stopped"))
 		{
+			if (task.getStatus() == Task.Status.UNSTARTED)
+			{
+				task.begin();
+			}
 			if (task.getStatus() == Task.Status.PAUSED ||
 					task.getStatus() == Task.Status.WORKING)
 				task.stop();
@@ -126,6 +126,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Paused"))
 		{
+			if (task.getStatus() == Task.Status.UNSTARTED)
+			{
+				task.begin();
+			}
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
 					task.getStatus() == Task.Status.UNSTARTED)
@@ -136,6 +140,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Working"))
 		{
+			if (task.getStatus() == Task.Status.UNSTARTED)
+			{
+				task.begin();
+			}
 			if (task.getStatus() == Task.Status.STOPPED ||
 					task.getStatus() == Task.Status.COMPLETE ||
 					task.getStatus() == Task.Status.UNSTARTED)
@@ -146,6 +154,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		}
 		else if (command.equals("Complete"))
 		{
+			if (task.getStatus() == Task.Status.UNSTARTED)
+			{
+				task.begin();
+			}
 			if (task.getStatus() == Task.Status.PAUSED ||
 					task.getStatus() == Task.Status.WORKING)
 				task.stop();
