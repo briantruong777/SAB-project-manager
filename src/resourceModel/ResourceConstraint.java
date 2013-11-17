@@ -2,6 +2,7 @@ package resourceModel;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class ResourceConstraint implements Serializable
 {
 	private String name;

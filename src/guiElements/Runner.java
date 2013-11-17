@@ -73,8 +73,7 @@ public class Runner
 		}
 		catch(IOException ex)
 		{
-			JOptionPane loadFailed = new JOptionPane(JOptionPane.ERROR_MESSAGE);
-			loadFailed.showMessageDialog(null, "File could not be loaded.");
+			JOptionPane.showMessageDialog(null, "File could not be loaded.", null, JOptionPane.ERROR_MESSAGE);
 			ex.printStackTrace();
 			return;
 		}
