@@ -200,6 +200,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
+				break;
 			case UNSTARTED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
