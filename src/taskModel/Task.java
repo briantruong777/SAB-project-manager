@@ -188,6 +188,7 @@ public class Task implements Serializable, Comparable<Task>
 	public void finish()
 	{
 		endDate = Calendar.getInstance();
+		//TODO: Tell dependers that this task is done
 	}
 
 	//NOTE:We could also check resources from an outside class since that
@@ -195,10 +196,12 @@ public class Task implements Serializable, Comparable<Task>
 	public void start()
 	{
 		//TODO:Remove required resources from Inventory
+		//TODO:Have all tasks check whether there are still enough resources
 	}
 	public void stop()
 	{
 		//TODO:Add back required resources to Inventory
+		//TODO:Have all tasks check whether there are still enough resources
 	}
 
 	public Calendar getStartDate()
