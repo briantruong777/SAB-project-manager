@@ -260,6 +260,17 @@ public class ActiveInstructionsFrame extends JFrame
 				return false;
 
 			file = fileChooser.getSelectedFile();
+			if (!file.isFile())
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch(IOException e)
+				{
+					return false;
+				}
+			}
 //			System.out.println(selectedFile.getAbsolutePath());
 				//setLastSavedLocation(selectedFile.getAbsolutePath());
 			Runner.saveProject(file.getAbsolutePath());

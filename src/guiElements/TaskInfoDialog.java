@@ -37,39 +37,39 @@ import taskModel.TaskManager;
 @SuppressWarnings("serial")
 public class TaskInfoDialog extends JDialog
 {
-	private JTextField mtextTask;
-	private JTextField mtextForeman;
-	private JTextField mtextBuilder;
-	private JSpinner toolNumSpinner;
-	private JSpinner partNumSpinner;
-	private JTextField mtextLink;
+	private JTextField taskName;
+	private JTextField foremanName;
+	private JTextField builderName;
+	private JTextField folderPath;
+	private JSpinner toolSpinner;
+	private JSpinner partSpinner;
 	
-	private JButton btnAddTask;
-	private JButton btnRemoveTask;
-	private JButton btnAddTool;
-	private JButton btnRemoveTool;
-	private JButton btnAddPart;
-	private JButton btnRemovePart;
-	private JButton btnFindLink;
+	private JButton addTask;
+	private JButton removeTask;
+	private JButton addTool;
+	private JButton removeTool;
+	private JButton addPart;
+	private JButton removePart;
+	private JButton find;
 	private JButton deleteButton;
 
 	private JList<Task> taskList;
-	private JList<Task> taskSelectList;
+	private JList<Task> taskCstrList;
 	private JList<Resource> toolList;
-	private JList<ResourceConstraint> toolSelectList;
+	private JList<ResourceConstraint> toolCstrList;
 	private JList<Resource> partList;
-	private JList<ResourceConstraint> partSelectList;
+	private JList<ResourceConstraint> partCstrList;
 	
 	private ArrayListModel<Task> taskModel;
-	private ArrayListModel<Task> taskSelectModel;
+	private ArrayListModel<Task> taskCstrModel;
 	private ArrayListModel<Resource> toolModel;
-	private ArrayListModel<ResourceConstraint> toolSelectModel;
+	private ArrayListModel<ResourceConstraint> toolCstrModel;
 	private ArrayListModel<Resource> partModel;
-	private ArrayListModel<ResourceConstraint> partSelectModel;
+	private ArrayListModel<ResourceConstraint> partCstrModel;
 	
-	private JLabel lblStartDate;
-	private JLabel lblTimeSpent;
-	private JLabel lblEndDate;
+	private JLabel startDate;
+	private JLabel timeSpent;
+	private JLabel endDate;
 	
 	private JFileChooser fileChooser;
 
@@ -110,67 +110,67 @@ public class TaskInfoDialog extends JDialog
 		mcontentPanel.setLayout(gbl_contentPanel);
 		
 		{
-			JLabel mlblTaskName = new JLabel("Task Name");
-			GridBagConstraints gbc_mlblTaskName = new GridBagConstraints();
-			gbc_mlblTaskName.insets = new Insets(0, 0, 5, 5);
-			gbc_mlblTaskName.anchor = GridBagConstraints.EAST;
-			gbc_mlblTaskName.gridx = 0;
-			gbc_mlblTaskName.gridy = 0;
-			mcontentPanel.add(mlblTaskName, gbc_mlblTaskName);
+			JLabel taskNameLabel = new JLabel("Task Name");
+			GridBagConstraints gbc_taskNameLabel = new GridBagConstraints();
+			gbc_taskNameLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_taskNameLabel.anchor = GridBagConstraints.EAST;
+			gbc_taskNameLabel.gridx = 0;
+			gbc_taskNameLabel.gridy = 0;
+			mcontentPanel.add(taskNameLabel, gbc_taskNameLabel);
 		}
 		{
-			mtextTask = new JTextField();
-			GridBagConstraints gbc_textTask = new GridBagConstraints();
-			gbc_textTask.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textTask.insets = new Insets(0, 0, 5, 5);
-			gbc_textTask.gridx = 1;
-			gbc_textTask.gridy = 0;
-			mcontentPanel.add(mtextTask, gbc_textTask);
+			taskName = new JTextField();
+			GridBagConstraints gbc_taskName = new GridBagConstraints();
+			gbc_taskName.fill = GridBagConstraints.HORIZONTAL;
+			gbc_taskName.insets = new Insets(0, 0, 5, 5);
+			gbc_taskName.gridx = 1;
+			gbc_taskName.gridy = 0;
+			mcontentPanel.add(taskName, gbc_taskName);
 		}
 		{
-			JLabel lblBuilder = new JLabel("Builder");
-			GridBagConstraints gbc_lblBuilder = new GridBagConstraints();
-			gbc_lblBuilder.anchor = GridBagConstraints.EAST;
-			gbc_lblBuilder.insets = new Insets(0, 0, 5, 5);
-			gbc_lblBuilder.gridx = 0;
-			gbc_lblBuilder.gridy = 1;
-			mcontentPanel.add(lblBuilder, gbc_lblBuilder);
+			JLabel builderLabel = new JLabel("Builder");
+			GridBagConstraints gbc_builderLabel = new GridBagConstraints();
+			gbc_builderLabel.anchor = GridBagConstraints.EAST;
+			gbc_builderLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_builderLabel.gridx = 0;
+			gbc_builderLabel.gridy = 1;
+			mcontentPanel.add(builderLabel, gbc_builderLabel);
 		}
 		{
-			mtextBuilder = new JTextField();
-			GridBagConstraints gbc_textBuilder = new GridBagConstraints();
-			gbc_textBuilder.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textBuilder.insets = new Insets(0, 0, 5, 5);
-			gbc_textBuilder.gridx = 1;
-			gbc_textBuilder.gridy = 1;
-			mcontentPanel.add(mtextBuilder, gbc_textBuilder);
+			builderName = new JTextField();
+			GridBagConstraints gbc_builderName = new GridBagConstraints();
+			gbc_builderName.fill = GridBagConstraints.HORIZONTAL;
+			gbc_builderName.insets = new Insets(0, 0, 5, 5);
+			gbc_builderName.gridx = 1;
+			gbc_builderName.gridy = 1;
+			mcontentPanel.add(builderName, gbc_builderName);
 		}
 		{
-			JLabel lblForeman = new JLabel("Foreman");
-			GridBagConstraints gbc_lblForeman = new GridBagConstraints();
-			gbc_lblForeman.anchor = GridBagConstraints.EAST;
-			gbc_lblForeman.insets = new Insets(0, 0, 5, 5);
-			gbc_lblForeman.gridx = 3;
-			gbc_lblForeman.gridy = 1;
-			mcontentPanel.add(lblForeman, gbc_lblForeman);
+			JLabel foremanLabel = new JLabel("Foreman");
+			GridBagConstraints gbc_foremanLabel = new GridBagConstraints();
+			gbc_foremanLabel.anchor = GridBagConstraints.EAST;
+			gbc_foremanLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_foremanLabel.gridx = 3;
+			gbc_foremanLabel.gridy = 1;
+			mcontentPanel.add(foremanLabel, gbc_foremanLabel);
 		}
 		{
-			mtextForeman = new JTextField();
-			GridBagConstraints gbc_textForeman = new GridBagConstraints();
-			gbc_textForeman.insets = new Insets(0, 0, 5, 0);
-			gbc_textForeman.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textForeman.gridx = 4;
-			gbc_textForeman.gridy = 1;
-			mcontentPanel.add(mtextForeman, gbc_textForeman);
+			foremanName = new JTextField();
+			GridBagConstraints gbc_foremanName = new GridBagConstraints();
+			gbc_foremanName.insets = new Insets(0, 0, 5, 0);
+			gbc_foremanName.fill = GridBagConstraints.HORIZONTAL;
+			gbc_foremanName.gridx = 4;
+			gbc_foremanName.gridy = 1;
+			mcontentPanel.add(foremanName, gbc_foremanName);
 		}
 		{
-			JLabel lblTaskConstraint = new JLabel("Task Constraint");
-			GridBagConstraints gbc_lblTaskConstraint = new GridBagConstraints();
-			gbc_lblTaskConstraint.gridheight = 2;
-			gbc_lblTaskConstraint.insets = new Insets(0, 0, 5, 5);
-			gbc_lblTaskConstraint.gridx = 0;
-			gbc_lblTaskConstraint.gridy = 2;
-			mcontentPanel.add(lblTaskConstraint, gbc_lblTaskConstraint);
+			JLabel taskConstraintLabel = new JLabel("Task Constraint");
+			GridBagConstraints gbc_taskConstraintLabel = new GridBagConstraints();
+			gbc_taskConstraintLabel.gridheight = 2;
+			gbc_taskConstraintLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_taskConstraintLabel.gridx = 0;
+			gbc_taskConstraintLabel.gridy = 2;
+			mcontentPanel.add(taskConstraintLabel, gbc_taskConstraintLabel);
 		}
 		{
 			JScrollPane taskScroll = new JScrollPane();
@@ -185,82 +185,104 @@ public class TaskInfoDialog extends JDialog
 			{
 				taskModel = new ArrayListModel<Task>();
 				taskList = new JList<Task>(taskModel);
-				taskList.addListSelectionListener(new ListButtonEnabler(btnAddTask));
+				taskList.addListSelectionListener(new ListSelectionListener()
+				{
+					@Override
+					public void valueChanged(ListSelectionEvent e)
+					{
+						if (taskList.getMinSelectionIndex() == -1)
+							addTask.setEnabled(false);
+						else
+							addTask.setEnabled(true);
+						repaint();
+					}
+				});
 				taskScroll.setViewportView(taskList);
 				taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			}
 		}
 		{
-			btnAddTask = new JButton("Add >>");
-			btnAddTask.addActionListener(new ActionListener()
+			addTask = new JButton("Add >>");
+			addTask.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (!taskSelectModel.contains(taskList.getSelectedValue()))
+					if (!taskCstrModel.contains(taskList.getSelectedValue()))
 					{
-						taskSelectModel.add(taskList.getSelectedValue());
-						taskSelectList.repaint();
+						taskCstrModel.add(taskList.getSelectedValue());
+						taskCstrList.repaint();
 					}
 				}
 			});
-			GridBagConstraints gbc_btnAddTask = new GridBagConstraints();
-			gbc_btnAddTask.gridwidth = 2;
-			gbc_btnAddTask.anchor = GridBagConstraints.SOUTH;
-			gbc_btnAddTask.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnAddTask.insets = new Insets(0, 0, 5, 5);
-			gbc_btnAddTask.gridx = 2;
-			gbc_btnAddTask.gridy = 2;
+			GridBagConstraints gbc_addTask = new GridBagConstraints();
+			gbc_addTask.gridwidth = 2;
+			gbc_addTask.anchor = GridBagConstraints.SOUTH;
+			gbc_addTask.fill = GridBagConstraints.HORIZONTAL;
+			gbc_addTask.insets = new Insets(0, 0, 5, 5);
+			gbc_addTask.gridx = 2;
+			gbc_addTask.gridy = 2;
 			
-			mcontentPanel.add(btnAddTask, gbc_btnAddTask);
+			mcontentPanel.add(addTask, gbc_addTask);
 		}
 		{
-			JScrollPane taskSelectScroll = new JScrollPane();
-			GridBagConstraints gbc_taskSelectScroll = new GridBagConstraints();
-			gbc_taskSelectScroll.fill = GridBagConstraints.BOTH;
-			gbc_taskSelectScroll.gridheight = 2;
-			gbc_taskSelectScroll.insets = new Insets(0, 0, 5, 0);
-			gbc_taskSelectScroll.gridx = 4;
-			gbc_taskSelectScroll.gridy = 2;
-			mcontentPanel.add(taskSelectScroll, gbc_taskSelectScroll);
+			JScrollPane taskCstrScroll = new JScrollPane();
+			GridBagConstraints gbc_taskCstrScroll = new GridBagConstraints();
+			gbc_taskCstrScroll.fill = GridBagConstraints.BOTH;
+			gbc_taskCstrScroll.gridheight = 2;
+			gbc_taskCstrScroll.insets = new Insets(0, 0, 5, 0);
+			gbc_taskCstrScroll.gridx = 4;
+			gbc_taskCstrScroll.gridy = 2;
+			mcontentPanel.add(taskCstrScroll, gbc_taskCstrScroll);
 			{
-				taskSelectModel = new ArrayListModel<Task>();
-				taskSelectList = new JList<Task>(taskSelectModel);
-				taskSelectList.addListSelectionListener(new ListButtonEnabler(btnRemoveTask));
-				taskSelectScroll.setViewportView(taskSelectList);
-				taskSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				taskCstrModel = new ArrayListModel<Task>();
+				taskCstrList = new JList<Task>(taskCstrModel);
+				taskCstrList.addListSelectionListener(new ListSelectionListener()
+				{
+					@Override
+					public void valueChanged(ListSelectionEvent e)
+					{
+						if (taskCstrList.getMinSelectionIndex() == -1)
+							removeTask.setEnabled(false);
+						else
+							removeTask.setEnabled(true);
+						repaint();
+					}
+				});
+				taskCstrScroll.setViewportView(taskCstrList);
+				taskCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			}
 		}
 		{
-			btnRemoveTask = new JButton("Remove <<");
-			btnRemoveTask.addActionListener(new ActionListener()
+			removeTask = new JButton("Remove <<");
+			removeTask.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (taskSelectList.getMinSelectionIndex() >= 0)
+					if (taskCstrList.getMinSelectionIndex() >= 0)
 					{
-						taskSelectList.remove(taskSelectList.getMinSelectionIndex());
-						taskSelectList.clearSelection();
+						taskCstrModel.remove(taskCstrList.getMinSelectionIndex());
+						taskCstrList.clearSelection();
+						taskCstrList.repaint();
 					}
-					taskSelectList.repaint();
 				}
 			});
-			GridBagConstraints gbc_btnRemoveTask = new GridBagConstraints();
-			gbc_btnRemoveTask.gridwidth = 2;
-			gbc_btnRemoveTask.anchor = GridBagConstraints.NORTH;
-			gbc_btnRemoveTask.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnRemoveTask.insets = new Insets(0, 0, 5, 5);
-			gbc_btnRemoveTask.gridx = 2;
-			gbc_btnRemoveTask.gridy = 3;
-			mcontentPanel.add(btnRemoveTask, gbc_btnRemoveTask);
+			GridBagConstraints gbc_removeTask = new GridBagConstraints();
+			gbc_removeTask.gridwidth = 2;
+			gbc_removeTask.anchor = GridBagConstraints.NORTH;
+			gbc_removeTask.fill = GridBagConstraints.HORIZONTAL;
+			gbc_removeTask.insets = new Insets(0, 0, 5, 5);
+			gbc_removeTask.gridx = 2;
+			gbc_removeTask.gridy = 3;
+			mcontentPanel.add(removeTask, gbc_removeTask);
 		}
 		{
-			JLabel lblToolConstraint = new JLabel("Tool Constraint");
-			GridBagConstraints gbc_lblToolConstraint = new GridBagConstraints();
-			gbc_lblToolConstraint.gridheight = 3;
-			gbc_lblToolConstraint.insets = new Insets(0, 0, 5, 5);
-			gbc_lblToolConstraint.gridx = 0;
-			gbc_lblToolConstraint.gridy = 4;
-			mcontentPanel.add(lblToolConstraint, gbc_lblToolConstraint);
+			JLabel toolConstraintLabel = new JLabel("Tool Constraint");
+			GridBagConstraints gbc_toolConstraintLabel = new GridBagConstraints();
+			gbc_toolConstraintLabel.gridheight = 3;
+			gbc_toolConstraintLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_toolConstraintLabel.gridx = 0;
+			gbc_toolConstraintLabel.gridy = 4;
+			mcontentPanel.add(toolConstraintLabel, gbc_toolConstraintLabel);
 		}
 		{
 			JScrollPane toolScroll = new JScrollPane();
@@ -274,7 +296,18 @@ public class TaskInfoDialog extends JDialog
 			{
 				toolModel = new ArrayListModel<Resource>();
 				toolList = new JList<Resource>(toolModel);
-				toolList.addListSelectionListener(new ListButtonEnabler(btnAddTool));
+				toolList.addListSelectionListener(new ListSelectionListener()
+				{
+					@Override
+					public void valueChanged(ListSelectionEvent e)
+					{
+						if (toolList.getMinSelectionIndex() == -1)
+							addTool.setEnabled(false);
+						else
+							addTool.setEnabled(true);
+						repaint();
+					}
+				});
 				toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				toolList.setCellRenderer(new DefaultListCellRenderer()
 				{
@@ -297,47 +330,63 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(toolAmount, gbc_toolAmount);
 		}
 		{
-			toolNumSpinner = new JSpinner();
-			toolNumSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-			toolNumSpinner.setValue(1);
-			toolNumSpinner.setToolTipText("Enter number of tools needed.");
-			GridBagConstraints gbc_toolNumSpinner = new GridBagConstraints();
-			gbc_toolNumSpinner.fill = GridBagConstraints.HORIZONTAL;
-			gbc_toolNumSpinner.insets = new Insets(0, 0, 5, 5);
-			gbc_toolNumSpinner.gridx = 3;
-			gbc_toolNumSpinner.gridy = 4;
-			mcontentPanel.add(toolNumSpinner, gbc_toolNumSpinner);
+			toolSpinner = new JSpinner();
+			toolSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+			toolSpinner.setValue(1);
+			toolSpinner.setToolTipText("Enter number of tools needed.");
+			GridBagConstraints gbc_toolSpinner = new GridBagConstraints();
+			gbc_toolSpinner.fill = GridBagConstraints.HORIZONTAL;
+			gbc_toolSpinner.insets = new Insets(0, 0, 5, 5);
+			gbc_toolSpinner.gridx = 3;
+			gbc_toolSpinner.gridy = 4;
+			mcontentPanel.add(toolSpinner, gbc_toolSpinner);
 		}
 		{
-			btnAddTool = new JButton("Add >>");
-			btnAddTool.addActionListener(new ActionListener()
+			addTool = new JButton("Add >>");
+			addTool.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent arg0)
 				{
-					Object obj = toolList.getSelectedValue();
-					int i = toolSelectModel.indexOf(obj);
-					if (i == -1)
-						toolSelectModel.add(new ResourceConstraint(obj.toString(), (Integer)toolNumSpinner.getValue()));
-					else
-						toolSelectModel.getElementAt(i).setAmount((Integer)toolNumSpinner.getValue());
-					toolSelectList.repaint();
+					Resource r = toolList.getSelectedValue();
+					for (ResourceConstraint rc: toolCstrModel)
+					{
+						if (rc.getName().equals(r.getName()))
+						{
+							rc.setAmount((Integer)toolSpinner.getValue());
+							toolCstrList.repaint();
+							return;
+						}
+					}
+					toolCstrModel.add(new ResourceConstraint(r.getName(), (Integer)toolSpinner.getValue()));
+					toolCstrList.repaint();
 				}
 			});
 			{
-				JScrollPane toolSelectScroll = new JScrollPane();
-				GridBagConstraints gbc_toolSelectScroll = new GridBagConstraints();
-				gbc_toolSelectScroll.fill = GridBagConstraints.BOTH;
-				gbc_toolSelectScroll.gridheight = 3;
-				gbc_toolSelectScroll.insets = new Insets(0, 0, 5, 0);
-				gbc_toolSelectScroll.gridx = 4;
-				gbc_toolSelectScroll.gridy = 4;
-				mcontentPanel.add(toolSelectScroll, gbc_toolSelectScroll);
+				JScrollPane toolCstrScroll = new JScrollPane();
+				GridBagConstraints gbc_toolCstrScroll = new GridBagConstraints();
+				gbc_toolCstrScroll.fill = GridBagConstraints.BOTH;
+				gbc_toolCstrScroll.gridheight = 3;
+				gbc_toolCstrScroll.insets = new Insets(0, 0, 5, 0);
+				gbc_toolCstrScroll.gridx = 4;
+				gbc_toolCstrScroll.gridy = 4;
+				mcontentPanel.add(toolCstrScroll, gbc_toolCstrScroll);
 				{
-					toolSelectModel = new ArrayListModel<ResourceConstraint>();
-					toolSelectList = new JList<ResourceConstraint>(toolSelectModel);
-					toolSelectList.addListSelectionListener(new ListButtonEnabler(btnRemoveTool));
-					toolSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-					toolSelectList.setCellRenderer(new DefaultListCellRenderer()
+					toolCstrModel = new ArrayListModel<ResourceConstraint>();
+					toolCstrList = new JList<ResourceConstraint>(toolCstrModel);
+					toolCstrList.addListSelectionListener(new ListSelectionListener()
+					{
+						@Override
+						public void valueChanged(ListSelectionEvent e)
+						{
+							if (toolCstrList.getMinSelectionIndex() == -1)
+								removeTool.setEnabled(false);
+							else
+								removeTool.setEnabled(true);
+							repaint();
+						}
+					});
+					toolCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					toolCstrList.setCellRenderer(new DefaultListCellRenderer()
 					{
 						public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 						{
@@ -346,47 +395,47 @@ public class TaskInfoDialog extends JDialog
 							return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 						}
 					});
-					toolSelectScroll.setViewportView(toolSelectList);
+					toolCstrScroll.setViewportView(toolCstrList);
 				}
 			}
-			GridBagConstraints gbc_btnAddTool = new GridBagConstraints();
-			gbc_btnAddTool.gridwidth = 2;
-			gbc_btnAddTool.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnAddTool.insets = new Insets(0, 0, 5, 5);
-			gbc_btnAddTool.gridx = 2;
-			gbc_btnAddTool.gridy = 5;
-			mcontentPanel.add(btnAddTool, gbc_btnAddTool);
+			GridBagConstraints gbc_addTool = new GridBagConstraints();
+			gbc_addTool.gridwidth = 2;
+			gbc_addTool.fill = GridBagConstraints.HORIZONTAL;
+			gbc_addTool.insets = new Insets(0, 0, 5, 5);
+			gbc_addTool.gridx = 2;
+			gbc_addTool.gridy = 5;
+			mcontentPanel.add(addTool, gbc_addTool);
 		}
 		{
-			btnRemoveTool = new JButton("Remove <<");
-			btnRemoveTool.addActionListener(new ActionListener()
+			removeTool = new JButton("Remove <<");
+			removeTool.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (toolSelectList.getMinSelectionIndex() >= 0)
+					if (toolCstrList.getMinSelectionIndex() >= 0)
 					{
-						toolSelectList.remove(toolSelectList.getMinSelectionIndex());
-						toolSelectList.clearSelection();
+						toolCstrModel.remove(toolCstrList.getMinSelectionIndex());
+						toolCstrList.clearSelection();
+						toolCstrList.repaint();
 					}
-					toolSelectList.repaint();
 				}
 			});
-			GridBagConstraints gbc_btnRemoveTool = new GridBagConstraints();
-			gbc_btnRemoveTool.gridwidth = 2;
-			gbc_btnRemoveTool.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnRemoveTool.insets = new Insets(0, 0, 5, 5);
-			gbc_btnRemoveTool.gridx = 2;
-			gbc_btnRemoveTool.gridy = 6;
-			mcontentPanel.add(btnRemoveTool, gbc_btnRemoveTool);
+			GridBagConstraints gbc_removeTool = new GridBagConstraints();
+			gbc_removeTool.gridwidth = 2;
+			gbc_removeTool.fill = GridBagConstraints.HORIZONTAL;
+			gbc_removeTool.insets = new Insets(0, 0, 5, 5);
+			gbc_removeTool.gridx = 2;
+			gbc_removeTool.gridy = 6;
+			mcontentPanel.add(removeTool, gbc_removeTool);
 		}
 		{
-			JLabel lblPartConstraint = new JLabel("Part Constraint");
-			GridBagConstraints gbc_lblPartConstraint = new GridBagConstraints();
-			gbc_lblPartConstraint.gridheight = 3;
-			gbc_lblPartConstraint.insets = new Insets(0, 0, 5, 5);
-			gbc_lblPartConstraint.gridx = 0;
-			gbc_lblPartConstraint.gridy = 7;
-			mcontentPanel.add(lblPartConstraint, gbc_lblPartConstraint);
+			JLabel partConstraintLabel = new JLabel("Part Constraint");
+			GridBagConstraints gbc_partConstraintLabel = new GridBagConstraints();
+			gbc_partConstraintLabel.gridheight = 3;
+			gbc_partConstraintLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_partConstraintLabel.gridx = 0;
+			gbc_partConstraintLabel.gridy = 7;
+			mcontentPanel.add(partConstraintLabel, gbc_partConstraintLabel);
 		}
 		{
 			JScrollPane partScroll = new JScrollPane();
@@ -400,7 +449,18 @@ public class TaskInfoDialog extends JDialog
 			{
 				partModel = new ArrayListModel<Resource>();
 				partList = new JList<Resource>(partModel);
-				partList.addListSelectionListener(new ListButtonEnabler(btnAddPart));
+				partList.addListSelectionListener(new ListSelectionListener()
+				{
+					@Override
+					public void valueChanged(ListSelectionEvent e)
+					{
+						if (partList.getMinSelectionIndex() == -1)
+							addPart.setEnabled(false);
+						else
+							addPart.setEnabled(true);
+						repaint();
+					}
+				});
 				partList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				partList.setCellRenderer(new DefaultListCellRenderer()
 				{
@@ -423,32 +483,43 @@ public class TaskInfoDialog extends JDialog
 			mcontentPanel.add(partAmount, gbc_partAmount);
 		}
 		{
-			partNumSpinner = new JSpinner();
-			partNumSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-			partNumSpinner.setValue(1);
-			partNumSpinner.setToolTipText("Enter number of parts needed.");
-			GridBagConstraints gbc_partNumSpinner = new GridBagConstraints();
-			gbc_partNumSpinner.insets = new Insets(0, 0, 5, 5);
-			gbc_partNumSpinner.fill = GridBagConstraints.HORIZONTAL;
-			gbc_partNumSpinner.gridx = 3;
-			gbc_partNumSpinner.gridy = 7;
-			mcontentPanel.add(partNumSpinner, gbc_partNumSpinner);
+			partSpinner = new JSpinner();
+			partSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+			partSpinner.setValue(1);
+			partSpinner.setToolTipText("Enter number of parts needed.");
+			GridBagConstraints gbc_partSpinner = new GridBagConstraints();
+			gbc_partSpinner.insets = new Insets(0, 0, 5, 5);
+			gbc_partSpinner.fill = GridBagConstraints.HORIZONTAL;
+			gbc_partSpinner.gridx = 3;
+			gbc_partSpinner.gridy = 7;
+			mcontentPanel.add(partSpinner, gbc_partSpinner);
 		}
 		{
-			JScrollPane partSelectScroll = new JScrollPane();
-			GridBagConstraints gbc_partSelectScroll = new GridBagConstraints();
-			gbc_partSelectScroll.fill = GridBagConstraints.BOTH;
-			gbc_partSelectScroll.gridheight = 3;
-			gbc_partSelectScroll.insets = new Insets(0, 0, 5, 0);
-			gbc_partSelectScroll.gridx = 4;
-			gbc_partSelectScroll.gridy = 7;
-			mcontentPanel.add(partSelectScroll, gbc_partSelectScroll);
+			JScrollPane partCstrScroll = new JScrollPane();
+			GridBagConstraints gbc_partCstrScroll = new GridBagConstraints();
+			gbc_partCstrScroll.fill = GridBagConstraints.BOTH;
+			gbc_partCstrScroll.gridheight = 3;
+			gbc_partCstrScroll.insets = new Insets(0, 0, 5, 0);
+			gbc_partCstrScroll.gridx = 4;
+			gbc_partCstrScroll.gridy = 7;
+			mcontentPanel.add(partCstrScroll, gbc_partCstrScroll);
 			{
-				partSelectModel = new ArrayListModel<ResourceConstraint>();
-				partSelectList = new JList<ResourceConstraint>(partSelectModel);
-				partSelectList.addListSelectionListener(new ListButtonEnabler(btnRemovePart));
-				partSelectList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				partSelectList.setCellRenderer(new DefaultListCellRenderer()
+				partCstrModel = new ArrayListModel<ResourceConstraint>();
+				partCstrList = new JList<ResourceConstraint>(partCstrModel);
+				partCstrList.addListSelectionListener(new ListSelectionListener()
+				{
+					@Override
+					public void valueChanged(ListSelectionEvent e)
+					{
+						if (partCstrList.getMinSelectionIndex() == -1)
+							removePart.setEnabled(false);
+						else
+							removePart.setEnabled(true);
+						repaint();
+					}
+				});
+				partCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				partCstrList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 					{
@@ -457,120 +528,125 @@ public class TaskInfoDialog extends JDialog
 						return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 					}
 				});
-				partSelectScroll.setViewportView(partSelectList);
+				partCstrScroll.setViewportView(partCstrList);
 			}
 		}
 		{
-			btnAddPart = new JButton("Add >>");
-			btnAddPart.addActionListener(new ActionListener()
+			addPart = new JButton("Add >>");
+			addPart.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					Object obj = partList.getSelectedValue();
-					int i = partSelectModel.indexOf(obj);
-					if (i == -1)
-						partSelectModel.add(new ResourceConstraint(obj.toString(), (Integer)partNumSpinner.getValue()));
-					else
-						((ResourceConstraint) partSelectModel.getElementAt(i)).setAmount((Integer)partNumSpinner.getValue());
-					partSelectList.repaint();
-				}
-			});
-			GridBagConstraints gbc_btnAddPart = new GridBagConstraints();
-			gbc_btnAddPart.gridwidth = 2;
-			gbc_btnAddPart.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnAddPart.insets = new Insets(0, 0, 5, 5);
-			gbc_btnAddPart.gridx = 2;
-			gbc_btnAddPart.gridy = 8;
-			mcontentPanel.add(btnAddPart, gbc_btnAddPart);
-		}
-		{
-			btnRemovePart = new JButton("Remove <<");
-			btnRemovePart.addActionListener(new ActionListener()
-			{
-				public void actionPerformed(ActionEvent e)
-				{
-					if (partSelectList.getMinSelectionIndex() >= 0)
+					Resource r = partList.getSelectedValue();
+					for (ResourceConstraint rc: partCstrModel)
 					{
-						partSelectList.remove(partSelectList.getMinSelectionIndex());
-						partSelectList.clearSelection();
+						if (rc.getName().equals(r.getName()))
+						{
+							rc.setAmount((Integer)partSpinner.getValue());
+							partCstrList.repaint();
+							return;
+						}
 					}
-					partSelectList.repaint();
+					partCstrModel.add(new ResourceConstraint(r.getName(), (Integer)partSpinner.getValue()));
+					partCstrList.repaint();
 				}
 			});
-			GridBagConstraints gbc_btnRemove = new GridBagConstraints();
-			gbc_btnRemove.fill = GridBagConstraints.HORIZONTAL;
-			gbc_btnRemove.gridwidth = 2;
-			gbc_btnRemove.insets = new Insets(0, 0, 5, 5);
-			gbc_btnRemove.gridx = 2;
-			gbc_btnRemove.gridy = 9;
-			mcontentPanel.add(btnRemovePart, gbc_btnRemove);
+			GridBagConstraints gbc_addPart = new GridBagConstraints();
+			gbc_addPart.gridwidth = 2;
+			gbc_addPart.fill = GridBagConstraints.HORIZONTAL;
+			gbc_addPart.insets = new Insets(0, 0, 5, 5);
+			gbc_addPart.gridx = 2;
+			gbc_addPart.gridy = 8;
+			mcontentPanel.add(addPart, gbc_addPart);
 		}
 		{
-			JLabel mlblFolderLocation = new JLabel("Folder Location");
-			GridBagConstraints gbc_mlblFolderLocation = new GridBagConstraints();
-			gbc_mlblFolderLocation.anchor = GridBagConstraints.EAST;
-			gbc_mlblFolderLocation.insets = new Insets(0, 0, 5, 5);
-			gbc_mlblFolderLocation.gridx = 0;
-			gbc_mlblFolderLocation.gridy = 10;
-			mcontentPanel.add(mlblFolderLocation, gbc_mlblFolderLocation);
+			removePart = new JButton("Remove <<");
+			removePart.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					if (partCstrList.getMinSelectionIndex() >= 0)
+					{
+						partCstrModel.remove(partCstrList.getMinSelectionIndex());
+						partCstrList.clearSelection();
+						partCstrList.repaint();
+					}
+				}
+			});
+			GridBagConstraints gbc_removePart = new GridBagConstraints();
+			gbc_removePart.fill = GridBagConstraints.HORIZONTAL;
+			gbc_removePart.gridwidth = 2;
+			gbc_removePart.insets = new Insets(0, 0, 5, 5);
+			gbc_removePart.gridx = 2;
+			gbc_removePart.gridy = 9;
+			mcontentPanel.add(removePart, gbc_removePart);
 		}
 		{
-			mtextLink = new JTextField();
-			GridBagConstraints gbc_textLink = new GridBagConstraints();
-			gbc_textLink.gridwidth = 3;
-			gbc_textLink.insets = new Insets(0, 0, 5, 5);
-			gbc_textLink.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textLink.gridx = 1;
-			gbc_textLink.gridy = 10;
-			mcontentPanel.add(mtextLink, gbc_textLink);
-			mtextLink.setColumns(10);
+			JLabel folderLocationLabel = new JLabel("Folder Location");
+			GridBagConstraints gbc_folderLocationLabel = new GridBagConstraints();
+			gbc_folderLocationLabel.anchor = GridBagConstraints.EAST;
+			gbc_folderLocationLabel.insets = new Insets(0, 0, 5, 5);
+			gbc_folderLocationLabel.gridx = 0;
+			gbc_folderLocationLabel.gridy = 10;
+			mcontentPanel.add(folderLocationLabel, gbc_folderLocationLabel);
+		}
+		{
+			folderPath = new JTextField();
+			GridBagConstraints gbc_folderPath = new GridBagConstraints();
+			gbc_folderPath.gridwidth = 3;
+			gbc_folderPath.insets = new Insets(0, 0, 5, 5);
+			gbc_folderPath.fill = GridBagConstraints.HORIZONTAL;
+			gbc_folderPath.gridx = 1;
+			gbc_folderPath.gridy = 10;
+			mcontentPanel.add(folderPath, gbc_folderPath);
+			folderPath.setColumns(10);
 		}
 		{
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			btnFindLink = new JButton("Find...");
-			btnFindLink.addActionListener(new ActionListener()
+			find = new JButton("Find...");
+			find.addActionListener(new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
 					switch(fileChooser.showOpenDialog(null))
 					{
 						case JFileChooser.APPROVE_OPTION:
-							mtextLink.setText(fileChooser.getSelectedFile().toString());
+							folderPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
 							break;
 					}
 				}
 			});
-			GridBagConstraints gbc_btnFindLink = new GridBagConstraints();
-			gbc_btnFindLink.anchor = GridBagConstraints.WEST;
-			gbc_btnFindLink.insets = new Insets(0, 0, 5, 0);
-			gbc_btnFindLink.gridx = 4;
-			gbc_btnFindLink.gridy = 10;
-			mcontentPanel.add(btnFindLink, gbc_btnFindLink);
+			GridBagConstraints gbc_find = new GridBagConstraints();
+			gbc_find.anchor = GridBagConstraints.WEST;
+			gbc_find.insets = new Insets(0, 0, 5, 0);
+			gbc_find.gridx = 4;
+			gbc_find.gridy = 10;
+			mcontentPanel.add(find, gbc_find);
 		}
 		{
-			lblStartDate = new JLabel("Start Date: N/A");
-			GridBagConstraints gbc_lblStartDate = new GridBagConstraints();
-			gbc_lblStartDate.insets = new Insets(0, 0, 0, 5);
-			gbc_lblStartDate.gridx = 1;
-			gbc_lblStartDate.gridy = 11;
-			mcontentPanel.add(lblStartDate, gbc_lblStartDate);
+			startDate = new JLabel("Start Date: N/A");
+			GridBagConstraints gbc_startDate = new GridBagConstraints();
+			gbc_startDate.insets = new Insets(0, 0, 0, 5);
+			gbc_startDate.gridx = 1;
+			gbc_startDate.gridy = 11;
+			mcontentPanel.add(startDate, gbc_startDate);
 		}
 		{
-			lblTimeSpent = new JLabel("Time Spent: N/A");
-			GridBagConstraints gbc_lblTimeSpent = new GridBagConstraints();
-			gbc_lblTimeSpent.gridwidth = 2;
-			gbc_lblTimeSpent.insets = new Insets(0, 0, 0, 5);
-			gbc_lblTimeSpent.gridx = 2;
-			gbc_lblTimeSpent.gridy = 11;
-			mcontentPanel.add(lblTimeSpent, gbc_lblTimeSpent);
+			timeSpent = new JLabel("Time Spent: N/A");
+			GridBagConstraints gbc_timeSpent = new GridBagConstraints();
+			gbc_timeSpent.gridwidth = 2;
+			gbc_timeSpent.insets = new Insets(0, 0, 0, 5);
+			gbc_timeSpent.gridx = 2;
+			gbc_timeSpent.gridy = 11;
+			mcontentPanel.add(timeSpent, gbc_timeSpent);
 		}
 		{
-			lblEndDate = new JLabel("End Date: N/A");
-			GridBagConstraints gbc_lblEndDate = new GridBagConstraints();
-			gbc_lblEndDate.gridx = 4;
-			gbc_lblEndDate.gridy = 11;
-			mcontentPanel.add(lblEndDate, gbc_lblEndDate);
+			endDate = new JLabel("End Date: N/A");
+			GridBagConstraints gbc_endDate = new GridBagConstraints();
+			gbc_endDate.gridx = 4;
+			gbc_endDate.gridy = 11;
+			mcontentPanel.add(endDate, gbc_endDate);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -587,13 +663,13 @@ public class TaskInfoDialog extends JDialog
 							case CREATE:
 								if (!checkNameLink())
 									return;
-								task = new Task(mtextTask.getText());
-								task.setBuilder(mtextBuilder.getText());
-								task.setForeman(mtextForeman.getText());
+								task = new Task(taskName.getText());
+								task.setBuilder(builderName.getText());
+								task.setForeman(foremanName.getText());
 								task.addDependencies(taskModel);
-								task.addTools(toolSelectModel);
-								task.addParts(partSelectModel);
-								task.setPath(mtextLink.getText());
+								task.addTools(toolCstrModel);
+								task.addParts(partCstrModel);
+								task.setPath(folderPath.getText());
 								if (task.meetDependencies() && task.meetResources())
 									task.setStatus(Task.Status.UNSTARTED);
 								else
@@ -601,46 +677,46 @@ public class TaskInfoDialog extends JDialog
 								change = true;
 								break;
 							case EDIT:
-								change = !task.getName().equals(mtextTask.getText());
+								change = !task.getName().equals(taskName.getText());
 								if (change && !checkNameLink() || !checkBuilderForeman())
 									return;
 								if (change)
-									task.setName(mtextTask.getText());
-								if (!task.getBuilder().equals(mtextBuilder.getText()))
+									task.setName(taskName.getText());
+								if (!task.getBuilder().equals(builderName.getText()))
 								{
 									change = true;
-									task.setBuilder(mtextBuilder.getText());
+									task.setBuilder(builderName.getText());
 								}
-								if (!task.getForeman().equals(mtextForeman.getText()))
+								if (!task.getForeman().equals(foremanName.getText()))
 								{
 									change = true;
-									task.setForeman(mtextForeman.getText());
+									task.setForeman(foremanName.getText());
 								}
-								if (!task.getParts().equals(mtextLink.getText()))
+								if (!task.getParts().equals(folderPath.getText()))
 								{
 									change = true;
-									task.setPath(mtextLink.getText());
+									task.setPath(folderPath.getText());
 								}
 								
 								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.UNSTARTED)
 								{
-									if (!task.getDependencies().containsAll(taskSelectModel) || !taskSelectModel.containsAll(task.getDependencies()))
+									if (!task.getDependencies().containsAll(taskCstrModel) || !taskCstrModel.containsAll(task.getDependencies()))
 									{
 										change = true;
 										task.clearDependencies();
 										task.addDependencies(taskModel);
 									}
-									if (!task.getTools().containsAll(toolSelectModel) || !toolSelectModel.containsAll(task.getTools()))
+									if (!task.getTools().containsAll(toolCstrModel) || !toolCstrModel.containsAll(task.getTools()))
 									{
 										change = true;
 										task.clearTools();
-										task.addTools(toolSelectModel);
+										task.addTools(toolCstrModel);
 									}
-									if (!task.getParts().containsAll(partSelectModel) || !partSelectModel.containsAll(task.getParts()))
+									if (!task.getParts().containsAll(partCstrModel) || !partCstrModel.containsAll(task.getParts()))
 									{
 										change = true;
 										task.clearParts();
-										task.addParts(partSelectModel);
+										task.addParts(partCstrModel);
 									}
 									if (task.meetDependencies() && task.meetResources())
 										task.setStatus(Task.Status.UNSTARTED);
@@ -698,11 +774,11 @@ public class TaskInfoDialog extends JDialog
 
 	private boolean checkNameLink()
 	{
-		String name = mtextTask.getText(), path = mtextLink.getText();
+		String name = taskName.getText(), path = folderPath.getText();
 		if (name == null || "".equals(name))
 		{
 			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.PLAIN_MESSAGE);
-			mtextTask.setText("!!!");
+			taskName.setText("!!!");
 			return false;			
 		}
 		else if (TaskManager.getTask(name) != null)
@@ -720,7 +796,7 @@ public class TaskInfoDialog extends JDialog
 	
 	private boolean checkBuilderForeman()
 	{
-		String builder = mtextBuilder.getText(), foreman = mtextForeman.getText();
+		String builder = builderName.getText(), foreman = foremanName.getText();
 		if (builder == null || "".equals(builder))
 		{
 			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.PLAIN_MESSAGE);
@@ -786,52 +862,52 @@ public class TaskInfoDialog extends JDialog
 	private static void loadTask(Task t)
 	{
 		dialog.taskList.clearSelection();
-		dialog.taskSelectList.clearSelection();
+		dialog.taskCstrList.clearSelection();
 		dialog.taskModel.clear();
 		dialog.taskModel.addAll(TaskManager.getTasks());
-		dialog.taskSelectModel.clear();
+		dialog.taskCstrModel.clear();
 		dialog.toolList.clearSelection();
-		dialog.toolSelectList.clearSelection();
+		dialog.toolCstrList.clearSelection();
 		dialog.toolModel.clear();
 		dialog.toolModel.addAll(Inventory.getTools());
-		dialog.toolSelectModel.clear();
+		dialog.toolCstrModel.clear();
 		dialog.partList.clearSelection();
-		dialog.partSelectList.clearSelection();
+		dialog.partCstrList.clearSelection();
 		dialog.partModel.clear();
 		dialog.partModel.addAll(Inventory.getParts());
-		dialog.partSelectModel.clear();
-		dialog.toolNumSpinner.setValue(1);
-		dialog.toolNumSpinner.setValue(1);
+		dialog.partCstrModel.clear();
+		dialog.toolSpinner.setValue(1);
+		dialog.toolSpinner.setValue(1);
 		
 		if (t == null)
 		{
-			dialog.mtextTask.setText("");
-			dialog.mtextBuilder.setText("");
-			dialog.mtextBuilder.setText("");
-			dialog.mtextLink.setText("");
-			dialog.lblStartDate.setText("Start Date: N/A");
-			dialog.lblTimeSpent.setText("Time Spent: N/A");
-			dialog.lblEndDate.setText("End Date: N/A");
+			dialog.taskName.setText("");
+			dialog.builderName.setText("");
+			dialog.builderName.setText("");
+			dialog.folderPath.setText("");
+			dialog.startDate.setText("Start Date: N/A");
+			dialog.timeSpent.setText("Time Spent: N/A");
+			dialog.endDate.setText("End Date: N/A");
 		}
 		else
 		{
-			dialog.mtextTask.setText(t.getName());
+			dialog.taskName.setText(t.getName());
 			if (t.getBuilder() == null)
-				dialog.mtextBuilder.setText("");
+				dialog.builderName.setText("");
 			else
-				dialog.mtextBuilder.setText(t.getBuilder());
+				dialog.builderName.setText(t.getBuilder());
 			if (t.getForeman() == null)
-				dialog.mtextBuilder.setText("");
+				dialog.builderName.setText("");
 			else
-				dialog.mtextBuilder.setText(t.getForeman());
+				dialog.builderName.setText(t.getForeman());
 			if (t.getPath() == null)
-				dialog.mtextLink.setText("");
+				dialog.folderPath.setText("");
 			else
-				dialog.mtextLink.setText(t.getPath());
+				dialog.folderPath.setText(t.getPath());
 			
-			dialog.taskSelectModel.addAll(t.getDependencies());
-			dialog.toolSelectModel.addAll(t.getTools());
-			dialog.partSelectModel.addAll(t.getParts());
+			dialog.taskCstrModel.addAll(t.getDependencies());
+			dialog.toolCstrModel.addAll(t.getTools());
+			dialog.partCstrModel.addAll(t.getParts());
 			
 			//!!! set date/time
 		}
@@ -839,56 +915,37 @@ public class TaskInfoDialog extends JDialog
 	
 	private static void enableText(boolean b)
 	{
-		dialog.mtextBuilder.setEditable(b);
-		dialog.mtextForeman.setEditable(b);
-		dialog.mtextLink.setEditable(b);
-		dialog.mtextTask.setEditable(b);
-		dialog.btnFindLink.setEnabled(b);
+		dialog.builderName.setEditable(b);
+		dialog.foremanName.setEditable(b);
+		dialog.folderPath.setEditable(b);
+		dialog.taskName.setEditable(b);
+		dialog.find.setEnabled(b);
 	}
 	
 	private static void enableLists(boolean b)
 	{
 		dialog.taskList.setEnabled(b);
-		dialog.taskSelectList.setEnabled(b);
+		dialog.taskCstrList.setEnabled(b);
 		dialog.toolList.setEnabled(b);
-		dialog.toolSelectList.setEnabled(b);
-		dialog.toolNumSpinner.setEnabled(b);
+		dialog.toolCstrList.setEnabled(b);
+		dialog.toolSpinner.setEnabled(b);
 		dialog.partList.setEnabled(b);
-		dialog.partSelectList.setEnabled(b);
-		dialog.partNumSpinner.setEnabled(b);
+		dialog.partCstrList.setEnabled(b);
+		dialog.partSpinner.setEnabled(b);
 	}
 	
 	private static void enableButtons(boolean b)
 	{
-		dialog.btnAddPart.setEnabled(b);
-		dialog.btnAddTask.setEnabled(b);
-		dialog.btnAddTool.setEnabled(b);
-		dialog.btnRemovePart.setEnabled(b);
-		dialog.btnRemoveTask.setEnabled(b);
-		dialog.btnRemoveTool.setEnabled(b);
+		dialog.addPart.setEnabled(b);
+		dialog.addTask.setEnabled(b);
+		dialog.addTool.setEnabled(b);
+		dialog.removePart.setEnabled(b);
+		dialog.removeTask.setEnabled(b);
+		dialog.removeTool.setEnabled(b);
 	}
 	
 	public static Task getTask()
 	{
 		return task;
-	}
-	
-	private class ListButtonEnabler implements ListSelectionListener
-	{
-		private JButton target;
-		
-		public ListButtonEnabler(JButton target)
-		{
-			this.target = target;
-		}
-		@Override
-		public void valueChanged(ListSelectionEvent arg0)
-		{
-			if (arg0.getFirstIndex() >= 0)
-				target.setEnabled(true);
-			else
-				target.setEnabled(false);
-			target.repaint();
-		}
 	}
 }
