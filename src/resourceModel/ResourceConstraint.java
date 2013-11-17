@@ -38,5 +38,4 @@ public class ResourceConstraint implements Serializable
 	{
 		return name;
 	}
-
 }

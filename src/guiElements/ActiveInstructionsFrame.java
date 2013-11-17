@@ -15,7 +15,7 @@ public class ActiveInstructionsFrame extends JFrame
 {
 	private TaskPanel taskPanel;
 	private ResourcePanel resourcePanel;
-	private JMenuItem mntmSave;
+	private JMenuItem menuSave;
 	private FileStatus status;
 	/**
 	 * Create the frame.
@@ -37,40 +37,40 @@ public class ActiveInstructionsFrame extends JFrame
 		mnFile.setMnemonic('F');
 		menuBar.add(mnFile);
 
-		JMenuItem mntmNew = new JMenuItem("New");
-		mntmNew.addActionListener(mfileHandler);
-		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-		mnFile.add(mntmNew);
+		JMenuItem menuNew = new JMenuItem("New");
+		menuNew.addActionListener(mfileHandler);
+		menuNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		mnFile.add(menuNew);
 
-		JMenuItem mntmOpen = new JMenuItem("Open");
-		mntmOpen.addActionListener(mfileHandler);
-		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-		mnFile.add(mntmOpen);
+		JMenuItem menuOpen = new JMenuItem("Open");
+		menuOpen.addActionListener(mfileHandler);
+		menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		mnFile.add(menuOpen);
 
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 
-		mntmSave = new JMenuItem("Save");
-		mntmSave.addActionListener(mfileHandler);
-		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-		mnFile.add(mntmSave);
+		menuSave = new JMenuItem("Save");
+		menuSave.addActionListener(mfileHandler);
+		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+		mnFile.add(menuSave);
 
-		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
-		mntmSaveAs.addActionListener(mfileHandler);
-		mnFile.add(mntmSaveAs);
+		JMenuItem menuSaveAs = new JMenuItem("Save As...");
+		menuSaveAs.addActionListener(mfileHandler);
+		mnFile.add(menuSaveAs);
 
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 
-		JMenuItem mntmExport = new JMenuItem("Export");
-		mnFile.add(mntmExport);
+		JMenuItem menuExport = new JMenuItem("Export");
+		mnFile.add(menuExport);
 
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		JMenuItem mntmQuit = new JMenuItem("Quit");
-		mntmQuit.addActionListener(mfileHandler);
-		mnFile.add(mntmQuit);
+		JMenuItem menuQuit = new JMenuItem("Quit");
+		menuQuit.addActionListener(mfileHandler);
+		mnFile.add(menuQuit);
 		JPanel mcontentPane = new JPanel();
 		mcontentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(mcontentPane);
@@ -99,14 +99,14 @@ public class ActiveInstructionsFrame extends JFrame
 
 	public void clearTaskPanel()
 	{
-		mntmSave.setEnabled(false);
+		menuSave.setEnabled(false);
 		taskPanel.clearTaskList();
 		resourcePanel.clearInventory();
 	}
 
 	public void reloadTaskPanel()
 	{
-		mntmSave.setEnabled(false);
+		menuSave.setEnabled(false);
 		taskPanel.reloadTaskList();
 		resourcePanel.reloadInventory();
 	}

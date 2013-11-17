@@ -35,14 +35,14 @@ public class Task implements Serializable, Comparable<Task>
 	
 	public enum Status
 	{
-		UNAVAILABLE, UNSTARTED, STOPPED, WORKING, PAUSED, COMPLETE;
+		UNAVAILABLE, UNSTARTED, WORKING, STOPPED, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
 	{
 		this.name = s;
-		builder = "No Builder";
-		foreman = "No Foreman";
+		builder = "";
+		foreman = "";
 		taskStatus = Status.UNSTARTED;
 		tools = new HashMap<String, ResourceConstraint>();
 		parts = new HashMap<String, ResourceConstraint>();
@@ -58,15 +58,28 @@ public class Task implements Serializable, Comparable<Task>
 
 		lastResumeTime = -1; // -1 when paused
 	}
-	
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	public void setName(String str)
+	
+	// return whether Task needs to be rehashed
+	public boolean setName(String str)
 	{
-		name = str;
+		// check whether name is changed
+		if (!"".equals(name) && !name.equals(str))
+		{
+			TaskManager.removeTask(name);
+			name = str;
+			TaskManager.addTask(this);
+			return true;
+		}
+		else
+		{
+			name = str;
+			return false;
+		}
 	}
 	public String getBuilder()
 	{
@@ -365,5 +378,10 @@ public class Task implements Serializable, Comparable<Task>
 	public void setNotes(String s)
 	{
 		notes = s;
+	}
+	
+	public int hashCode()
+	{
+		return name.hashCode();
 	}
 }

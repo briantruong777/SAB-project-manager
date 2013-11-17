@@ -80,6 +80,8 @@ public class TaskInfoDialog extends JDialog
 	private static Status status;
 	private static boolean change;
 	private static DateFormat format;
+	private static String oldName;
+	private static boolean nameChange;
 
 	private enum Status
 	{
@@ -90,6 +92,8 @@ public class TaskInfoDialog extends JDialog
 	{
 		dialog = new TaskInfoDialog();
 		format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+		oldName = "";
+		nameChange = false;
 	}
 	
 	/**
@@ -690,7 +694,10 @@ public class TaskInfoDialog extends JDialog
 								if (change && !checkNameLink())
 									return;
 								if (change)
-									task.setName(taskName.getText());
+								{
+									oldName = task.getName();
+									nameChange = task.setName(taskName.getText());
+								}
 								if (!task.getBuilder().equals(builderName.getText()))
 								{
 									change = true;
@@ -766,7 +773,7 @@ public class TaskInfoDialog extends JDialog
 							task.clearDependencies();
 							task.clearParts();
 							task.clearTools();
-							TaskManager.removeTask(task);
+							TaskManager.removeTask(task.getName());
 							change = true;
 							task = null;
 							setVisible(false);
@@ -946,5 +953,15 @@ public class TaskInfoDialog extends JDialog
 	public static Task getTask()
 	{
 		return task;
+	}
+	
+	public static boolean nameChanged()
+	{
+		return nameChange;
+	}
+	
+	public static String oldName()
+	{
+		return oldName;
 	}
 }

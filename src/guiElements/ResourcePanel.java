@@ -318,7 +318,7 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
-					Inventory.removeTool(r);
+					Inventory.removeTool(r.getName());
 					r.setName(text);
 					for (Task t: r.getDependers())
 						t.renameTool(r.getName(), text);
@@ -362,7 +362,7 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
-					Inventory.removePart(r);
+					Inventory.removePart(r.getName());
 					for (Task t: r.getDependers())
 						t.renamePart(r.getName(), text);
 					r.setName(text);
@@ -397,7 +397,7 @@ public class ResourcePanel extends JPanel
 				}
 				toolList.clearSelection();
 				toolModel.remove(r);
-				Inventory.removeTool(r);
+				Inventory.removeTool(r.getName());
 				Runner.notifyChange();
 			}
 		});
@@ -423,7 +423,7 @@ public class ResourcePanel extends JPanel
 				}
 				partList.clearSelection();
 				partModel.remove(r);
-				Inventory.removePart(r);
+				Inventory.removePart(r.getName());
 				Runner.notifyChange();
 			}
 		});

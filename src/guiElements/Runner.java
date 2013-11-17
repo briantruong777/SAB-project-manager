@@ -87,8 +87,9 @@ public class Runner
 		tools = (HashMap<String, Resource>) saveList.get(1);
 		parts = (HashMap<String, Resource>) saveList.get(2);
 		TaskManager.setTasksMap(tasks);
-		Inventory.setTools(tools);
-		Inventory.setParts(parts);
+		Inventory.clear();
+		Inventory.addTools(tools.values());
+		Inventory.addParts(parts.values());
 
 		System.out.println(TaskManager.getTasksMap());
 		System.out.println(Inventory.getTools());

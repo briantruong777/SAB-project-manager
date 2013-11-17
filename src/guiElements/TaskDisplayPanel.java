@@ -226,6 +226,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				if (TaskInfoDialog.getTask() == null)
 					panel.removeTask(task);
+				if (TaskInfoDialog.nameChanged())
+					panel.renameTask(TaskInfoDialog.oldName(), TaskInfoDialog.getTask().getName());
 				refreshTaskStatus();
 			}
 		}

@@ -10,7 +10,7 @@ import taskModel.*;
 @SuppressWarnings("serial")
 public class TaskPanel extends JPanel implements ItemListener
 {
-	private HashMap<Task, TaskDisplayPanel> tasks;
+	private HashMap<String, TaskDisplayPanel> tasks;
 	private Box taskList;
 	private JCheckBox checkUnavailable;
 	private JCheckBox checkIncomplete;
@@ -22,7 +22,7 @@ public class TaskPanel extends JPanel implements ItemListener
 	public TaskPanel()
 	{
 		self = this;
-		tasks = new HashMap<Task, TaskDisplayPanel>();
+		tasks = new HashMap<String, TaskDisplayPanel>();
 		setLayout(new BorderLayout(0, 0));
 
 		JScrollPane taskScroll = new JScrollPane();
@@ -66,7 +66,7 @@ public class TaskPanel extends JPanel implements ItemListener
 					Task t = TaskInfoDialog.getTask();
 					TaskManager.addTask(t);
 					TaskDisplayPanel tdp = new TaskDisplayPanel(t, self);
-					tasks.put(t, tdp);
+					tasks.put(t.getName(), tdp);
 					taskList.add(tdp);
 					updateUI();
 					Runner.notifyChange();
@@ -104,7 +104,7 @@ public class TaskPanel extends JPanel implements ItemListener
 		for (Task t : TaskManager.getSortedTasks())
 		{
 			tdp = new TaskDisplayPanel(t, this);
-			tasks.put(t, tdp);
+			tasks.put(t.getName(), tdp);
 			taskList.add(tdp);
 		}
 		taskList.repaint();
@@ -114,15 +114,20 @@ public class TaskPanel extends JPanel implements ItemListener
 	{
 		for (Task t : refreshTasks)
 		{
-			tasks.get(t).refreshTaskStatus();
+			tasks.get(t.getName()).refreshTaskStatus();
 		}
 	}
 	
 	public void removeTask(Task t)
 	{
-		taskList.remove(tasks.get(t));
-		tasks.remove(t);
+		taskList.remove(tasks.get(t.getName()));
+		tasks.remove(t.getName());
 		updateUI();
+	}
+	
+	public void renameTask(String oldName, String newName)
+	{
+		tasks.put(newName, tasks.remove(oldName));
 	}
 	
 	public void itemStateChanged(ItemEvent e)
