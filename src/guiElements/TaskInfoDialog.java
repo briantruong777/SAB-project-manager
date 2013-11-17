@@ -9,6 +9,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DateFormat;
+import java.util.Calendar;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -77,6 +79,7 @@ public class TaskInfoDialog extends JDialog
 	private static Task task;
 	private static Status status;
 	private static boolean change;
+	private static DateFormat format;
 
 	private enum Status
 	{
@@ -86,6 +89,7 @@ public class TaskInfoDialog extends JDialog
 	static
 	{
 		dialog = new TaskInfoDialog();
+		format = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 	}
 	
 	/**
@@ -678,7 +682,7 @@ public class TaskInfoDialog extends JDialog
 								break;
 							case EDIT:
 								change = !task.getName().equals(taskName.getText());
-								if (change && !checkNameLink() || !checkBuilderForeman())
+								if (change && !checkNameLink())
 									return;
 								if (change)
 									task.setName(taskName.getText());
@@ -777,34 +781,17 @@ public class TaskInfoDialog extends JDialog
 		String name = taskName.getText(), path = folderPath.getText();
 		if (name == null || "".equals(name))
 		{
-			JOptionPane.showMessageDialog(null, "Task name cannot be empty.", "", JOptionPane.ERROR_MESSAGE);
-			taskName.setText("!!!");
+			JOptionPane.showMessageDialog(dialog, "Task name cannot be empty.", "", JOptionPane.ERROR_MESSAGE);
 			return false;			
 		}
 		else if (TaskManager.getTask(name) != null)
 		{
-			JOptionPane.showMessageDialog(null, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
 		{
-			JOptionPane.showMessageDialog(null, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
-	}
-	
-	private boolean checkBuilderForeman()
-	{
-		String builder = builderName.getText(), foreman = foremanName.getText();
-		if (builder == null || "".equals(builder))
-		{
-			JOptionPane.showMessageDialog(null, "Please enter a builder before running the task", "", JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
-		if (foreman == null || "".equals(foreman))
-		{
-			JOptionPane.showMessageDialog(null, "Please enter a foreman before running the task", "", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -909,7 +896,25 @@ public class TaskInfoDialog extends JDialog
 			dialog.toolCstrModel.addAll(t.getTools());
 			dialog.partCstrModel.addAll(t.getParts());
 			
-			//!!! set date/time
+			if (t.getStartDate().isSet(Calendar.HOUR))
+				dialog.startDate.setText("Start Date: " + format.format(t.getStartDate()));
+			else
+				dialog.startDate.setText("Start Date: N/A");
+			
+			if (t.getTimeSpent() != 0)
+			{
+				long hrs = t.getTimeSpent() / 1000 / 60 / 60;
+				long days = hrs / 24;
+				hrs %= 24;
+				dialog.timeSpent.setText("Time Spent: " + days + " days, " + hrs + "hours");
+			}
+			else
+				dialog.timeSpent.setText("Time Spent: N/A");
+			
+			if (t.getEndDate().isSet(Calendar.HOUR))
+				dialog.endDate.setText("End Date: " + format.format(t.getEndDate()));
+			else
+				dialog.endDate.setText("End Date: N/A");
 		}
 	}
 	
