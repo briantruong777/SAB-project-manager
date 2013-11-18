@@ -368,6 +368,7 @@ public class Task implements Serializable, Comparable<Task>
 	}
 	public void stop()
 	{
+		endDate.clear();
 		Inventory.releaseResources(tools.values(), parts.values());
 		//TODO:Have all tasks check whether there are still enough resources
 	}
