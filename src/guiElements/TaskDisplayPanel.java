@@ -63,24 +63,14 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		mhorizontalStrut_1 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_1);
 
-		statusLabel = new JLabel(new ImageIcon("res/incomplete_bw.png"), JLabel.LEFT);
+		statusLabel = new JLabel(new ImageIcon("res/unstarted.png"), JLabel.LEFT);
 		add(statusLabel);
 
 		mhorizontalStrut = Box.createHorizontalStrut(10);
 		add(mhorizontalStrut);
 
 		JLabel lblTasknamelabel = new JLabel(task.getName());
-		//		JLabel lblTasknamelabel = new JLabel(t.getName());
 		add(lblTasknamelabel);
-
-		//		TaskStatusManager statusManager = new TaskStatusManager();
-
-		/*incompleteButton = new JButton(new ImageIcon("res/incomplete.png"));
-//		mradioPlayButton.addActionListener(statusManager);
-		incompleteButton.setActionCommand("Incomplete");
-		add(incompleteButton);*/
-
-		//		stopButton = new JButton(new ImageIcon("res/stop.png"));
 
 		mhorizontalGlue = Box.createHorizontalGlue();
 		add(mhorizontalGlue);
@@ -260,14 +250,14 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
-				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
+				statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
 				break;
 			case UNSTARTED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(true);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(true);
-				statusLabel.setIcon(new ImageIcon("res/incomplete_bw.png"));
+				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
 				break;
 			case STOPPED:
 				stopButton.setEnabled(false);
