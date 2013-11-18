@@ -3,6 +3,8 @@ package resourceModel;
 import java.util.Collection;
 import java.util.HashMap;
 
+import guiElements.Runner;
+
 public class Inventory
 {
 	private static HashMap<String, Resource> tools;
@@ -112,11 +114,13 @@ public class Inventory
 		{
 			r = tools.get(t.getName());
 			r.setAvailable(r.getAvailable() - t.getAmount());
+			Runner.refreshTaskPanelTasks(r.getDependers());
 		}
 		for (ResourceConstraint t : taskParts)
 		{
 			r = parts.get(t.getName());
 			r.setAvailable(r.getAvailable() - t.getAmount());
+			Runner.refreshTaskPanelTasks(r.getDependers());
 		}
 	}
 
@@ -128,11 +132,13 @@ public class Inventory
 		{
 			r = tools.get(t.getName());
 			r.setAvailable(r.getAvailable() + t.getAmount());
+			Runner.refreshTaskPanelTasks(r.getDependers());
 		}
 		for (ResourceConstraint t : taskParts)
 		{
 			r = parts.get(t.getName());
 			r.setAvailable(r.getAvailable() + t.getAmount());
+			Runner.refreshTaskPanelTasks(r.getDependers());
 		}
 	}
 }
