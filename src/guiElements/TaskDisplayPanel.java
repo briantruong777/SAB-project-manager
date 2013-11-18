@@ -154,6 +154,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
+      Runner.notifyChange();
 		}
 		else if (command.equals("Paused"))
 		{
@@ -172,6 +173,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
+      Runner.notifyChange();
 		}
 		else if (command.equals("Working"))
 		{
@@ -190,6 +192,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
+      Runner.notifyChange();
 		}
 		else if (command.equals("Complete"))
 		{
@@ -207,6 +210,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
 			panel.refreshTasks(task.getDependers());
+      Runner.notifyChange();
 		}
 		else if (command.equals("Notes"))
 		{
@@ -214,7 +218,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			textArea.setText(text);
 			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Notes", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (option == JOptionPane.OK_OPTION)
+      {
 				task.setNotes(textArea.getText());
+        Runner.notifyChange();
+      }
 		}
 		else if (command.equals("File"))
 		{
