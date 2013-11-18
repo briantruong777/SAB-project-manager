@@ -771,7 +771,7 @@ public class TaskInfoDialog extends JDialog
 						public void actionPerformed(ActionEvent arg0)
 						{
 							if (task.getDependers().size() == 0 ||
-									JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(dialog, "There are tasks that depend on this one.\nRemove this task as a dependency for those tasks?", "Delete Task", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE))
+									JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(dialog, "Deleting this task removes it from the dependencies of other tasks. Delete this task?", "Delete Task", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE))
 							{
 								for (Task depr: task.getDependers())
 									depr.removeDependency(task);
