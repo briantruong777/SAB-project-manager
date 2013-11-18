@@ -148,8 +148,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			if (curTaskStatus == Task.Status.COMPLETE)
 			{
 				panel.refreshTasks(task.getDependers());
-				refreshTaskStatus();
 			}
+      refreshTaskStatus();
 		}
 		else if (command.equals("Paused"))
 		{
