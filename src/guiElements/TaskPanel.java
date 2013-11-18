@@ -116,6 +116,7 @@ public class TaskPanel extends JPanel implements ItemListener
 		{
 			tasks.get(t.getName()).refreshTaskStatus();
 		}
+		updateUI();
 	}
 	
 	public void removeTask(Task t)
