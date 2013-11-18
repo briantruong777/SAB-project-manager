@@ -95,6 +95,7 @@ public class ActiveInstructionsFrame extends JFrame
 	public void notifyChange()
 	{
 		status = FileStatus.CHANGED;
+		taskPanel.updateUI();
 	}
 
 	public void clearTaskPanel()
