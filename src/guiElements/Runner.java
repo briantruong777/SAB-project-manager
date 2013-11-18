@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
@@ -101,5 +102,10 @@ public class Runner
 	public static void notifyChange()
 	{
 		frame.notifyChange();
+	}
+
+	public static void refreshTaskPanelTasks(Collection<Task> tasks)
+	{
+		frame.refreshTaskPanelTasks(tasks);
 	}
 }
