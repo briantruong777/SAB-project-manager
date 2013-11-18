@@ -203,6 +203,14 @@ public class ActiveInstructionsFrame extends JFrame
 				switch(JOptionPane.showConfirmDialog(null, "Save changes?", "", JOptionPane.YES_NO_CANCEL_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
+						for (Task t: TaskManager.getTasks())
+						{
+							if (t.getStatus() == Task.Status.WORKING)
+							{
+								t.setStatus(Task.Status.PAUSED);
+								t.pause();
+							}
+						}
 						if (file.isFile())
 							save();
 						else if (!saveAs())
