@@ -228,11 +228,11 @@ public class Task implements Serializable, Comparable<Task>
 
 	public long getTimeSpent()
 	{
-    if (lastResumeTime != -1)
-    {
-      pause();
-      resume();
-    }
+		if (lastResumeTime != -1)
+		{
+			pause();
+			resume();
+		}
 		return timeSpent;
 	}
 	public void setTimeSpent(long timeSpent)

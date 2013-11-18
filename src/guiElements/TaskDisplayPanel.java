@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -137,6 +138,42 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				task.stop();
 			}
+			else if (curTaskStatus == Task.Status.COMPLETE)
+			{
+				boolean haveWorkingDependers = false;
+				for (Task t : task.getDependers())
+				{
+					if (t.getStatus() == Task.Status.WORKING ||
+							t.getStatus() == Task.Status.PAUSED)
+					{
+						haveWorkingDependers = true;
+						break;
+					}
+				}
+				if (haveWorkingDependers)
+				{
+					if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, "Setting this task to the Stopped state\nwill set any Working/Paused\ntasks dependent on this one\nto the Stopped state.\n\nDo you want to set this task and relevant\ndependent tasks to the Stopped state?", "Set this task to Stopped state?", JOptionPane.YES_NO_OPTION))
+					{
+						ArrayList<Task> refreshTasks = new ArrayList<Task>();
+						for (Task t : task.getDependers())
+						{
+							if (t.getStatus() == Task.Status.WORKING ||
+									t.getStatus() == Task.Status.PAUSED)
+							{
+								t.stop();
+								t.pause();
+								t.setStatus(Task.Status.STOPPED);
+								refreshTasks.add(t);
+							}
+						}
+						panel.refreshTasks(refreshTasks);
+					}
+					else
+					{
+						return;
+					}
+				}
+			}
 
 			task.pause();
 			task.setStatus(Task.Status.STOPPED);
@@ -144,7 +181,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
-      Runner.notifyChange();
+			Runner.notifyChange();
 		}
 		else if (command.equals("Paused"))
 		{
@@ -163,7 +200,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
-      Runner.notifyChange();
+			Runner.notifyChange();
 		}
 		else if (command.equals("Working"))
 		{
@@ -182,7 +219,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
-      Runner.notifyChange();
+			Runner.notifyChange();
 		}
 		else if (command.equals("Complete"))
 		{
@@ -196,11 +233,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				task.stop();
 			}
 
-      task.pause();
+			task.pause();
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
 			panel.refreshTasks(task.getDependers());
-      Runner.notifyChange();
+			Runner.notifyChange();
 		}
 		else if (command.equals("Notes"))
 		{
@@ -208,10 +245,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			textArea.setText(text);
 			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Notes", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (option == JOptionPane.OK_OPTION)
-      {
+			{
 				task.setNotes(textArea.getText());
-        Runner.notifyChange();
-      }
+				Runner.notifyChange();
+			}
 		}
 		else if (command.equals("File"))
 		{
@@ -269,21 +306,21 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			case PAUSED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-        workingButton.setEnabled(true);
-        completeButton.setEnabled(true);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(true);
 				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
 				stopButton.setEnabled(true);
-        pauseButton.setEnabled(true);
-        completeButton.setEnabled(true);
+				pauseButton.setEnabled(true);
+				completeButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:
 				stopButton.setEnabled(true);
-        pauseButton.setEnabled(false);
-        workingButton.setEnabled(false);
+				pauseButton.setEnabled(false);
+				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/complete.png"));
 				break;
