@@ -622,7 +622,7 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					switch(fileChooser.showOpenDialog(null))
+					switch(fileChooser.showOpenDialog(dialog))
 					{
 						case JFileChooser.APPROVE_OPTION:
 							folderPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
