@@ -200,6 +200,11 @@ public class Task implements Serializable, Comparable<Task>
 			t.removeDepender(this);
 		dependencies.clear();
 	}
+	
+	public void clearDependers()
+	{
+		dependers.clear();
+	}
 
 	public void addDependencies(Collection<Task> tasks)
 	{

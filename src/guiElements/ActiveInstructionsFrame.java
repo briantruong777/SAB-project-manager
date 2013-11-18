@@ -52,6 +52,7 @@ public class ActiveInstructionsFrame extends JFrame
 		mnFile.add(separator);
 
 		menuSave = new JMenuItem("Save");
+		menuSave.setEnabled(false);
 		menuSave.addActionListener(mfileHandler);
 		menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mnFile.add(menuSave);

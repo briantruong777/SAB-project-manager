@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -748,6 +749,7 @@ public class TaskInfoDialog extends JDialog
 								break;
 						}
 						setVisible(false);
+						Runner.notifyChange();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -773,14 +775,21 @@ public class TaskInfoDialog extends JDialog
 							if (task.getDependers().size() == 0 ||
 									JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(dialog, "Deleting this task removes it from the dependencies of other tasks. Delete this task?", "Delete Task", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE))
 							{
-								for (Task depr: task.getDependers())
+								Collection<Task> deprs = task.getDependers();
+								for (Task depr: deprs)
+								{
 									depr.removeDependency(task);
+									depr.refreshStatus();
+								}
+								Runner.refreshTaskPanelTasks(deprs);
 								task.clearDependencies();
+								task.clearDependers();
 								task.clearParts();
 								task.clearTools();
 								TaskManager.removeTask(task.getName());
 								change = true;
 								task = null;
+								Runner.notifyChange();
 								setVisible(false);
 							}
 						}
