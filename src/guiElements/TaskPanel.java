@@ -1,14 +1,31 @@
 package guiElements;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
-import taskModel.*;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import taskModel.Task;
+import taskModel.TaskManager;
 
 @SuppressWarnings("serial")
-public class TaskPanel extends JPanel implements ItemListener
+public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDisplayPanel>
 {
 	private HashMap<String, TaskDisplayPanel> tasks;
 	private Box taskList;
@@ -52,10 +69,16 @@ public class TaskPanel extends JPanel implements ItemListener
 		checkComplete.addItemListener(this);
 		checkComplete.setToolTipText("View completed tasks.");
 		taskViewPanel.add(checkComplete);
-
-		Box taskControlPanel = Box.createVerticalBox();
+		
+		JPanel taskControlPanel = new JPanel();
 		add(taskControlPanel, BorderLayout.EAST);
-
+		GridBagLayout gbl_taskControlPanel = new GridBagLayout();
+		gbl_taskControlPanel.columnWidths = new int[]{0, 0};
+		gbl_taskControlPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_taskControlPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_taskControlPanel.rowWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		taskControlPanel.setLayout(gbl_taskControlPanel);
+		
 		JButton btnCreateTask = new JButton("Create Task");
 		btnCreateTask.addActionListener(new ActionListener()
 		{
@@ -73,13 +96,32 @@ public class TaskPanel extends JPanel implements ItemListener
 				}
 			}
 		});
-
-		Component glue = Box.createGlue();
-		taskControlPanel.add(glue);
-		taskControlPanel.add(btnCreateTask);
-
-		Component glue_1 = Box.createGlue();
-		taskControlPanel.add(glue_1);
+		GridBagConstraints gbc_btnCreateTask = new GridBagConstraints();
+		gbc_btnCreateTask.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCreateTask.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCreateTask.gridx = 0;
+		gbc_btnCreateTask.gridy = 1;
+		taskControlPanel.add(btnCreateTask, gbc_btnCreateTask);
+		
+		JButton btnSort = new JButton("Sort");
+		btnSort.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				taskList.removeAll();
+				ArrayList<TaskDisplayPanel> tdps = new ArrayList<TaskDisplayPanel>(tasks.values());
+				Collections.sort(tdps, self);
+				for (TaskDisplayPanel tdp: tdps)
+					taskList.add(tdp);
+				updateUI();
+			}
+		});
+		GridBagConstraints gbc_btnSort = new GridBagConstraints();
+		gbc_btnSort.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSort.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSort.gridx = 0;
+		gbc_btnSort.gridy = 3;
+		taskControlPanel.add(btnSort, gbc_btnSort);
 	}
 
 	public void clearTaskList()
@@ -163,4 +205,20 @@ public class TaskPanel extends JPanel implements ItemListener
 		}
 		taskList.repaint();
 	}
+
+	@Override
+	public int compare(TaskDisplayPanel tdp1, TaskDisplayPanel tdp2)
+	{
+		int comp = tdp1.getStatus().compareTo(tdp2.getStatus());
+		if (comp != 0)
+			return comp;
+		else if (tdp1.getStatus() == Task.Status.UNSTARTED && tdp2.getStatus() == Task.Status.UNSTARTED)
+		{
+			int depr = tdp2.task.getDependers().size() - tdp1.task.getDependers().size();
+			if (depr != 0)
+				return depr;
+		}
+		return tdp1.task.compareTo(tdp2.task);
+	}
+	
 }
