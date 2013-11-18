@@ -240,6 +240,8 @@ public class ResourcePanel extends JPanel
 					Resource existTool = toolModel.get(i);
 					existTool.setMax(existTool.getMax() + newTool.getMax());
 					existTool.setAvailable(existTool.getAvailable() + newTool.getMax());
+					for (Task t: existTool.getDependers())
+						t.refreshStatus();
 					toolModel.notifyChanged(i);
 				}
 				toolList.clearSelection();
@@ -279,6 +281,8 @@ public class ResourcePanel extends JPanel
 					Resource existPart = partModel.get(i);
 					existPart.setMax(existPart.getMax() + newPart.getMax());
 					existPart.setAvailable(existPart.getAvailable() + newPart.getMax());
+					for (Task t: existPart.getDependers())
+						t.refreshStatus();
 					partModel.notifyChanged(i);
 				}
 				partList.clearSelection();
@@ -302,6 +306,13 @@ public class ResourcePanel extends JPanel
 			{
 				Resource r = toolList.getSelectedValue();
 				String text = toolName.getText();
+				if ("".equals(text))
+				{
+					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.PLAIN_MESSAGE);
+					toolName.setText(r.getName());
+					repaint();
+					return;
+				}
 				if (!r.getName().equals(text) && toolModel.contains(new Resource(text)))
 				{
 					JOptionPane.showMessageDialog(null, "There is already a tool with that name.", "", JOptionPane.PLAIN_MESSAGE);
@@ -347,6 +358,13 @@ public class ResourcePanel extends JPanel
 			{
 				Resource r = partList.getSelectedValue();
 				String text = partName.getText();
+				if ("".equals(text))
+				{
+					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.PLAIN_MESSAGE);
+					toolName.setText(r.getName());
+					repaint();
+					return;
+				}
 				if (!r.getName().equals(text) && partModel.contains(new Resource(text)))
 				{
 					JOptionPane.showMessageDialog(null, "There is already a part with that name.", "", JOptionPane.PLAIN_MESSAGE);
