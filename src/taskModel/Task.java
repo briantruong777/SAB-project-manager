@@ -228,6 +228,11 @@ public class Task implements Serializable, Comparable<Task>
 
 	public long getTimeSpent()
 	{
+    if (lastResumeTime != -1)
+    {
+      pause();
+      resume();
+    }
 		return timeSpent;
 	}
 	public void setTimeSpent(long timeSpent)
@@ -342,7 +347,6 @@ public class Task implements Serializable, Comparable<Task>
 	public void begin()
 	{
 		startDate = Calendar.getInstance();
-		taskStatus = Status.WORKING;
 	}
 	/**
 	 * Run when task is finished. Sets the endDate.
@@ -350,10 +354,6 @@ public class Task implements Serializable, Comparable<Task>
 	public void finish()
 	{
 		endDate = Calendar.getInstance();
-		taskStatus = Status.COMPLETE;
-		for (Task t: dependers)
-			t.refreshStatus();
-		//TODO: Tell dependers that this task is done
 	}
 
 	public void start()

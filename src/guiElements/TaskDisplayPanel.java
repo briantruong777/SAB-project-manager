@@ -38,6 +38,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	private Component mhorizontalStrut;
 	private Component mhorizontalStrut_1;
 	private Component mhorizontalStrut_2;
+	private Component mhorizontalStrut_3;
 	private JScrollPane textScroll;
 	private JTextArea textArea;
 
@@ -80,28 +81,32 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(incompleteButton);*/
 
 		//		stopButton = new JButton(new ImageIcon("res/stop.png"));
-		stopButton = new JButton(new ImageIcon("res/stop.png"));
-		stopButton.addActionListener(this);
 
 		mhorizontalGlue = Box.createHorizontalGlue();
 		add(mhorizontalGlue);
-		stopButton.setActionCommand("Stopped");
-		add(stopButton);
-
-		pauseButton = new JButton(new ImageIcon("res/pause.png"));
-		pauseButton.addActionListener(this);
-		pauseButton.setActionCommand("Paused");
-		add(pauseButton);
 
 		workingButton = new JButton(new ImageIcon("res/work.png"));
 		workingButton.addActionListener(this);
 		workingButton.setActionCommand("Working");
 		add(workingButton);
 
+		pauseButton = new JButton(new ImageIcon("res/pause.png"));
+		pauseButton.addActionListener(this);
+		pauseButton.setActionCommand("Paused");
+		add(pauseButton);
+
 		completeButton = new JButton(new ImageIcon("res/complete.png"));
 		completeButton.addActionListener(this);
 		completeButton.setActionCommand("Complete");
 		add(completeButton);
+
+		mhorizontalStrut_3 = Box.createHorizontalStrut(5);
+		add(mhorizontalStrut_3);
+
+		stopButton = new JButton(new ImageIcon("res/stop.png"));
+		stopButton.addActionListener(this);
+		stopButton.setActionCommand("Stopped");
+		add(stopButton);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
 		mradioNotesButton.addActionListener(this);
@@ -149,7 +154,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			{
 				panel.refreshTasks(task.getDependers());
 			}
-      refreshTaskStatus();
 		}
 		else if (command.equals("Paused"))
 		{
@@ -199,6 +203,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 				task.stop();
 			}
 
+      task.pause();
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
 			panel.refreshTasks(task.getDependers());
@@ -267,45 +272,21 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 			case PAUSED:
 				stopButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-				if (task.meetDependencies())
-				{
-					workingButton.setEnabled(true);
-					completeButton.setEnabled(true);
-				}
-				else
-				{
-					workingButton.setEnabled(false);
-					completeButton.setEnabled(false);
-				}
+        workingButton.setEnabled(true);
+        completeButton.setEnabled(true);
 				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
 				stopButton.setEnabled(true);
-				if (task.meetDependencies())
-				{
-					pauseButton.setEnabled(true);
-					completeButton.setEnabled(true);
-				}
-				else
-				{
-					pauseButton.setEnabled(false);
-					completeButton.setEnabled(false);
-				}
+        pauseButton.setEnabled(true);
+        completeButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:
 				stopButton.setEnabled(true);
-				if (task.meetDependencies())
-				{
-					pauseButton.setEnabled(true);
-					workingButton.setEnabled(true);
-				}
-				else
-				{
-					pauseButton.setEnabled(false);
-					workingButton.setEnabled(false);
-				}
+        pauseButton.setEnabled(false);
+        workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/complete.png"));
 				break;
