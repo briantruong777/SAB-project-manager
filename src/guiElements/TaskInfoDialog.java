@@ -770,13 +770,19 @@ public class TaskInfoDialog extends JDialog
 					{
 						public void actionPerformed(ActionEvent arg0)
 						{
-							task.clearDependencies();
-							task.clearParts();
-							task.clearTools();
-							TaskManager.removeTask(task.getName());
-							change = true;
-							task = null;
-							setVisible(false);
+							if (task.getDependers().size() == 0 ||
+									JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(dialog, "There are tasks that depend on this one.\nRemove this task as a dependency for those tasks?", "Delete Task", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE))
+							{
+								for (Task depr: task.getDependers())
+									depr.removeDependency(task);
+								task.clearDependencies();
+								task.clearParts();
+								task.clearTools();
+								TaskManager.removeTask(task.getName());
+								change = true;
+								task = null;
+								setVisible(false);
+							}
 						}
 					});
 					deleteButton.setVisible(false);
