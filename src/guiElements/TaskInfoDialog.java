@@ -617,7 +617,7 @@ public class TaskInfoDialog extends JDialog
 		}
 		{
 			fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 			find = new JButton("Find...");
 			find.addActionListener(new ActionListener()
 			{
