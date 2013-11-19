@@ -79,16 +79,19 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		workingButton = new JButton(new ImageIcon("res/work.png"));
 		workingButton.addActionListener(this);
 		workingButton.setActionCommand("Working");
+		workingButton.setToolTipText("Set this task to the Working state");
 		add(workingButton);
 
 		pauseButton = new JButton(new ImageIcon("res/pause.png"));
 		pauseButton.addActionListener(this);
 		pauseButton.setActionCommand("Paused");
+		pauseButton.setToolTipText("Set this task to the Paused state");
 		add(pauseButton);
 
 		completeButton = new JButton(new ImageIcon("res/complete.png"));
 		completeButton.addActionListener(this);
 		completeButton.setActionCommand("Complete");
+		completeButton.setToolTipText("Set this task to the Complete state");
 		add(completeButton);
 
 		mhorizontalStrut_3 = Box.createHorizontalStrut(5);
@@ -97,21 +100,25 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		stopButton = new JButton(new ImageIcon("res/stop.png"));
 		stopButton.addActionListener(this);
 		stopButton.setActionCommand("Stopped");
+		stopButton.setToolTipText("Set this task to the Stopped state");
 		add(stopButton);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
 		mradioNotesButton.addActionListener(this);
 		mradioNotesButton.setActionCommand("Notes");
+		mradioNotesButton.setToolTipText("Edit/View this Task's notes");
 		add(mradioNotesButton);
 
 		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
-		mradioLinkButton .addActionListener(this);
-		mradioLinkButton .setActionCommand("File");
+		mradioLinkButton.addActionListener(this);
+		mradioLinkButton.setActionCommand("File");
+		mradioLinkButton.setToolTipText("Open a window to this Task's associated file");
 		add(mradioLinkButton);
 
 		editButton = new JButton("Edit");
 		editButton.addActionListener(this);
 		editButton.setActionCommand("Edit");
+		editButton.setToolTipText("Edit this Task");
 		add(editButton);
 
 		mhorizontalStrut_2 = Box.createHorizontalStrut(5);
