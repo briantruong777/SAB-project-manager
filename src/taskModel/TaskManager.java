@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-import resourceModel.Resource;
-
 public class TaskManager
 {
 	private static HashMap<String, Task> tasks;

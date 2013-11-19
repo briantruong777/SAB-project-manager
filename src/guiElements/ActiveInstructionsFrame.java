@@ -46,11 +46,13 @@ public class ActiveInstructionsFrame extends JFrame
 	private ResourcePanel resourcePanel;
 	private JMenuItem menuSave;
 	private FileStatus status;
+	private File file;
 	/**
 	 * Create the frame.
 	 */
 	public ActiveInstructionsFrame()
 	{
+		file = new File("");
 		status = FileStatus.UNCHANGED;
 		FileHandler mfileHandler = new FileHandler();
 
@@ -126,7 +128,8 @@ public class ActiveInstructionsFrame extends JFrame
 	public void notifyChange()
 	{
 		status = FileStatus.CHANGED;
-		menuSave.setEnabled(true);
+		if (file.isFile())
+			menuSave.setEnabled(true);
 	}
 
 	public void clearTaskPanel()
@@ -151,12 +154,10 @@ public class ActiveInstructionsFrame extends JFrame
 	private class FileHandler extends WindowAdapter implements ActionListener
 	{
 		//public static String lastSavedLocation;
-		private File file;
 		private JFileChooser fileChooser;
 		
 		public FileHandler()
 		{
-			file = new File("");
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		}
@@ -237,6 +238,7 @@ public class ActiveInstructionsFrame extends JFrame
 			clearTaskPanel();
 			status = FileStatus.UNCHANGED;
 			menuSave.setEnabled(false);
+			file = new File("");
 		}
 
 		public void open()

@@ -5,8 +5,6 @@ import guiElements.Runner;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
 
 public class Inventory
 {
