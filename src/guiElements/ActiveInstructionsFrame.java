@@ -97,6 +97,7 @@ public class ActiveInstructionsFrame extends JFrame
 	public void notifyChange()
 	{
 		status = FileStatus.CHANGED;
+		menuSave.setEnabled(true);
 	}
 
 	public void clearTaskPanel()
@@ -231,6 +232,7 @@ public class ActiveInstructionsFrame extends JFrame
 			TaskManager.clear();
 			clearTaskPanel();
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 		}
 
 		public void open()
@@ -250,6 +252,7 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 			Runner.loadProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 			
 				//setLastSavedLocation(selectedFile.getAbsolutePath());
 			//Runner.loadTools(path+"/tools");
@@ -261,6 +264,7 @@ public class ActiveInstructionsFrame extends JFrame
 			//if (!hasBeenSaved())
 			Runner.saveProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 			/*else
 			{
 				//Runner.saveTasks(lastSavedLocation);
@@ -291,6 +295,7 @@ public class ActiveInstructionsFrame extends JFrame
 			Runner.saveProject(file.getAbsolutePath());
 			setTitle(file.getName() + " - Active Instructions");
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 			return true;
 		}
 

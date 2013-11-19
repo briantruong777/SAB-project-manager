@@ -922,7 +922,7 @@ public class TaskInfoDialog extends JDialog
 				long hrs = t.getTimeSpent() / 1000 / 60 / 60;
 				long days = hrs / 24;
 				hrs %= 24;
-				dialog.timeSpent.setText("Time: " + days + " days, " + hrs + "hours");
+				dialog.timeSpent.setText("Time: " + days + " days, " + hrs + " hours");
 			}
 			else
 				dialog.timeSpent.setText("Time: N/A");
