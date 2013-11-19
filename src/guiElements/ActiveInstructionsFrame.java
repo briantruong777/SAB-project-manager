@@ -31,7 +31,6 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import jxl.write.Label;
 import jxl.write.Number;
-import jxl.write.WritableCellFeatures;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
@@ -127,6 +126,7 @@ public class ActiveInstructionsFrame extends JFrame
 	public void notifyChange()
 	{
 		status = FileStatus.CHANGED;
+		menuSave.setEnabled(true);
 	}
 
 	public void clearTaskPanel()
@@ -208,6 +208,14 @@ public class ActiveInstructionsFrame extends JFrame
 				switch(JOptionPane.showConfirmDialog(null, "Save changes?", "", JOptionPane.YES_NO_CANCEL_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
+						for (Task t: TaskManager.getTasks())
+						{
+							if (t.getStatus() == Task.Status.WORKING)
+							{
+								t.setStatus(Task.Status.PAUSED);
+								t.pause();
+							}
+						}
 						if (file.isFile())
 							save();
 						else if (!saveAs())
@@ -228,6 +236,7 @@ public class ActiveInstructionsFrame extends JFrame
 			TaskManager.clear();
 			clearTaskPanel();
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 		}
 
 		public void open()
@@ -241,6 +250,11 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 			Runner.loadProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
+			
+				//setLastSavedLocation(selectedFile.getAbsolutePath());
+			//Runner.loadTools(path+"/tools");
+			//}
 		}
 
 		public void save()
@@ -248,6 +262,11 @@ public class ActiveInstructionsFrame extends JFrame
 			//if (!hasBeenSaved())
 			Runner.saveProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
+			/*else
+			{
+				//Runner.saveTasks(lastSavedLocation);
+			}*/
 		}
 
 		public boolean saveAs()
@@ -272,6 +291,7 @@ public class ActiveInstructionsFrame extends JFrame
 			Runner.saveProject(file.getAbsolutePath());
 			setTitle(file.getName() + " - Active Instructions");
 			status = FileStatus.UNCHANGED;
+			menuSave.setEnabled(false);
 			return true;
 		}
 

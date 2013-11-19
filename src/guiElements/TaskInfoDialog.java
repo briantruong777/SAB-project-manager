@@ -886,7 +886,7 @@ public class TaskInfoDialog extends JDialog
 		{
 			dialog.taskName.setText("");
 			dialog.builderName.setText("");
-			dialog.builderName.setText("");
+			dialog.foremanName.setText("");
 			dialog.folderPath.setText("");
 			dialog.startDate.setText("Start: N/A");
 			dialog.timeSpent.setText("Time: N/A");
@@ -900,9 +900,9 @@ public class TaskInfoDialog extends JDialog
 			else
 				dialog.builderName.setText(t.getBuilder());
 			if (t.getForeman() == null)
-				dialog.builderName.setText("");
+				dialog.foremanName.setText("");
 			else
-				dialog.builderName.setText(t.getForeman());
+				dialog.foremanName.setText(t.getForeman());
 			if (t.getPath() == null)
 				dialog.folderPath.setText("");
 			else
@@ -922,7 +922,7 @@ public class TaskInfoDialog extends JDialog
 				long hrs = t.getTimeSpent() / 1000 / 60 / 60;
 				long days = hrs / 24;
 				hrs %= 24;
-				dialog.timeSpent.setText("Time: " + days + " days, " + hrs + "hours");
+				dialog.timeSpent.setText("Time: " + days + " days, " + hrs + " hours");
 			}
 			else
 				dialog.timeSpent.setText("Time: N/A");
