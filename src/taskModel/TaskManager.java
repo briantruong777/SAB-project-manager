@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
+import resourceModel.Resource;
+
 public class TaskManager
 {
 	private static HashMap<String, Task> tasks;
@@ -26,6 +28,12 @@ public class TaskManager
 	public static Task getTask(String taskName)
 	{
 		return tasks.get(taskName);
+	}
+	
+	public static Task getTask (int i)
+	{
+		ArrayList<Task> temp = new ArrayList<Task>(tasks.values());
+		return temp.get(i);
 	}
 	
 	public static void addTask(Task task)

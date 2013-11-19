@@ -1,15 +1,44 @@
 package guiElements;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Locale;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
+import javax.swing.border.EmptyBorder;
 
-import resourceModel.*;
-import taskModel.*;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.write.Label;
+import jxl.write.Number;
+import jxl.write.WritableCellFeatures;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import resourceModel.Inventory;
+import resourceModel.ResourceConstraint;
+import taskModel.Task;
+import taskModel.TaskManager;
 
 @SuppressWarnings("serial")
 public class ActiveInstructionsFrame extends JFrame
@@ -65,6 +94,7 @@ public class ActiveInstructionsFrame extends JFrame
 		mnFile.add(separator_1);
 
 		JMenuItem menuExport = new JMenuItem("Export");
+		menuExport.addActionListener(mfileHandler);
 		mnFile.add(menuExport);
 
 		JSeparator separator_4 = new JSeparator();
@@ -129,39 +159,8 @@ public class ActiveInstructionsFrame extends JFrame
 			file = new File("");
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			//lastSavedLocation = getLastSavedLocation();
 		}
-
-
-		/*public String getLastSavedLocation()
-		{
-			try
-			{
-				Scanner reader = new Scanner(f);
-				return reader.nextLine();
-			}
-			catch (FileNotFoundException e)
-			{
-				f = new File("C:\\lastsavedlocation.txt");
-				return "";
-			}		
-		}
-
-		public String setLastSavedLocation(String path)
-		{
-			try
-			{
-				PrintWriter writer = new PrintWriter(f);
-				writer.write("");
-				writer.close();
-			}
-			catch (FileNotFoundException e)
-			{
-
-			}
-			return "";
-		}*/
-
+		
 		public void actionPerformed(ActionEvent e)
 		{
 			switch(e.getActionCommand())
@@ -183,7 +182,13 @@ public class ActiveInstructionsFrame extends JFrame
 					saveAs();
 					break;
 				case "Export":
-					export();
+				try {
+					export();					
+				} catch (WriteException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 					break;
 				case "Quit":
 					if (!savedChanges())
@@ -227,12 +232,6 @@ public class ActiveInstructionsFrame extends JFrame
 
 		public void open()
 		{
-			/*if (hasBeenSaved())
-			{
-				Runner.loadTasks(lastSavedLocation);
-			}
-			else
-			{*/
 			int returnValue = fileChooser.showOpenDialog(null);
 			if (returnValue != JFileChooser.APPROVE_OPTION)
 				return;
@@ -242,10 +241,6 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 			Runner.loadProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
-			
-				//setLastSavedLocation(selectedFile.getAbsolutePath());
-			//Runner.loadTools(path+"/tools");
-			//}
 		}
 
 		public void save()
@@ -253,10 +248,6 @@ public class ActiveInstructionsFrame extends JFrame
 			//if (!hasBeenSaved())
 			Runner.saveProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
-			/*else
-			{
-				//Runner.saveTasks(lastSavedLocation);
-			}*/
 		}
 
 		public boolean saveAs()
@@ -278,24 +269,178 @@ public class ActiveInstructionsFrame extends JFrame
 					return false;
 				}
 			}
-//			System.out.println(selectedFile.getAbsolutePath());
-				//setLastSavedLocation(selectedFile.getAbsolutePath());
 			Runner.saveProject(file.getAbsolutePath());
 			setTitle(file.getName() + " - Active Instructions");
 			status = FileStatus.UNCHANGED;
 			return true;
 		}
 
-		public void export()
+		public boolean export() throws IOException, WriteException
 		{
-			// Excel???
+			
+			JFileChooser fileChooser = new JFileChooser();
+			int returnValue = fileChooser.showSaveDialog(null);
+			if (returnValue != JFileChooser.APPROVE_OPTION)
+				return false;
+			file = fileChooser.getSelectedFile();
+			String filename = file.getAbsolutePath();
+			if (!filename.substring(filename.length()-4, filename.length()).equals(".xls"))
+			{
+				filename +=".xls";
+			}
+			WorkbookSettings ws = new WorkbookSettings();
+		    ws.setLocale(new Locale("en", "EN"));
+		    WritableWorkbook workbook = Workbook.createWorkbook(new File(filename), ws);		
+		    WritableSheet s1 = workbook.createSheet("Inventory", 0);
+		    WritableSheet s2 = workbook.createSheet("Task Properties", 1);
+		    WritableSheet s3 = workbook.createSheet("Task Dependencies", 2);
+		    exportInventory(s1);
+		    exportTaskProperties(s2);
+		    exportTaskDependencies(s3);
+		    workbook.write();
+		    workbook.close();
+		    return true;
 		}
-
-		/*public boolean hasBeenSaved()
+		
+		public void exportInventory(WritableSheet s1) throws WriteException, IOException
 		{
-			return getLastSavedLocation().length() != 0;
-		}*/
-
+			Label tools = new Label(0, 0, "Tool");
+		    Label numAvailableTools = new Label(1, 0, "Number Available");
+		    Label numMaxTools = new Label(2, 0, "Total Amount");
+		    Label parts = new Label(4, 0, "Part");
+		    Label numAvailableParts = new Label(5, 0, "Number Available");
+		    Label numMaxParts = new Label(6, 0, "Total Amount");
+		    s1.setColumnView(1, 15);
+		    s1.setColumnView(2, 15);
+		    s1.setColumnView(5, 15);
+		    s1.setColumnView(6, 15);
+		    s1.addCell(tools);
+		    s1.addCell(parts);
+		    s1.addCell(numAvailableTools);
+		    s1.addCell(numAvailableParts);
+		    s1.addCell(numMaxTools);
+		    s1.addCell(numMaxParts);
+	     	for (int j = 1; j <= Inventory.getNumTools(); j++)
+	    	{
+	    		Label l1 = new Label(0,j, Inventory.getTool(j-1).getName());
+	    		Number n1 = new Number(1,j, Inventory.getTool(j-1).getAvailable());
+	    		Number n2 = new Number(2,j, Inventory.getTool(j-1).getMax());
+	    	    s1.addCell(l1);
+	    	    s1.addCell(n1);
+	    	    s1.addCell(n2);
+	    	}
+	     	for (int i = 1; i <= Inventory.getNumParts(); i++)
+	     	{
+	     		Label l1 = new Label(4,i, Inventory.getPart(i-1).getName());
+	    		Number n1 = new Number(5,i, Inventory.getPart(i-1).getAvailable());
+	    		Number n2 = new Number(6,i, Inventory.getPart(i-1).getMax());
+	    	    s1.addCell(l1);
+	    	    s1.addCell(n1);
+	    	    s1.addCell(n2);
+	     	}
+		}
+		
+		public void exportTaskProperties(WritableSheet s2) throws WriteException, IOException
+		{
+			s2.setColumnView(2, 20);
+	     	s2.setColumnView(3, 20);
+	     	s2.setColumnView(4, 20);
+	     	s2.setColumnView(5, 20);
+	     	s2.setColumnView(6, 40);
+	     	ArrayList<Label> propertyLabels = new ArrayList<Label>();
+	     	propertyLabels.add(new Label(0, 0, "Task"));
+	     	propertyLabels.add(new Label(1, 0, "Builder"));
+	     	propertyLabels.add(new Label(2, 0, "Foreman"));
+	     	propertyLabels.add(new Label(3, 0, "Start Time"));
+	     	propertyLabels.add(new Label(4, 0, "End Time"));
+	     	propertyLabels.add(new Label(5, 0, "Time Spent"));
+	     	propertyLabels.add(new Label(6,0, "Notes"));
+	     	for (int k = 1; k <= TaskManager.getTotalNumTasks(); k++)
+	     	{
+	     		Task t = TaskManager.getTask(k-1);
+	     		ArrayList<Label> valueLabels = new ArrayList<Label>();
+	     		valueLabels.add(new Label(0, k, t.getName()));
+	     		valueLabels.add(new Label(1, k, t.getBuilder()));
+	     		valueLabels.add(new Label(2, k, t.getForeman()));
+	     		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+	     		if (t.getStartDate().isSet(Calendar.MINUTE))
+	     			valueLabels.add(new Label(3, k, df.format(t.getStartDate().getTime())));
+	     		else
+	     			valueLabels.add(new Label(3, k, ""));
+	     		if (t.getEndDate().isSet(Calendar.MINUTE))
+	     			valueLabels.add(new Label(4, k, df.format(t.getEndDate().getTime())));
+	     		else
+	     			valueLabels.add(new Label(4, k, ""));
+	     		valueLabels.add(new Label(6, k, t.getNotes()));
+	     		
+	     		String timeStr = "";
+	     		if (t.getTimeSpent() != 0)
+	     		{	
+	     			long hrs = t.getTimeSpent() / 1000 / 60 / 60;
+	     			long days = hrs / 24;
+	     			hrs %= 24;
+	     			timeStr += days + " days, " + hrs + " hours";
+	     		}
+	     		valueLabels.add(new Label(5, k, timeStr));
+	     		
+	     		for (int l = 0; l < valueLabels.size(); l++)
+	     			s2.addCell(valueLabels.get(l));  		
+//	     		s2.addCell(timeSpent);  
+	     	}
+	     	for (int m = 0; m < propertyLabels.size(); m++)
+     			s2.addCell(propertyLabels.get(m)); 
+		}
+		
+		public void exportTaskDependencies(WritableSheet s3) throws WriteException, IOException
+		{
+			s3.setColumnView(1, 30);
+			s3.setColumnView(2, 30);
+			s3.setColumnView(3, 30);
+			ArrayList<Label> labels1 = new ArrayList<Label>();
+			labels1.add(new Label(0, 0, "Task"));
+			labels1.add(new Label(1, 0, "Tool Dependencies"));
+			labels1.add(new Label(2, 0, "Part Dependencies"));
+			labels1.add(new Label(3, 0, "Task Dependencies"));
+			for (int i = 0; i < labels1.size(); i++)
+				s3.addCell(labels1.get(i));
+			for (int j = 1; j <= TaskManager.getTotalNumTasks(); j++)
+			{
+				Task t = TaskManager.getTask(j-1);
+				s3.addCell(new Label(0, j, t.getName()));
+				
+				StringBuilder toolConstraints = new StringBuilder();
+				for (ResourceConstraint rc : t.getTools())
+				{
+					toolConstraints.append(rc.getAmount()).append(' ').append(rc.getName()).append(", ");
+				}
+				// remove trailing ", "
+				if (toolConstraints.length() != 0)
+					toolConstraints.delete(toolConstraints.length() - 2, toolConstraints.length());
+				s3.addCell(new Label(1, j, toolConstraints.toString()));
+				
+				StringBuilder partConstraints = new StringBuilder();
+				for (ResourceConstraint rc : t.getParts())
+				{
+					partConstraints.append(rc.getAmount()).append(' ').append(rc.getName()).append(", ");
+				}
+				// remove trailing ", "
+				if (partConstraints.length() != 0)
+					partConstraints.delete(partConstraints.length() - 2, partConstraints.length());
+				s3.addCell(new Label(2, j, partConstraints.toString()));	
+				
+				StringBuilder taskConstraints = new StringBuilder();
+				for (Task task : t.getDependencies())
+				{
+					taskConstraints.append(task.getName()).append(", ");
+				}
+				// remove trailing ", "
+				if (taskConstraints.length() != 0)
+					taskConstraints.delete(taskConstraints.length() - 2, taskConstraints.length());
+				s3.addCell(new Label(3, j, taskConstraints.toString()));	
+			}
+			
+		}
+		
 		@Override
 		public void windowClosing(WindowEvent e)
 		{

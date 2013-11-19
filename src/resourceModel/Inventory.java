@@ -1,9 +1,12 @@
 package resourceModel;
 
+import guiElements.Runner;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-
-import guiElements.Runner;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class Inventory
 {
@@ -26,14 +29,36 @@ public class Inventory
 		parts.put(part.toString(), part);
 	}
 	
+	public static int getNumTools()
+	{
+		return tools.size();
+	}
+	
+	public static int getNumParts()
+	{
+		return parts.size();
+	}
+	
 	public static Resource getTool(String name)
 	{
 		return tools.get(name);
 	}
 	
+	public static Resource getTool(int i)
+	{
+		ArrayList<Resource> temp = new ArrayList<Resource>(tools.values());
+		return temp.get(i);
+	}
+	
 	public static Resource getPart(String name)
 	{
 		return parts.get(name);
+	}
+	
+	public static Resource getPart(int i)
+	{
+		ArrayList<Resource> temp = new ArrayList<Resource>(parts.values());
+		return temp.get(i);
 	}
 	
 	public static void removeTool(String name)

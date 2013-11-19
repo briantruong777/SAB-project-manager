@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Collection;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import resourceModel.Inventory;
 import resourceModel.Resource;
@@ -32,7 +33,13 @@ public class Runner
 		Inventory.addTool(new Resource("Sword", 1));
 		Inventory.addPart(new Resource("Wing", 1));
 		Inventory.addPart(new Resource("Shield", 1));*/
-
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+			
+		}
 		frame = new ActiveInstructionsFrame();
 		frame.setVisible(true);
 //		frame.reloadTaskPanel();
