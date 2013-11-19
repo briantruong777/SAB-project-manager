@@ -32,6 +32,7 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 	private JCheckBox checkUnavailable;
 	private JCheckBox checkIncomplete;
 	private JCheckBox checkComplete;
+	private JButton buttonFilter;
 	private TaskPanel self;
 	/**
 	 * Create the panel.
@@ -69,6 +70,17 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		checkComplete.addItemListener(this);
 		checkComplete.setToolTipText("View completed tasks.");
 		taskViewPanel.add(checkComplete);
+		
+		buttonFilter = new JButton("Filter");
+		buttonFilter.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				itemStateChanged(null);
+			}
+		});
+		buttonFilter.setToolTipText("Filter the list of tasks");
+		taskViewPanel.add(buttonFilter);
 		
 		JPanel taskControlPanel = new JPanel();
 		add(taskControlPanel, BorderLayout.EAST);
