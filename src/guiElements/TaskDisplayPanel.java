@@ -29,7 +29,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	Task task;
 	//private JButton incompleteButton;
 	private JLabel statusLabel;
-	private JButton stopButton;
+	private JButton undoCompleteButton;
 	private JButton pauseButton;
 	private JButton workingButton;
 	private JButton completeButton;
@@ -100,11 +100,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		mhorizontalStrut_3 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_3);
 
-		stopButton = new JButton(new ImageIcon("res/stop.png"));
-		stopButton.addActionListener(this);
-		stopButton.setActionCommand("Stopped");
-		stopButton.setToolTipText("Set this task to the Stopped state");
-		add(stopButton);
+		undoCompleteButton = new JButton(new ImageIcon("res/stop.png"));
+		undoCompleteButton.addActionListener(this);
+		undoCompleteButton.setActionCommand("UndoComplete");
+		undoCompleteButton.setToolTipText("Undo-complete this task");
+		add(undoCompleteButton);
 
 		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
 		mradioNotesButton.addActionListener(this);
@@ -137,116 +137,84 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		String command = e.getActionCommand();
 		Task.Status curTaskStatus = task.getStatus();
 		System.out.println(command);
-		if (command.equals("Stopped"))
+		if (command.equals("UndoComplete"))
 		{
-			if (curTaskStatus == Task.Status.UNSTARTED)
-			{
-				task.begin();
-			}
-			else if (curTaskStatus == Task.Status.PAUSED ||
-							 curTaskStatus == Task.Status.WORKING)
-			{
-				task.stop();
-			}
-			else if (curTaskStatus == Task.Status.COMPLETE)
-			{
-				boolean haveWorkingDependers = false;
-				for (Task t : task.getDependers())
-				{
-					if (t.getStatus() == Task.Status.WORKING ||
-							t.getStatus() == Task.Status.PAUSED)
-					{
-						haveWorkingDependers = true;
-						break;
-					}
-				}
-				if (haveWorkingDependers)
-				{
-					if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, "Setting this task to the Stopped state\nwill set any Working/Paused\ntasks dependent on this one\nto the Stopped state.\n\nDo you want to set this task and relevant\ndependent tasks to the Stopped state?", "Set this task to Stopped state?", JOptionPane.YES_NO_OPTION))
-					{
-						ArrayList<Task> refreshTasks = new ArrayList<Task>();
-						for (Task t : task.getDependers())
-						{
-							if (t.getStatus() == Task.Status.WORKING ||
-									t.getStatus() == Task.Status.PAUSED)
-							{
-								t.stop();
-								t.pause();
-								t.setStatus(Task.Status.STOPPED);
-								refreshTasks.add(t);
-							}
-						}
-						panel.refreshTasks(refreshTasks);
-					}
-					else
-					{
-						return;
-					}
-				}
-			}
+			// Only possible when state is COMPLETE
 
-			task.pause();
-			task.setStatus(Task.Status.STOPPED);
-			if (curTaskStatus == Task.Status.COMPLETE)
+			// First change state of all dependers
+			boolean haveWorkingDependers = false;
+			for (Task t : task.getDependers())
 			{
-				panel.refreshTasks(task.getDependers());
-				refreshTaskStatus();
+				if (t.getStatus() == Task.Status.WORKING)
+				{
+					haveWorkingDependers = true;
+					break;
+				}
 			}
+			if (haveWorkingDependers)
+			{
+				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, "Undo-completing this task\nwill set any Working\ntasks dependent on this one\nto the Paused state.\n\nDo you want to undo-complete this task and set relevant\ndependent tasks to the Paused state?", "Undo-complete this task?", JOptionPane.YES_NO_OPTION))
+				{
+					ArrayList<Task> refreshTasks = new ArrayList<Task>();
+					for (Task t : task.getDependers())
+					{
+						if (t.getStatus() == Task.Status.WORKING)
+						{
+							t.stop();
+							t.pause();
+							t.setStatus(Task.Status.PAUSED);
+							refreshTasks.add(t);
+						}
+					}
+					panel.refreshTasks(refreshTasks);
+				}
+				else
+				{
+					return;
+				}
+			}
+			// Now undo-complete this task
+			task.setStatus(Task.Status.PAUSED);
+			task.setUndoCompleted(true);
+
+			panel.refreshTasks(task.getDependers());
 			Runner.notifyChange();
 		}
 		else if (command.equals("Paused"))
 		{
-			if (curTaskStatus == Task.Status.UNSTARTED)
-			{
-				task.begin();
-			}
-			if (curTaskStatus != Task.Status.WORKING)
-			{
-				task.start();
-			}
-
+			// Only possible when state is WORKING
+			task.stop();
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
-			if (curTaskStatus == Task.Status.COMPLETE)
-			{
-				panel.refreshTasks(task.getDependers());
-			}
 			Runner.notifyChange();
 		}
 		else if (command.equals("Working"))
 		{
+			// Only possible when state is PAUSED or UNSTARTED
 			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
-			if (curTaskStatus != Task.Status.PAUSED)
-			{
-				task.start();
-			}
 
+			task.start();
 			task.resume();
 			task.setStatus(Task.Status.WORKING);
-			if (curTaskStatus == Task.Status.COMPLETE)
-			{
-				panel.refreshTasks(task.getDependers());
-			}
 			Runner.notifyChange();
 		}
 		else if (command.equals("Complete"))
 		{
-			if (curTaskStatus == Task.Status.UNSTARTED)
-			{
-				task.begin();
-			}
-			else if (curTaskStatus == Task.Status.PAUSED ||
-					curTaskStatus == Task.Status.WORKING)
-			{
-				task.stop();
-			}
-
+			// Only possible when state is WORKING
+			task.stop();
 			task.pause();
 			task.finish();
 			task.setStatus(Task.Status.COMPLETE);
+
+			// Check if this task was undo-completed
+			if (task.getUndoCompleted())
+			{
+				task.setUndoCompleted(false);
+			}
+
 			panel.refreshTasks(task.getDependers());
 			Runner.notifyChange();
 		}
@@ -294,42 +262,35 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		switch (task.getStatus())
 		{
 			case UNAVAILABLE:
-				stopButton.setEnabled(false);
+				undoCompleteButton.setEnabled(false);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
 				break;
 			case UNSTARTED:
-				stopButton.setEnabled(true);
-				pauseButton.setEnabled(true);
-				workingButton.setEnabled(true);
-				completeButton.setEnabled(true);
-				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
-				break;
-			case STOPPED:
-				stopButton.setEnabled(false);
-				pauseButton.setEnabled(true);
-				workingButton.setEnabled(true);
-				completeButton.setEnabled(true);
-				statusLabel.setIcon(new ImageIcon("res/stop.png"));
-				break;
-			case PAUSED:
-				stopButton.setEnabled(true);
+				undoCompleteButton.setEnabled(false);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(true);
-				completeButton.setEnabled(true);
+				completeButton.setEnabled(false);
+				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
+				break;
+			case PAUSED:
+				undoCompleteButton.setEnabled(false);
+				pauseButton.setEnabled(false);
+				workingButton.setEnabled(true);
+				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/pause.png"));
 				break;
 			case WORKING:
-				stopButton.setEnabled(true);
+				undoCompleteButton.setEnabled(false);
 				pauseButton.setEnabled(true);
 				completeButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/work.png"));
 				break;
 			case COMPLETE:
-				stopButton.setEnabled(true);
+				undoCompleteButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);

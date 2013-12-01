@@ -198,7 +198,6 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 						p.setVisible(false);
 					break;
 				case UNSTARTED:
-				case STOPPED:
 				case WORKING:
 				case PAUSED:
 					if (checkIncomplete.isSelected())

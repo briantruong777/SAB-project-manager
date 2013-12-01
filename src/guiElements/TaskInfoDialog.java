@@ -849,7 +849,6 @@ public class TaskInfoDialog extends JDialog
 				enableLists(true);
 				dialog.deleteButton.setVisible(true);
 				break;
-			case STOPPED:
 			case WORKING:
 			case PAUSED:
 			case COMPLETE:

@@ -31,12 +31,13 @@ public class Task implements Serializable, Comparable<Task>
 	private String path;
 	private String notes;
 	private String steps;
+	private boolean undoCompleted;
 
 	private long lastResumeTime;
 	
 	public enum Status
 	{
-		UNAVAILABLE, UNSTARTED, WORKING, PAUSED, COMPLETE, STOPPED;
+		UNAVAILABLE, UNSTARTED, WORKING, PAUSED, COMPLETE;
 	}
 	
 	public Task(String s)
@@ -57,6 +58,7 @@ public class Task implements Serializable, Comparable<Task>
 		path= "";
 		notes = "";
 		steps = "";
+		undoCompleted = false;
 
 		lastResumeTime = -1; // -1 when paused
 	}
@@ -267,27 +269,25 @@ public class Task implements Serializable, Comparable<Task>
 
 	public void refreshStatus()
 	{
-		if (taskStatus == Status.COMPLETE ||
-				taskStatus == Status.PAUSED ||
-				taskStatus == Status.WORKING)
+		// Only if status is UNAVAILABLE or UNSTARTED, refresh status
+		if (taskStatus == Status.UNAVAILABLE ||
+				taskStatus == Status.UNSTARTED)
 		{
-			return;
-		}
-
-		if (meetDependencies() && meetResources())
-		{
-			if (startDate.isSet(Calendar.MINUTE))
+			if (meetDependencies() && meetResources())
 			{
-				taskStatus = Status.STOPPED;
+				if (startDate.isSet(Calendar.MINUTE))
+				{
+					taskStatus = Status.PAUSED;
+				}
+				else
+				{
+					taskStatus = Status.UNSTARTED;
+				}
 			}
 			else
 			{
-				taskStatus = Status.UNSTARTED;
+				taskStatus = Status.UNAVAILABLE;
 			}
-		}
-		else
-		{
-			taskStatus = Status.UNAVAILABLE;
 		}
 	}
 
@@ -351,6 +351,15 @@ public class Task implements Serializable, Comparable<Task>
 	public void setSteps(String s)
 	{
 		steps = s;
+	}
+
+	public boolean getUndoCompleted()
+	{
+		return undoCompleted;
+	}
+	public void setUndoCompleted(boolean val)
+	{
+		undoCompleted = val;
 	}
 	
 	public int hashCode()
