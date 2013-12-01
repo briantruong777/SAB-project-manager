@@ -4,6 +4,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ import javax.swing.JTextArea;
 import taskModel.Task;
 
 @SuppressWarnings("serial")
-public class TaskDisplayPanel extends JPanel implements ActionListener
+public class TaskDisplayPanel extends JPanel implements ActionListener, MouseListener
 {
 
 	Task task;
@@ -71,6 +73,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 		add(mhorizontalStrut);
 
 		JLabel lblTasknamelabel = new JLabel(task.getName());
+		lblTasknamelabel.addMouseListener(this);
 		add(lblTasknamelabel);
 
 		mhorizontalGlue = Box.createHorizontalGlue();
@@ -346,6 +349,36 @@ public class TaskDisplayPanel extends JPanel implements ActionListener
 	{
 		task.refreshStatus();
 		enableButtons();
+	}
+
+	public void mouseClicked(MouseEvent e)
+	{
+		if (e.getClickCount() == 2)
+		{
+			System.out.println("Double click");
+			String text = task.getSteps();
+			textArea.setText(text);
+			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Steps", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			if (option == JOptionPane.OK_OPTION)
+			{
+				task.setSteps(textArea.getText());
+				Runner.notifyChange();
+			}
+		}
+	}
+
+	// Needed to fulfill interface MouseListener
+	public void mousePressed(MouseEvent e)
+	{
+	}
+	public void mouseReleased(MouseEvent e)
+	{
+	}
+	public void mouseEntered(MouseEvent e)
+	{
+	}
+	public void mouseExited(MouseEvent e)
+	{
 	}
 
 	/*	

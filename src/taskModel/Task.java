@@ -30,6 +30,7 @@ public class Task implements Serializable, Comparable<Task>
 	private long timeSpent;
 	private String path;
 	private String notes;
+	private String steps;
 
 	private long lastResumeTime;
 	
@@ -55,6 +56,7 @@ public class Task implements Serializable, Comparable<Task>
 		timeSpent = 0; // In milliseconds
 		path= "";
 		notes = "";
+		steps = "";
 
 		lastResumeTime = -1; // -1 when paused
 	}
@@ -339,6 +341,16 @@ public class Task implements Serializable, Comparable<Task>
 	public void setNotes(String s)
 	{
 		notes = s;
+	}
+	
+	public String getSteps()
+	{
+		return steps;
+	}
+	
+	public void setSteps(String s)
+	{
+		steps = s;
 	}
 	
 	public int hashCode()
