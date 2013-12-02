@@ -269,9 +269,10 @@ public class Task implements Serializable, Comparable<Task>
 
 	public void refreshStatus()
 	{
-		// Only if status is UNAVAILABLE or UNSTARTED, refresh status
+		// Only if status is UNAVAILABLE, UNSTARTED, or PAUSED, then refresh status
 		if (taskStatus == Status.UNAVAILABLE ||
-				taskStatus == Status.UNSTARTED)
+				taskStatus == Status.UNSTARTED ||
+				taskStatus == Status.PAUSED)
 		{
 			if (meetDependencies() && meetResources())
 			{
