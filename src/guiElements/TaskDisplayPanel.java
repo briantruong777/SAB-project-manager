@@ -270,7 +270,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				if (task.checkDependenciesUndoCompleted())
 				{
-					statusLabel.setIcon(new ImageIcon("res/unavailable_red.png"));
 					ArrayList<Task> depsUndoCompleted =
 						task.getDependenciesUndoCompleted();
 					String undoCompleteTasksStr = " - " +
@@ -280,10 +279,23 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 						undoCompleteTasksStr += "<br> - " +
 							depsUndoCompleted.get(i).getName();
 					}
-					statusLabel.setToolTipText("<html>" +
-						"Unavailable Task<br><br>" +
-						"Dependencies that were undo-completed:<br>" +
-						undoCompleteTasksStr);
+
+					if (task.getUndoCompleted())
+					{
+						statusLabel.setIcon(new ImageIcon("res/unavailable_red_square.png"));
+						statusLabel.setToolTipText("<html>" +
+							"Unavailable Task (Undo-completed)<br><br>" +
+							"Dependencies that were undo-completed:<br>" +
+							undoCompleteTasksStr);
+					}
+					else
+					{
+						statusLabel.setIcon(new ImageIcon("res/unavailable_red.png"));
+						statusLabel.setToolTipText("<html>" +
+							"Unavailable Task<br><br>" +
+							"Dependencies that were undo-completed:<br>" +
+							undoCompleteTasksStr);
+					}
 				}
 				else
 				{
