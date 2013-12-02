@@ -155,7 +155,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 			{
 				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, "Undo-completing this task\nwill set any Working\ntasks dependent on this one\nto the Paused state.\n\nDo you want to undo-complete this task and set relevant\ndependent tasks to the Paused state?", "Undo-complete this task?", JOptionPane.YES_NO_OPTION))
 				{
-					ArrayList<Task> refreshTasks = new ArrayList<Task>();
+					// Set all Working dependers to Paused so they can later be set to
+					// Unavailable
 					for (Task t : task.getDependers())
 					{
 						if (t.getStatus() == Task.Status.WORKING)
@@ -163,10 +164,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 							t.stop();
 							t.pause();
 							t.setStatus(Task.Status.PAUSED);
-							refreshTasks.add(t);
 						}
 					}
-					panel.refreshTasks(refreshTasks);
 				}
 				else
 				{
@@ -176,6 +175,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 			// Now undo-complete this task
 			task.setStatus(Task.Status.PAUSED);
 			task.setUndoCompleted(true);
+			// Check if this Task can still be run after undo-completed
+			task.refreshStatus();
 
 			panel.refreshTasks(task.getDependers());
 			Runner.notifyChange();
@@ -266,7 +267,29 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
-				statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
+
+				if (task.checkDependenciesUndoCompleted())
+				{
+					statusLabel.setIcon(new ImageIcon("res/unavailable_red.png"));
+					ArrayList<Task> depsUndoCompleted =
+						task.getDependenciesUndoCompleted();
+					String undoCompleteTasksStr = " - " +
+						depsUndoCompleted.get(0).getName();
+					for (int i = 1; i < depsUndoCompleted.size(); i++)
+					{
+						undoCompleteTasksStr += "<br> - " +
+							depsUndoCompleted.get(i).getName();
+					}
+					statusLabel.setToolTipText("<html>" +
+						"Unavailable Task<br><br>" +
+						"Dependencies that were undo-completed:<br>" +
+						undoCompleteTasksStr);
+				}
+				else
+				{
+					statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
+					statusLabel.setToolTipText("Unavailable Task");
+				}
 				break;
 			case UNSTARTED:
 				undoCompleteButton.setEnabled(false);
@@ -274,6 +297,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
+				statusLabel.setToolTipText("Unstarted Task");
 				break;
 			case PAUSED:
 				undoCompleteButton.setEnabled(false);
@@ -281,6 +305,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/pause.png"));
+				statusLabel.setToolTipText("Paused Task");
 				break;
 			case WORKING:
 				undoCompleteButton.setEnabled(false);
@@ -288,13 +313,37 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				completeButton.setEnabled(true);
 				workingButton.setEnabled(false);
 				statusLabel.setIcon(new ImageIcon("res/work.png"));
+				statusLabel.setToolTipText("Working Task");
 				break;
 			case COMPLETE:
 				undoCompleteButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(false);
 				completeButton.setEnabled(false);
-				statusLabel.setIcon(new ImageIcon("res/complete.png"));
+
+				if (task.checkDependenciesUndoCompleted())
+				{
+					statusLabel.setIcon(new ImageIcon("res/complete_red.png"));
+
+					ArrayList<Task> depsUndoCompleted =
+						task.getDependenciesUndoCompleted();
+					String undoCompleteTasksStr = " - " +
+						depsUndoCompleted.get(0).getName();
+					for (int i = 1; i < depsUndoCompleted.size(); i++)
+					{
+						undoCompleteTasksStr += "<br> - " +
+							depsUndoCompleted.get(i).getName();
+					}
+					statusLabel.setToolTipText("<html>" +
+						"Complete Task (DEPENDENCY FAILURE)<br><br>" +
+						"Dependencies that were undo-completed:<br>" +
+						undoCompleteTasksStr);
+				}
+				else
+				{
+					statusLabel.setIcon(new ImageIcon("res/complete.png"));
+					statusLabel.setToolTipText("Complete Task");
+				}
 				break;
 			default:
 				break;

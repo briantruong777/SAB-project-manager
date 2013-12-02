@@ -362,6 +362,36 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		undoCompleted = val;
 	}
+
+	/**
+	 * Returns true when Task has some dependencies that are undo-completed
+	 */
+	public boolean checkDependenciesUndoCompleted()
+	{
+		for (Task t : dependencies)
+		{
+			if (t.getUndoCompleted())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * Returns ArrayList of dependencies (Tasks) that are undo-completed
+	 */
+	public ArrayList<Task> getDependenciesUndoCompleted()
+	{
+		ArrayList<Task> undoCompletedTasks = new ArrayList<Task>();
+		for (Task t : dependencies)
+		{
+			if (t.getUndoCompleted())
+			{
+				undoCompletedTasks.add(t);
+			}
+		}
+		return undoCompletedTasks;
+	}
 	
 	public int hashCode()
 	{
