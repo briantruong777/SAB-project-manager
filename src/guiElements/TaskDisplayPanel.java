@@ -304,16 +304,35 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				pauseButton.setEnabled(false);
 				workingButton.setEnabled(true);
 				completeButton.setEnabled(false);
-				statusLabel.setIcon(new ImageIcon("res/pause.png"));
-				statusLabel.setToolTipText("Paused Task");
+
+				if (task.getUndoCompleted())
+				{
+					statusLabel.setIcon(new ImageIcon("res/pause_square.png"));
+					statusLabel.setToolTipText("Paused Task (Undo-completed)");
+				}
+				else
+				{
+					statusLabel.setIcon(new ImageIcon("res/pause.png"));
+					statusLabel.setToolTipText("Paused Task");
+				}
 				break;
 			case WORKING:
 				undoCompleteButton.setEnabled(false);
 				pauseButton.setEnabled(true);
 				completeButton.setEnabled(true);
 				workingButton.setEnabled(false);
-				statusLabel.setIcon(new ImageIcon("res/work.png"));
-				statusLabel.setToolTipText("Working Task");
+
+				if (task.getUndoCompleted())
+				{
+					statusLabel.setIcon(new ImageIcon("res/work_square.png"));
+					statusLabel.setToolTipText("Working Task (Undo-completed)");
+				}
+				else
+				{
+					statusLabel.setIcon(new ImageIcon("res/work.png"));
+					statusLabel.setToolTipText("Working Task");
+				}
+
 				break;
 			case COMPLETE:
 				undoCompleteButton.setEnabled(true);
