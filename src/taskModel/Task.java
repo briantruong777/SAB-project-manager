@@ -1,9 +1,3 @@
-/*
- * TODO:
- * -Start, resume things
- * -Store link to folder
- */
-
 package taskModel;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +21,7 @@ public class Task implements Serializable, Comparable<Task>
 	private ArrayList<Task> dependers;
 	private Calendar startDate;
 	private Calendar endDate;
+	private ArrayList<Session> sessions;
 	private long timeSpent;
 	private String path;
 	private String notes;
@@ -54,6 +49,7 @@ public class Task implements Serializable, Comparable<Task>
 		startDate.clear(); // Invalidates value
 		endDate = Calendar.getInstance();
 		endDate.clear();
+		sessions = new ArrayList<Session>();
 		timeSpent = 0; // In milliseconds
 		path= "";
 		notes = "";
@@ -226,6 +222,7 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		dependers.remove(t);
 	}
+
 	public Calendar getStartDate()
 	{
 		return startDate;
@@ -235,13 +232,13 @@ public class Task implements Serializable, Comparable<Task>
 		return endDate;
 	}
 
+	public ArrayList<Session> getSessions()
+	{
+		return sessions;
+	}
+
 	public long getTimeSpent()
 	{
-		if (lastResumeTime != -1)
-		{
-			pause();
-			resume();
-		}
 		return timeSpent;
 	}
 	public void setTimeSpent(long timeSpent)
@@ -406,7 +403,7 @@ public class Task implements Serializable, Comparable<Task>
 		startDate = Calendar.getInstance();
 	}
 	/**
-	 * Run when task is finished. Sets the endDate.
+	 * Run when task is completely finished. Sets the endDate.
 	 */
 	public void finish()
 	{
@@ -416,23 +413,23 @@ public class Task implements Serializable, Comparable<Task>
 	public void start()
 	{
 		Inventory.takeResources(tools.values(), parts.values());
-		//TODO:Have all tasks check whether there are still enough resources
 	}
 	public void stop()
 	{
 		endDate.clear();
 		Inventory.releaseResources(tools.values(), parts.values());
-		//TODO:Have all tasks check whether there are still enough resources
 	}
 
 	/**
 	 * Resumes counting working time. Can be called multiple times safely.
 	 */
-	public void resume()
+	public void resume(String builderName, String foremanName)
 	{
 		if (lastResumeTime == -1) // Check if paused
 		{
-			lastResumeTime = Calendar.getInstance().getTimeInMillis();
+			Calendar temp = Calendar.getInstance();
+			lastResumeTime = temp.getTimeInMillis();
+			sessions.add(new Session(builderName, foremanName, temp));
 		}
 	}
 	/**
@@ -442,9 +439,11 @@ public class Task implements Serializable, Comparable<Task>
 	{
 		if (lastResumeTime != -1) // Check for valid last resume time
 		{
-			long curTime = Calendar.getInstance().getTimeInMillis();
+			Calendar temp = Calendar.getInstance();
+			long curTime = temp.getTimeInMillis();
 			timeSpent += curTime - lastResumeTime;
 			lastResumeTime = -1;
+			sessions.get(sessions.size()-1).finish(temp);
 		}
 	}
 }

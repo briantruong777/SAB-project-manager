@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import taskModel.Task;
 
@@ -42,14 +43,20 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	private Component mhorizontalStrut_1;
 	private Component mhorizontalStrut_2;
 	private Component mhorizontalStrut_3;
+
 	private JScrollPane textScroll;
 	private JTextArea textArea;
+
+	private JPanel fbDialogPanel;
+	private JTextField builderTextField;
+	private JTextField foremanTextField;
 
 	/**
 	 * Create the panel.
 	 */
 	public TaskDisplayPanel(Task task, TaskPanel panel)
 	{
+		// Setting up textArea and textScroll
 		textArea = new JTextArea();
 		textArea.setColumns(30);
 		textArea.setRows(10);
@@ -57,6 +64,17 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		textArea.setWrapStyleWord( true );
 		textScroll = new JScrollPane(textArea);
 
+		// Setting up fbDialogPanel
+		fbDialogPanel = new JPanel();
+		builderTextField = new JTextField();
+		foremanTextField = new JTextField();
+		fbDialogPanel.setLayout(new BoxLayout(fbDialogPanel, BoxLayout.Y_AXIS));
+		fbDialogPanel.add(new JLabel("Builder Name:"));
+		fbDialogPanel.add(builderTextField);
+		fbDialogPanel.add(new JLabel("Foreman Name:"));
+		fbDialogPanel.add(foremanTextField);
+
+		// Setting up this TaskDisplayPanel
 		setMaximumSize(new Dimension(32767, 40));
 		this.panel = panel;
 		this.task = task;
@@ -137,10 +155,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		String command = e.getActionCommand();
 		Task.Status curTaskStatus = task.getStatus();
 		System.out.println(command);
-		if (command.equals("UndoComplete"))
+		if (command.equals("UndoComplete")) // Only possible when state is COMPLETE
 		{
-			// Only possible when state is COMPLETE
-
 			// First change state of all dependers
 			boolean haveWorkingDependers = false;
 			for (Task t : task.getDependers())
@@ -181,30 +197,53 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 			panel.refreshTasks(task.getDependers());
 			Runner.notifyChange();
 		}
-		else if (command.equals("Paused"))
+		else if (command.equals("Paused")) // Only possible when state is WORKING
 		{
-			// Only possible when state is WORKING
 			task.stop();
 			task.pause();
 			task.setStatus(Task.Status.PAUSED);
 			Runner.notifyChange();
 		}
-		else if (command.equals("Working"))
+		else if (command.equals("Working")) // state is PAUSED or UNSTARTED
 		{
-			// Only possible when state is PAUSED or UNSTARTED
+			// Getting foreman and builder name
+			foremanTextField.setText("");
+			builderTextField.setText("");
+			while (foremanTextField.getText().length() == 0 ||
+			       builderTextField.getText().length() == 0)
+			{
+				int option = JOptionPane.showConfirmDialog(this, fbDialogPanel,
+					"Foreman and Builder Name", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+				if (option == JOptionPane.OK_OPTION)
+				{
+					if (foremanTextField.getText().length() == 0 ||
+			       builderTextField.getText().length() == 0)
+					{
+						JOptionPane.showMessageDialog(this,
+							"Foreman and Builder name must both be provided",
+							"Foreman and Builder Name Issue", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else
+				{
+					return;
+				}
+			}
+
+			// Setting Task to Working state
 			if (curTaskStatus == Task.Status.UNSTARTED)
 			{
 				task.begin();
 			}
 
 			task.start();
-			task.resume();
+			task.resume(builderTextField.getText(), foremanTextField.getText());
 			task.setStatus(Task.Status.WORKING);
 			Runner.notifyChange();
 		}
-		else if (command.equals("Complete"))
+		else if (command.equals("Complete")) // Only possible when state is WORKING
 		{
-			// Only possible when state is WORKING
 			task.stop();
 			task.pause();
 			task.finish();
