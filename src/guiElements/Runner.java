@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collection;
@@ -45,6 +47,23 @@ public class Runner
 //		frame.reloadTaskPanel();
 	}
 
+	/**
+	 * Makes and saves a new project folder. This will make a new folder with
+	 * the path given. Inside this folder, this method will make a Backup folder.
+	 * Afterwards, it should just call saveProject().
+	 */
+	public static void saveNewProject(String path)
+	{
+		path += "\\";
+		// path is now the folder containing the Backup folder and project file
+		//TODO: Finish implementing this
+	}
+
+	/**
+	 * This saves the project to the file given by path. This will also
+	 * look for a folder called Backup in the same directory as the file given
+	 * by path. If it doesn't find the folder, it does not save a backup.
+	 */
 	public static void saveProject(String path)
 	{
 		ArrayList<Serializable> saveList = new ArrayList<Serializable>();
@@ -52,16 +71,51 @@ public class Runner
 		saveList.add(Inventory.getToolsHash());
 		saveList.add(Inventory.getPartsHash());
 
+		FileOutputStream fos;
+		ObjectOutputStream out;
 		try
 		{
-			FileOutputStream fos = new FileOutputStream(path);
-			ObjectOutputStream out = new ObjectOutputStream(fos);
+			fos = new FileOutputStream(path);
+			out = new ObjectOutputStream(fos);
 			out.writeObject(saveList);
 			out.close();
 		}
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
+		}
+
+		// Now looking for Backup folder
+
+		// Assuming path does not end with \
+		String projectNameStr = path.substring(path.lastIndexOf('\\')+1);
+		// projectDirectory will not include \
+		String projectDirectoryStr = path.substring(0, path.lastIndexOf('\\'));
+
+		// backupDirectory.toString() will not include \
+		File backupDirectory = new File(
+			projectDirectoryStr + "\\" + projectNameStr + "-Backup");
+
+		if (backupDirectory.exists())
+		{
+			//TODO: Label backups by date or something
+			System.out.println("BackupDirectory does exist\n");
+			try
+			{
+				fos = new FileOutputStream(
+					backupDirectory.toString() + "\\" + projectNameStr);
+				out = new ObjectOutputStream(fos);
+				out.writeObject(saveList);
+				out.close();
+			}
+			catch(IOException ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+		else
+		{
+			System.out.println("BackupDirectory does not exist");
 		}
 	}
 	@SuppressWarnings("unchecked")
@@ -101,7 +155,7 @@ public class Runner
 
 		System.out.println(TaskManager.getTasksMap());
 		System.out.println(Inventory.getTools());
-		System.out.println(Inventory.getParts());
+		System.out.println(Inventory.getParts()+"\n");
 
 		frame.reloadTaskPanel();
 	}
