@@ -54,7 +54,7 @@ public class ActiveInstructionsFrame extends JFrame
 	{
 		file = new File("");
 		status = FileStatus.UNCHANGED;
-		FileHandler mfileHandler = new FileHandler();
+		FileHandler mfileHandler = new FileHandler(this);
 
 		addWindowListener(mfileHandler);
 		setTitle("Untitled - Active Instructions");
@@ -68,12 +68,12 @@ public class ActiveInstructionsFrame extends JFrame
 		mnFile.setMnemonic('F');
 		menuBar.add(mnFile);
 
-		JMenuItem menuNew = new JMenuItem("New");
+		JMenuItem menuNew = new JMenuItem("New...");
 		menuNew.addActionListener(mfileHandler);
 		menuNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		mnFile.add(menuNew);
 
-		JMenuItem menuOpen = new JMenuItem("Open");
+		JMenuItem menuOpen = new JMenuItem("Open...");
 		menuOpen.addActionListener(mfileHandler);
 		menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mnFile.add(menuOpen);
@@ -94,7 +94,7 @@ public class ActiveInstructionsFrame extends JFrame
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
 
-		JMenuItem menuExport = new JMenuItem("Export");
+		JMenuItem menuExport = new JMenuItem("Export...");
 		menuExport.addActionListener(mfileHandler);
 		mnFile.add(menuExport);
 
@@ -132,16 +132,14 @@ public class ActiveInstructionsFrame extends JFrame
 			menuSave.setEnabled(true);
 	}
 
-	public void clearTaskPanel()
+	public void clearPanels()
 	{
-		menuSave.setEnabled(false);
 		taskPanel.clearTaskList();
 		resourcePanel.clearInventory();
 	}
 
-	public void reloadTaskPanel()
+	public void reloadPanels()
 	{
-		menuSave.setEnabled(false);
 		taskPanel.reloadTaskList();
 		resourcePanel.reloadInventory();
 	}
@@ -154,10 +152,12 @@ public class ActiveInstructionsFrame extends JFrame
 	private class FileHandler extends WindowAdapter implements ActionListener
 	{
 		//public static String lastSavedLocation;
+		private JFrame parent;
 		private JFileChooser fileChooser;
 		
-		public FileHandler()
+		public FileHandler(JFrame parent)
 		{
+			this.parent = parent;
 			fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		}
@@ -166,62 +166,71 @@ public class ActiveInstructionsFrame extends JFrame
 		{
 			switch(e.getActionCommand())
 			{
-				case "New":
-					if (!savedChanges())
-						return;
-					actionNew();
+				case "New...":
+					if (pauseTasks() && savedChanges())
+						actionNew();
 					break;
-				case "Open":
-					if (!savedChanges())
-						return;
-					open();
+				case "Open...":
+					if (pauseTasks() && savedChanges())
+						open();
 					break;
 				case "Save":
-					save();
+					if (file.isFile())
+						save();
+					else
+						saveAs();
 					break;
 				case "Save As...":
 					saveAs();
 					break;
-				case "Export":
-				try {
-					export();					
-				} catch (WriteException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				case "Export...":
+					try {
+						export();					
+					} catch (WriteException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					break;
 				case "Quit":						
-					if (!pauseTasks())
-						return;
-					else
+					if (pauseTasks() && savedChanges())
 						System.exit(0);
 					break;
 			}
 		}
 		
-		// checks whether to pause tasks
+		/**
+		 * Pause all working tasks if necessary. Returns true when all tasks have
+		 * been paused. No action should be taken if tasks are not paused. Does not
+		 * save anything.
+		 */
 		public boolean pauseTasks()
 		{
-			if (status == FileStatus.UNCHANGED)
-				return true;
-			else
+			boolean found = false;
+			for (Task t : TaskManager.getTasks())
 			{
-				switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_CANCEL_OPTION))
+				if (t.getStatus() == Task.Status.WORKING)
+				{
+					found = true;
+					break;
+				}
+			}
+
+			if (found)
+			{
+				switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
-						for (Task t: TaskManager.getTasks())
+						for (Task t : TaskManager.getTasks())
 						{
 							if (t.getStatus() == Task.Status.WORKING)
 							{
-								t.setStatus(Task.Status.PAUSED);
+								t.stop();
 								t.pause();
+								t.setStatus(Task.Status.PAUSED);
+								notifyChange();
 							}
 						}
-						if (file.isFile())
-							save();
-						//else if (!saveAs())
-							//return false;
 						return true;
 					case JOptionPane.NO_OPTION:
 						return false;
@@ -229,110 +238,144 @@ public class ActiveInstructionsFrame extends JFrame
 						return false;
 				}
 			}
+			else
+				return true;
 		}
 		
-		// returns whether to continue after asking for unsaved changes
-				public boolean savedChanges()
+		/**
+		 * Saves all changes to current file if necessary.
+		 * Returns true when it is successful in saving file or confirming no
+		 * save necessary. Returns false if it fails and no action should be taken
+		 * outside of this. Does not pause tasks or change them anymore.
+		 */
+		public boolean savedChanges()
+		{
+			if (status == FileStatus.UNCHANGED)
+				return true;
+			else
+			{
+				if (file.isFile())
+					return save();
+				else
 				{
-					if (status == FileStatus.UNCHANGED)
-						return true;
-					else
+					switch (JOptionPane.showConfirmDialog(parent, "You have not saved your current project, would you like to save it before continuing?", "Save current project?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE))
 					{
-						switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_CANCEL_OPTION))
-						{
-							case JOptionPane.YES_OPTION:
-								for (Task t: TaskManager.getTasks())
-								{
-									if (t.getStatus() == Task.Status.WORKING)
-									{
-										t.setStatus(Task.Status.PAUSED);
-										t.pause();
-									}
-								}
-								if (file.isFile())
-									save();
-								else if (!saveAs())
-									return false;
-								return true;
-							case JOptionPane.NO_OPTION:
-								return true;
-							default:
-								return false;
-						}
+						case JOptionPane.YES_OPTION:
+							return saveAs();
+						case JOptionPane.NO_OPTION:
+							return true; // Continue with other actions since user confirmed
+						case JOptionPane.CANCEL_OPTION:
+							return false;
+						default:
+							return false;
 					}
 				}
+			}
+		}
 
 		public void actionNew()
 		{
-			setTitle("Untitled - Active Instructions");
+			//TODO: Ask for password for project
+			// The password request will replace this dialog
+			JOptionPane.showMessageDialog(parent, "Choose a location to save the new project");
+
+			// Set current directory to file if exists, otherwise null
+			fileChooser.setCurrentDirectory(file.exists() ? file : null);
+			fileChooser.setDialogTitle("Where to save new project?");
+			int returnValue = fileChooser.showSaveDialog(parent);
+			if (returnValue != JFileChooser.APPROVE_OPTION)
+				return;
+			if (!Runner.saveNewProjectFolder(fileChooser.getSelectedFile().getAbsolutePath()))
+				return;
+
+			file = fileChooser.getSelectedFile();
+			// Assuming path does not end with \
+			String projectFileStr =
+				file.getPath() + "\\" +
+				file.getPath().substring(file.getPath().lastIndexOf('\\')+1);
+			file = new File(projectFileStr);
+
 			Inventory.clear();
 			TaskManager.clear();
-			clearTaskPanel();
-			status = FileStatus.UNCHANGED;
-			menuSave.setEnabled(false);
-			file = new File("");
+
+			clearPanels();
+
+			setTitle(file.getName() + " - Active Instructions");
+
+			save();
 		}
 
 		public void open()
 		{
-			int returnValue = fileChooser.showOpenDialog(null);
+			// Set current directory to file if exists, otherwise null
+			fileChooser.setCurrentDirectory(file.exists() ? file : null);
+			fileChooser.setDialogTitle("Which project do you want to open?");
+			int returnValue = fileChooser.showOpenDialog(parent);
 			if (returnValue != JFileChooser.APPROVE_OPTION)
 				return;
-			
-			// !!!assuming this file is correct
+			if (!Runner.loadProject(fileChooser.getSelectedFile().getAbsolutePath()))
+				return;
+
 			file = fileChooser.getSelectedFile();
+
+			reloadPanels();
+
 			setTitle(file.getName() + " - Active Instructions");
-			Runner.loadProject(file.getAbsolutePath());
 			status = FileStatus.UNCHANGED;
 			menuSave.setEnabled(false);
-			
-				//setLastSavedLocation(selectedFile.getAbsolutePath());
-			//Runner.loadTools(path+"/tools");
-			//}
 		}
 
-		public void save()
+		/**
+		 * Saves project to previously saved location. Expects file to be valid.
+		 * Return true when successful. Sets status correctly and disables
+		 * menuSave as well.
+		 */
+		public boolean save()
 		{
-			//if (!hasBeenSaved())
-			Runner.saveProject(file.getAbsolutePath());
-			status = FileStatus.UNCHANGED;
-			menuSave.setEnabled(false);
-			/*else
+			boolean success = Runner.saveProject(file.getAbsolutePath());
+			if (success)
 			{
-				//Runner.saveTasks(lastSavedLocation);
-			}*/
+				status = FileStatus.UNCHANGED;
+				menuSave.setEnabled(false);
+				return true;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(parent, "Automatic saving has failed. You should use Save As to save to a valid file to avoid data loss.", null, JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
 		}
 
+		/**
+		 * Saves project to new file. Returns true when successful.
+		 */
 		public boolean saveAs()
 		{
-			JFileChooser fileChooser = new JFileChooser();
-			int returnValue = fileChooser.showSaveDialog(null);
+			// Set current directory to file if exists, otherwise null
+			fileChooser.setCurrentDirectory(file.exists() ? file : null);
+			fileChooser.setDialogTitle("Where would you like to save the project?");
+			int returnValue = fileChooser.showSaveDialog(parent);
 			if (returnValue != JFileChooser.APPROVE_OPTION)
 				return false;
 
+			File oldFile = file;
 			file = fileChooser.getSelectedFile();
-			if (!file.isFile())
+			if (save())
 			{
-				try
-				{
-					file.createNewFile();
-				}
-				catch(IOException e)
-				{
-					return false;
-				}
+				setTitle(file.getName() + " - Active Instructions");
+				return true;
 			}
-			Runner.saveProject(file.getAbsolutePath());
-			setTitle(file.getName() + " - Active Instructions");
-			status = FileStatus.UNCHANGED;
-			menuSave.setEnabled(false);
-			return true;
+			else
+			{
+				file = oldFile;
+				return false;
+			}
 		}
 
 		public boolean export() throws IOException, WriteException
 		{
 			
-			JFileChooser fileChooser = new JFileChooser();
+			fileChooser = new JFileChooser();
 			int returnValue = fileChooser.showSaveDialog(null);
 			if (returnValue != JFileChooser.APPROVE_OPTION)
 				return false;
@@ -498,9 +541,7 @@ public class ActiveInstructionsFrame extends JFrame
 		@Override
 		public void windowClosing(WindowEvent e)
 		{
-			if (!pauseTasks())
-				return;
-			else
+			if (pauseTasks() && savedChanges())
 				System.exit(0);
 		}
 	}
