@@ -137,7 +137,7 @@ public class TaskInfoDialog extends JDialog
 			gbc_taskName.gridy = 0;
 			mcontentPanel.add(taskName, gbc_taskName);
 		}
-		{
+		/*{
 			JLabel builderLabel = new JLabel("Builder");
 			GridBagConstraints gbc_builderLabel = new GridBagConstraints();
 			gbc_builderLabel.anchor = GridBagConstraints.EAST;
@@ -172,7 +172,7 @@ public class TaskInfoDialog extends JDialog
 			gbc_foremanName.gridx = 4;
 			gbc_foremanName.gridy = 1;
 			mcontentPanel.add(foremanName, gbc_foremanName);
-		}
+		}*/
 		{
 			JLabel taskConstraintLabel = new JLabel("Task Constraint");
 			GridBagConstraints gbc_taskConstraintLabel = new GridBagConstraints();
@@ -678,8 +678,6 @@ public class TaskInfoDialog extends JDialog
 								if (!checkNameLink())
 									return;
 								task = new Task(taskName.getText());
-								task.setBuilder(builderName.getText());
-								task.setForeman(foremanName.getText());
 								task.addDependencies(taskCstrModel);
 								task.addTools(toolCstrModel);
 								task.addParts(partCstrModel);
@@ -699,7 +697,7 @@ public class TaskInfoDialog extends JDialog
 									oldName = task.getName();
 									nameChange = task.setName(taskName.getText());
 								}
-								if (!task.getBuilder().equals(builderName.getText()))
+								/*if (!task.getBuilder().equals(builderName.getText()))
 								{
 									change = true;
 									task.setBuilder(builderName.getText());
@@ -708,7 +706,7 @@ public class TaskInfoDialog extends JDialog
 								{
 									change = true;
 									task.setForeman(foremanName.getText());
-								}
+								}*/
 								if (!task.getParts().equals(folderPath.getText()))
 								{
 									change = true;
@@ -884,8 +882,8 @@ public class TaskInfoDialog extends JDialog
 		if (t == null)
 		{
 			dialog.taskName.setText("");
-			dialog.builderName.setText("");
-			dialog.foremanName.setText("");
+			//dialog.builderName.setText("");
+			//dialog.foremanName.setText("");
 			dialog.folderPath.setText("");
 			dialog.startDate.setText("Start: N/A");
 			dialog.timeSpent.setText("Time: N/A");
@@ -894,14 +892,14 @@ public class TaskInfoDialog extends JDialog
 		else
 		{
 			dialog.taskName.setText(t.getName());
-			if (t.getBuilder() == null)
+			/*if (t.getBuilder() == null)
 				dialog.builderName.setText("");
 			else
 				dialog.builderName.setText(t.getBuilder());
 			if (t.getForeman() == null)
 				dialog.foremanName.setText("");
 			else
-				dialog.foremanName.setText(t.getForeman());
+				dialog.foremanName.setText(t.getForeman());*/
 			if (t.getPath() == null)
 				dialog.folderPath.setText("");
 			else
@@ -935,8 +933,8 @@ public class TaskInfoDialog extends JDialog
 	
 	private static void enableText(boolean b)
 	{
-		dialog.builderName.setEditable(b);
-		dialog.foremanName.setEditable(b);
+		//dialog.builderName.setEditable(b);
+		//dialog.foremanName.setEditable(b);
 		dialog.folderPath.setEditable(b);
 		dialog.taskName.setEditable(b);
 		dialog.find.setEnabled(b);

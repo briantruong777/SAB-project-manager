@@ -414,8 +414,8 @@ public class ActiveInstructionsFrame extends JFrame
 	     		Task t = TaskManager.getTask(k-1);
 	     		ArrayList<Label> valueLabels = new ArrayList<Label>();
 	     		valueLabels.add(new Label(0, k, t.getName()));
-	     		valueLabels.add(new Label(1, k, t.getBuilder()));
-	     		valueLabels.add(new Label(2, k, t.getForeman()));
+	     		//valueLabels.add(new Label(1, k, t.getBuilder()));
+	     		//valueLabels.add(new Label(2, k, t.getForeman()));
 	     		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 	     		if (t.getStartDate().isSet(Calendar.MINUTE))
 	     			valueLabels.add(new Label(3, k, df.format(t.getStartDate().getTime())));
@@ -498,9 +498,10 @@ public class ActiveInstructionsFrame extends JFrame
 		@Override
 		public void windowClosing(WindowEvent e)
 		{
-			if (!savedChanges())
+			if (!pauseTasks())
 				return;
-			System.exit(0);
+			else
+				System.exit(0);
 		}
 	}
 }

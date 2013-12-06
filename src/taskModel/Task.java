@@ -12,8 +12,6 @@ import resourceModel.ResourceConstraint;
 public class Task implements Serializable, Comparable<Task>
 {
 	private String name;
-	private String builder;
-	private String foreman;
 	private Status taskStatus;
 	private HashMap<String, ResourceConstraint> tools;
 	private HashMap<String, ResourceConstraint> parts;
@@ -38,8 +36,6 @@ public class Task implements Serializable, Comparable<Task>
 	public Task(String s)
 	{
 		this.name = s;
-		builder = "";
-		foreman = "";
 		taskStatus = Status.UNSTARTED;
 		tools = new HashMap<String, ResourceConstraint>();
 		parts = new HashMap<String, ResourceConstraint>();
@@ -80,22 +76,6 @@ public class Task implements Serializable, Comparable<Task>
 			name = str;
 			return false;
 		}
-	}
-	public String getBuilder()
-	{
-		return builder;
-	}
-	public void setBuilder(String str)
-	{
-		builder = str;
-	}
-	public String getForeman()
-	{
-		return foreman;
-	}
-	public void setForeman(String str)
-	{
-		foreman = str;
 	}
 	public String getPath()
 	{
