@@ -181,7 +181,10 @@ public class ActiveInstructionsFrame extends JFrame
 						saveAs();
 					break;
 				case "Save As...":
-					saveAs();
+					if (pauseTasks())
+					{
+						saveAs();
+					}
 					break;
 				case "Export...":
 					try {
@@ -221,6 +224,7 @@ public class ActiveInstructionsFrame extends JFrame
 				switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
+						ArrayList<Task> refreshArray = new ArrayList<Task>();
 						for (Task t : TaskManager.getTasks())
 						{
 							if (t.getStatus() == Task.Status.WORKING)
@@ -228,9 +232,11 @@ public class ActiveInstructionsFrame extends JFrame
 								t.stop();
 								t.pause();
 								t.setStatus(Task.Status.PAUSED);
+								refreshArray.add(t);
 								notifyChange();
 							}
 						}
+						refreshTaskPanelTasks(refreshArray);
 						return true;
 					case JOptionPane.NO_OPTION:
 						return false;
