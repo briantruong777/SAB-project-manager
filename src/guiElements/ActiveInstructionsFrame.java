@@ -191,22 +191,23 @@ public class ActiveInstructionsFrame extends JFrame
 					e1.printStackTrace();
 				}
 					break;
-				case "Quit":
-					if (!savedChanges())
+				case "Quit":						
+					if (!pauseTasks())
 						return;
-					System.exit(0);
+					else
+						System.exit(0);
 					break;
 			}
 		}
 		
-		// returns whether to continue after asking for unsaved changes
-		public boolean savedChanges()
+		// checks whether to pause tasks
+		public boolean pauseTasks()
 		{
 			if (status == FileStatus.UNCHANGED)
 				return true;
 			else
 			{
-				switch(JOptionPane.showConfirmDialog(null, "Save changes?", "", JOptionPane.YES_NO_CANCEL_OPTION))
+				switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_CANCEL_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
 						for (Task t: TaskManager.getTasks())
@@ -219,16 +220,47 @@ public class ActiveInstructionsFrame extends JFrame
 						}
 						if (file.isFile())
 							save();
-						else if (!saveAs())
-							return false;
+						//else if (!saveAs())
+							//return false;
 						return true;
 					case JOptionPane.NO_OPTION:
-						return true;
+						return false;
 					default:
 						return false;
 				}
 			}
 		}
+		
+		// returns whether to continue after asking for unsaved changes
+				public boolean savedChanges()
+				{
+					if (status == FileStatus.UNCHANGED)
+						return true;
+					else
+					{
+						switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_CANCEL_OPTION))
+						{
+							case JOptionPane.YES_OPTION:
+								for (Task t: TaskManager.getTasks())
+								{
+									if (t.getStatus() == Task.Status.WORKING)
+									{
+										t.setStatus(Task.Status.PAUSED);
+										t.pause();
+									}
+								}
+								if (file.isFile())
+									save();
+								else if (!saveAs())
+									return false;
+								return true;
+							case JOptionPane.NO_OPTION:
+								return true;
+							default:
+								return false;
+						}
+					}
+				}
 
 		public void actionNew()
 		{
