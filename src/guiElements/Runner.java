@@ -54,7 +54,7 @@ public class Runner
 		{
 			if (!projectDirectory.isDirectory())
 			{
-				System.out.println("Project folder already exists as file!");
+				System.err.println("Project folder already exists as file!");
 				JOptionPane.showMessageDialog(frame, "There already is a file here of that name! Project was not created.", null, JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -63,7 +63,7 @@ public class Runner
 		{
 			if (!projectDirectory.mkdir())
 			{
-				System.out.println("Failed to make project directory!");
+				System.err.println("Failed to make project directory!");
 				JOptionPane.showMessageDialog(frame, "Failed to make project directory! Project was not created.", null, JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -75,7 +75,7 @@ public class Runner
 		{
 			if (!backupDirectory.isDirectory())
 			{
-				System.out.println("Backup folder already exists as file.");
+				System.err.println("Backup folder already exists as file.");
 				// Not returning false since backup is only secondary
 			}
 		}
@@ -115,7 +115,7 @@ public class Runner
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
-			System.out.println("Failed to save project file!");
+			System.err.println("Failed to save project file!");
 			JOptionPane.showMessageDialog(frame, "IO Error: Failed to save project file!", null, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -133,11 +133,47 @@ public class Runner
 
 		if (backupDirectory.isDirectory())
 		{
-			//TODO: Label backups by date or something
+			// Format of backup: projectname-v###
+			// Now attempting to find correct number to append
+			int maxNum = 0;
+			if (backupDirectory.list() != null)
+			{
+				int num;
+				int dashIdx;
+				for (String s : backupDirectory.list())
+				{
+					dashIdx = s.lastIndexOf('-');
+
+					// If can't find '-' or file name doesn't match
+					if (dashIdx == -1 || !s.substring(0, dashIdx).equals(projectNameStr))
+						continue;
+
+					try
+					{
+						num = Integer.parseInt(s.substring(s.lastIndexOf('-')+1));
+					}
+					catch (NumberFormatException ex)
+					{
+						continue;
+					}
+
+					if (num > maxNum)
+					{
+						maxNum = num;
+					}
+				}
+				maxNum++;
+			}
+			else
+			{
+				System.err.println("Failed to list files in backup directory");
+			}
+
+			// Saving backup file
 			try
 			{
 				fos = new FileOutputStream(
-					backupDirectory.getPath() + "\\" + projectNameStr);
+					backupDirectory.getPath() + "\\" + projectNameStr + "-" + maxNum);
 				out = new ObjectOutputStream(fos);
 				out.writeObject(saveList);
 				out.close();
@@ -145,13 +181,13 @@ public class Runner
 			catch(IOException ex)
 			{
 				ex.printStackTrace();
-				System.out.println("Failed to save to backup file.");
+				System.err.println("Failed to save to backup file.");
 				// Backup is only secondary so don't return false
 			}
 		}
 		else
 		{
-			System.out.println("Backup directory does not exist or is a file.");
+			System.err.println("Backup directory does not exist or is a file.");
 			// Backup is only secondary so don't return false
 		}
 
