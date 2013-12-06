@@ -11,7 +11,7 @@ public class ResourceConstraint implements Serializable
 	public ResourceConstraint(String name, int amount)
 	{
 		this.name = name;
-		this.amount = amount;
+		this.amount = 1;
 	}
 
 	public String getName()
@@ -26,7 +26,7 @@ public class ResourceConstraint implements Serializable
 
 	public void setAmount(int amount)
 	{
-		this.amount = amount;
+		this.amount = 1;
 	}
 
 	public void setName(String name)

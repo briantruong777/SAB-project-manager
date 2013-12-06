@@ -329,7 +329,7 @@ public class TaskInfoDialog extends JDialog
 				});
 				toolScroll.setViewportView(toolList);
 			}
-		}
+		}/*
 		{
 			JLabel toolAmount = new JLabel("Needed#");
 			GridBagConstraints gbc_toolAmount = new GridBagConstraints();
@@ -351,7 +351,7 @@ public class TaskInfoDialog extends JDialog
 			gbc_toolSpinner.gridx = 3;
 			gbc_toolSpinner.gridy = 4;
 			mcontentPanel.add(toolSpinner, gbc_toolSpinner);
-		}
+		}*/
 		{
 			addTool = new JButton("Add >>");
 			addTool.addActionListener(new ActionListener()
@@ -368,7 +368,7 @@ public class TaskInfoDialog extends JDialog
 							return;
 						}
 					}
-					toolCstrModel.add(new ResourceConstraint(r.getName(), (Integer)toolSpinner.getValue()));
+					toolCstrModel.add(new ResourceConstraint(r.getName(), 1));//(Integer)toolSpinner.getValue()));
 					toolCstrList.repaint();
 				}
 			});
@@ -484,7 +484,7 @@ public class TaskInfoDialog extends JDialog
 				});
 				partScroll.setViewportView(partList);
 			}
-		}
+		}/*
 		{
 			JLabel partAmount = new JLabel("Needed#");
 			GridBagConstraints gbc_partAmount = new GridBagConstraints();
@@ -506,7 +506,7 @@ public class TaskInfoDialog extends JDialog
 			gbc_partSpinner.gridx = 3;
 			gbc_partSpinner.gridy = 7;
 			mcontentPanel.add(partSpinner, gbc_partSpinner);
-		}
+		}*/
 		{
 			JScrollPane partCstrScroll = new JScrollPane();
 			GridBagConstraints gbc_partCstrScroll = new GridBagConstraints();
@@ -555,12 +555,12 @@ public class TaskInfoDialog extends JDialog
 					{
 						if (rc.getName().equals(r.getName()))
 						{
-							rc.setAmount((Integer)partSpinner.getValue());
+							rc.setAmount(1);//(Integer)partSpinner.getValue());
 							partCstrList.repaint();
 							return;
 						}
 					}
-					partCstrModel.add(new ResourceConstraint(r.getName(), (Integer)partSpinner.getValue()));
+					partCstrModel.add(new ResourceConstraint(r.getName(), 1));// (Integer)partSpinner.getValue()));
 					partCstrList.repaint();
 				}
 			});
@@ -876,8 +876,8 @@ public class TaskInfoDialog extends JDialog
 		dialog.partModel.clear();
 		dialog.partModel.addAll(Inventory.getParts());
 		dialog.partCstrModel.clear();
-		dialog.toolSpinner.setValue(1);
-		dialog.toolSpinner.setValue(1);
+		//dialog.toolSpinner.setValue(1);
+		//dialog.toolSpinner.setValue(1);
 		
 		if (t == null)
 		{
@@ -946,10 +946,10 @@ public class TaskInfoDialog extends JDialog
 		dialog.taskCstrList.setEnabled(b);
 		dialog.toolList.setEnabled(b);
 		dialog.toolCstrList.setEnabled(b);
-		dialog.toolSpinner.setEnabled(b);
+		//dialog.toolSpinner.setEnabled(b);
 		dialog.partList.setEnabled(b);
 		dialog.partCstrList.setEnabled(b);
-		dialog.partSpinner.setEnabled(b);
+		//dialog.partSpinner.setEnabled(b);
 	}
 	
 	private static void enableButtons(boolean b)
