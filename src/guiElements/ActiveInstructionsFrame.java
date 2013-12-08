@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -282,7 +283,8 @@ public class ActiveInstructionsFrame extends JFrame
 		public void actionNew()
 		{
 			//TODO: Ask for password for project
-			// The password request will replace this dialog
+			String passwd = JOptionPane.showInputDialog(parent, "Choose a password for this project", "Password Input", JOptionPane.QUESTION_MESSAGE);
+
 			JOptionPane.showMessageDialog(parent, "Choose a location to save the new project");
 
 			// Set current directory to file if exists, otherwise null
@@ -309,6 +311,46 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 
 			save();
+
+			// Saving password file
+			File passFile = new File(file.getParent() + "\\misc.dat");
+			if (passFile.exists())
+			{
+				if (!passFile.isFile())
+				{
+					System.err.println("Misc file already exists as directory!");
+					JOptionPane.showMessageDialog(parent, "There already is a directory here of that name! Misc file was not created.", null, JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+			else
+			{
+				try
+				{
+					passFile.createNewFile();
+				}
+				catch(IOException ex)
+				{
+					ex.printStackTrace();
+					System.err.println("Failed to create misc file!");
+					JOptionPane.showMessageDialog(parent, "IO Error: Failed to create misc file!", null, JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+
+			try
+			{
+				FileWriter fw = new FileWriter(passFile);
+				fw.write(passwd);
+				fw.flush();
+			}
+			catch (IOException ex)
+			{
+				ex.printStackTrace();
+				System.err.println("Failed to save misc file!");
+				JOptionPane.showMessageDialog(parent, "IO Error: Failed to save misc file!", null, JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 
 		public void open()
