@@ -35,6 +35,8 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 	private JButton buttonFilter;
 	private TaskPanel self;
 	private JPanel taskControlPanel;
+
+	private boolean adminViewEnabled;
 	/**
 	 * Create the panel.
 	 */
@@ -117,6 +119,7 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 					Task t = TaskInfoDialog.getTask();
 					TaskManager.addTask(t);
 					TaskDisplayPanel tdp = new TaskDisplayPanel(t, self);
+					tdp.setAdminView(adminViewEnabled);
 					tasks.put(t.getName(), tdp);
 					taskList.add(tdp);
 					updateUI();
@@ -225,6 +228,7 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		{
 			tdp.setAdminView(val);
 		}
+		adminViewEnabled = val;
 	}
 
 	@Override
