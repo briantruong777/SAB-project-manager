@@ -202,10 +202,13 @@ public class ActiveInstructionsFrame extends JFrame
 					}
 					break;
 				case "Save":
-					if (file.isFile())
-						save();
-					else
-						saveAs();
+					if (pauseTasks())
+					{
+						if (file.isFile())
+							save();
+						else
+							saveAs();
+					}
 					break;
 				case "Save As...":
 					if (pauseTasks())
@@ -442,7 +445,7 @@ public class ActiveInstructionsFrame extends JFrame
 			int returnValue = fileChooser.showSaveDialog(null);
 			if (returnValue != JFileChooser.APPROVE_OPTION)
 				return false;
-			file = fileChooser.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 			String filename = file.getAbsolutePath();
 			if (!filename.substring(filename.length()-4, filename.length()).equals(".xls"))
 			{
