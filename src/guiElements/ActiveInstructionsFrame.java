@@ -49,6 +49,7 @@ public class ActiveInstructionsFrame extends JFrame
 	private FileStatus status;
 	private File file;
 	private JCheckBoxMenuItem menuItemAdminView;
+	private JTabbedPane tabbedPane;
 	/**
 	 * Create the frame.
 	 */
@@ -120,7 +121,7 @@ public class ActiveInstructionsFrame extends JFrame
 		setContentPane(mcontentPane);
 		mcontentPane.setLayout(new BorderLayout(0, 0));
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		mcontentPane.add(tabbedPane);
 
 		taskPanel = new TaskPanel();
@@ -129,6 +130,7 @@ public class ActiveInstructionsFrame extends JFrame
 
 		resourcePanel = new ResourcePanel();
 		tabbedPane.addTab("Resources", null, resourcePanel, null);
+		tabbedPane.setEnabledAt(1, false);
 	}
 
 	private enum FileStatus
@@ -159,6 +161,14 @@ public class ActiveInstructionsFrame extends JFrame
 	{
 		taskPanel.refreshTasks(tasks);
 	}
+
+	private void setAdminView(boolean val)
+	{
+		taskPanel.setAdminView(val);
+		tabbedPane.setSelectedComponent(taskPanel);
+		tabbedPane.setEnabledAt(tabbedPane.indexOfComponent(resourcePanel), val);
+		menuItemAdminView.setState(val);
+	}
 	
 	private class FileHandler extends WindowAdapter implements ActionListener
 	{
@@ -179,11 +189,17 @@ public class ActiveInstructionsFrame extends JFrame
 			{
 				case "New...":
 					if (pauseTasks() && savedChanges())
+					{
 						actionNew();
+						setAdminView(false);
+					}
 					break;
 				case "Open...":
 					if (pauseTasks() && savedChanges())
+					{
 						open();
+						setAdminView(false);
+					}
 					break;
 				case "Save":
 					if (file.isFile())
@@ -213,9 +229,16 @@ public class ActiveInstructionsFrame extends JFrame
 				case "Admin View":
 					if (menuItemAdminView.getState())
 					{
-						if (Runner.checkPassword(file.getAbsolutePath() + "-Backup\\misc.dat", JOptionPane.showInputDialog(parent, "Enter your password:", "Password Entry", JOptionPane.QUESTION_MESSAGE)))
+						String password = JOptionPane.showInputDialog(parent, "Enter your password:", "Password Entry", JOptionPane.QUESTION_MESSAGE);
+						if (password == null)
 						{
-							// Switch to admin view
+							menuItemAdminView.setState(false);
+							return;
+						}
+
+						if (Runner.checkPassword(file.getAbsolutePath() + "-Backup\\misc.dat", password))
+						{
+							setAdminView(true);
 						}
 						else
 						{
@@ -225,7 +248,7 @@ public class ActiveInstructionsFrame extends JFrame
 					}
 					else
 					{
-						// Switch to regular
+						setAdminView(false);
 					}
 					break;
 			}
@@ -250,7 +273,7 @@ public class ActiveInstructionsFrame extends JFrame
 
 			if (found)
 			{
-				switch(JOptionPane.showConfirmDialog(null, "Pause all tasks?", "", JOptionPane.YES_NO_OPTION))
+				switch(JOptionPane.showConfirmDialog(parent, "Pause all tasks?", "", JOptionPane.YES_NO_OPTION))
 				{
 					case JOptionPane.YES_OPTION:
 						ArrayList<Task> refreshArray = new ArrayList<Task>();
@@ -311,6 +334,11 @@ public class ActiveInstructionsFrame extends JFrame
 		public void actionNew()
 		{
 			String password = JOptionPane.showInputDialog(parent, "Choose a password for this project", "Password Input", JOptionPane.QUESTION_MESSAGE);
+
+			if (password == null)
+				return;
+//			if (password.length() == 0)
+//				JOptionPane.showMessageDialog(parent, "Password cannot be empty");
 
 			JOptionPane.showMessageDialog(parent, "Choose a location to save the new project");
 

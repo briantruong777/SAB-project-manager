@@ -51,6 +51,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	private JTextField builderTextField;
 	private JTextField foremanTextField;
 
+	private boolean adminViewEnabled;
+
 	/**
 	 * Create the panel.
 	 */
@@ -115,9 +117,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		completeButton.setToolTipText("Set this task to the Complete state");
 		add(completeButton);
 
-		mhorizontalStrut_3 = Box.createHorizontalStrut(5);
-		add(mhorizontalStrut_3);
-
 		undoCompleteButton = new JButton(new ImageIcon("res/stop.png"));
 		undoCompleteButton.addActionListener(this);
 		undoCompleteButton.setActionCommand("UndoComplete");
@@ -145,9 +144,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		mhorizontalStrut_2 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_2);
 
-		refreshTaskStatus();
+		setAdminView(false);
 
-		//		taskStatusChange();
+		refreshTaskStatus();
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -302,10 +301,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		switch (task.getStatus())
 		{
 			case UNAVAILABLE:
-				undoCompleteButton.setEnabled(false);
-				pauseButton.setEnabled(false);
+				workingButton.setVisible(true);
 				workingButton.setEnabled(false);
-				completeButton.setEnabled(false);
+				pauseButton.setVisible(false);
+				completeButton.setVisible(false);
+				undoCompleteButton.setVisible(false);
 
 				if (task.checkDependenciesUndoCompleted())
 				{
@@ -343,18 +343,21 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				}
 				break;
 			case UNSTARTED:
-				undoCompleteButton.setEnabled(false);
-				pauseButton.setEnabled(false);
+				workingButton.setVisible(true);
 				workingButton.setEnabled(true);
-				completeButton.setEnabled(false);
+				pauseButton.setVisible(false);
+				completeButton.setVisible(false);
+				undoCompleteButton.setVisible(false);
+
 				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
 				statusLabel.setToolTipText("Unstarted Task");
 				break;
 			case PAUSED:
-				undoCompleteButton.setEnabled(false);
-				pauseButton.setEnabled(false);
+				workingButton.setVisible(true);
 				workingButton.setEnabled(true);
-				completeButton.setEnabled(false);
+				pauseButton.setVisible(false);
+				completeButton.setVisible(false);
+				undoCompleteButton.setVisible(false);
 
 				if (task.getUndoCompleted())
 				{
@@ -368,10 +371,11 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				}
 				break;
 			case WORKING:
-				undoCompleteButton.setEnabled(false);
+				workingButton.setVisible(false);
+				pauseButton.setVisible(true);
 				pauseButton.setEnabled(true);
-				completeButton.setEnabled(true);
-				workingButton.setEnabled(false);
+				completeButton.setVisible(true);
+				undoCompleteButton.setVisible(false);
 
 				if (task.getUndoCompleted())
 				{
@@ -386,10 +390,13 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				break;
 			case COMPLETE:
-				undoCompleteButton.setEnabled(true);
-				pauseButton.setEnabled(false);
-				workingButton.setEnabled(false);
-				completeButton.setEnabled(false);
+				workingButton.setVisible(false);
+				pauseButton.setVisible(false);
+				completeButton.setVisible(false);
+				if (adminViewEnabled)
+					undoCompleteButton.setVisible(true);
+				else
+					undoCompleteButton.setVisible(false);
 
 				if (task.checkDependenciesUndoCompleted())
 				{
@@ -431,6 +438,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		enableButtons();
 	}
 
+	/**
+	 * Sets admin view by showing/hiding certain elements
+	 */
+	public void setAdminView(boolean val)
+	{
+		editButton.setVisible(val);
+		adminViewEnabled = val;
+		enableButtons();
+	}
+
 	public void mouseClicked(MouseEvent e)
 	{
 		if (e.getClickCount() == 2)
@@ -460,70 +477,4 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	public void mouseExited(MouseEvent e)
 	{
 	}
-
-	/*	
-	private void taskStatusChange()
-	{
-		switch (task.getStatus())
-		{
-			case ILLEGAL:
-				mradioPlayButton.setEnabled(false);
-				mradioPausebutton.setEnabled(false);
-				mradioStopbutton.setEnabled(false);
-				setBackground(Color.RED);
-				break;
-			case UNAVAILABLE:
-				mradioPlayButton.setEnabled(false);
-				mradioPausebutton.setEnabled(false);
-				mradioStopbutton.setEnabled(false);
-				setBackground(Color.DARK_GRAY);
-				break;
-			case UNSTARTED:
-				mradioPlayButton.setEnabled(true);
-				mradioPausebutton.setEnabled(false);
-				mradioStopbutton.setEnabled(false);
-				setBackground(Color.BLUE);
-				break;
-			case WORKING:
-				mradioPlayButton.setEnabled(false);
-				mradioPausebutton.setEnabled(true);
-				mradioStopbutton.setEnabled(true);
-				setBackground(Color.GREEN);
-				break;
-			case PAUSED:
-				mradioPlayButton.setEnabled(true);
-				mradioPausebutton.setEnabled(false);
-				mradioStopbutton.setEnabled(true);
-				setBackground(Color.YELLOW);
-				break;
-			case COMPLETE:
-				mradioPlayButton.setEnabled(false);
-				mradioPausebutton.setEnabled(false);
-				mradioStopbutton.setEnabled(false);
-				setBackground(Color.LIGHT_GRAY);
-				break;
-		}
-	}
-
-	private class TaskStatusManager implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			switch(e.getActionCommand())
-			{
-				case "Play":
-					task.setStatus(Task.Status.WORKING);
-					break;
-				case "Pause":
-					task.setStatus(Task.Status.PAUSED);
-					break;
-				case "Stop":
-					task.setStatus(Task.Status.COMPLETE);
-			}
-			taskStatusChange();
-		}
-
-	}*/
-
 }

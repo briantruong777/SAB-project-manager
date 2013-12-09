@@ -34,6 +34,7 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 	private JCheckBox checkComplete;
 	private JButton buttonFilter;
 	private TaskPanel self;
+	private JPanel taskControlPanel;
 	/**
 	 * Create the panel.
 	 */
@@ -82,7 +83,22 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		buttonFilter.setToolTipText("Filter the list of tasks");
 		taskViewPanel.add(buttonFilter);
 		
-		JPanel taskControlPanel = new JPanel();
+		JButton btnSort = new JButton("Sort");
+		btnSort.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				taskList.removeAll();
+				ArrayList<TaskDisplayPanel> tdps = new ArrayList<TaskDisplayPanel>(tasks.values());
+				Collections.sort(tdps, self);
+				for (TaskDisplayPanel tdp: tdps)
+					taskList.add(tdp);
+				updateUI();
+			}
+		});
+		taskViewPanel.add(btnSort);
+		
+		taskControlPanel = new JPanel();
 		add(taskControlPanel, BorderLayout.EAST);
 		GridBagLayout gbl_taskControlPanel = new GridBagLayout();
 		gbl_taskControlPanel.columnWidths = new int[]{0, 0};
@@ -114,26 +130,8 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		gbc_btnCreateTask.gridx = 0;
 		gbc_btnCreateTask.gridy = 1;
 		taskControlPanel.add(btnCreateTask, gbc_btnCreateTask);
-		
-		JButton btnSort = new JButton("Sort");
-		btnSort.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				taskList.removeAll();
-				ArrayList<TaskDisplayPanel> tdps = new ArrayList<TaskDisplayPanel>(tasks.values());
-				Collections.sort(tdps, self);
-				for (TaskDisplayPanel tdp: tdps)
-					taskList.add(tdp);
-				updateUI();
-			}
-		});
-		GridBagConstraints gbc_btnSort = new GridBagConstraints();
-		gbc_btnSort.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSort.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSort.gridx = 0;
-		gbc_btnSort.gridy = 3;
-		taskControlPanel.add(btnSort, gbc_btnSort);
+
+		setAdminView(false);
 	}
 
 	public void clearTaskList()
@@ -217,6 +215,18 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		taskList.repaint();
 	}
 
+	/**
+	 * Sets the admin view features visible or not based on given value
+	 */
+	public void setAdminView(boolean val)
+	{
+		taskControlPanel.setVisible(val);
+		for (TaskDisplayPanel tdp : tasks.values())
+		{
+			tdp.setAdminView(val);
+		}
+	}
+
 	@Override
 	public int compare(TaskDisplayPanel tdp1, TaskDisplayPanel tdp2)
 	{
@@ -231,5 +241,4 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		}
 		return tdp1.task.compareTo(tdp2.task);
 	}
-	
 }
