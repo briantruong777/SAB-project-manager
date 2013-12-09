@@ -189,17 +189,11 @@ public class ActiveInstructionsFrame extends JFrame
 			{
 				case "New...":
 					if (pauseTasks() && savedChanges())
-					{
 						actionNew();
-						setAdminView(false);
-					}
 					break;
 				case "Open...":
 					if (pauseTasks() && savedChanges())
-					{
 						open();
-						setAdminView(false);
-					}
 					break;
 				case "Save":
 					if (pauseTasks())
@@ -369,6 +363,7 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 
 			save();
+			setAdminView(false);
 		}
 
 		public void open()
@@ -389,6 +384,7 @@ public class ActiveInstructionsFrame extends JFrame
 			setTitle(file.getName() + " - Active Instructions");
 			status = FileStatus.UNCHANGED;
 			menuSave.setEnabled(false);
+			setAdminView(false);
 		}
 
 		/**
