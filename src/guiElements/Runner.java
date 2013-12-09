@@ -7,6 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +47,7 @@ public class Runner
 	 * Returns true if successfully make project directory regardless of success
 	 * of making backup folder.
 	 */
-	public static boolean saveNewProjectFolder(String path)
+	public static boolean saveNewProjectFolder(String path, String password)
 	{
 		// Assuming path does not end with \
 		String projectNameStr = path.substring(path.lastIndexOf('\\')+1);
@@ -83,6 +86,46 @@ public class Runner
 		{
 			backupDirectory.mkdir();
 			// Not returning false if failure since backup folder is only secondary
+		}
+
+		// Saving password file
+		File passFile = new File(backupDirectory.getAbsolutePath() + "\\misc.dat");
+		if (passFile.exists())
+		{
+			if (!passFile.isFile())
+			{
+				System.err.println("Misc file already exists as directory!");
+				JOptionPane.showMessageDialog(frame, "There already is a directory here of that name! Misc file was not created.", null, JOptionPane.ERROR_MESSAGE);
+				// Not returning false since password is secondary
+			}
+		}
+		else
+		{
+			try
+			{
+				passFile.createNewFile();
+			}
+			catch(IOException ex)
+			{
+				ex.printStackTrace();
+				System.err.println("Failed to create misc file!");
+				JOptionPane.showMessageDialog(frame, "IO Error: Failed to create misc file!", null, JOptionPane.ERROR_MESSAGE);
+				// Not returning false since password is secondary
+			}
+		}
+
+		try
+		{
+			FileWriter fw = new FileWriter(passFile);
+			fw.write(password);
+			fw.flush();
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
+			System.err.println("Failed to save misc file!");
+			JOptionPane.showMessageDialog(frame, "IO Error: Failed to save misc file!", null, JOptionPane.ERROR_MESSAGE);
+			// Not returning false since password is secondary
 		}
 
 		return true;
@@ -240,6 +283,47 @@ public class Runner
 		Inventory.addTools(tools.values());
 		Inventory.addParts(parts.values());
 		 return true;
+	}
+
+	/**
+	 * Returns true if the given String matches the given password file
+	 */
+	public static boolean checkPassword(String passwordPath, String password)
+	{
+		File passFile = new File(passwordPath);
+		if (passFile.isFile())
+		{
+			char[] charArray = new char[password.length()];
+			FileReader fr;
+			try
+			{
+				fr = new FileReader(passFile);
+				fr.read(charArray);
+
+				if (password.equals(new String(charArray)) && !fr.ready())
+					return true;
+				else
+					return false;
+			}
+			catch (FileNotFoundException ex)
+			{
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(frame, "FileNotFound Error: Could not find password file!", null, JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			catch (IOException ex)
+			{
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(frame, "IO Error: Could not read password file!", null, JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		else
+		{
+			System.err.println("Failed to find password file!");
+			JOptionPane.showMessageDialog(frame, "Failed to find password file!", null, JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 	}
 	
 	public static void notifyChange()
