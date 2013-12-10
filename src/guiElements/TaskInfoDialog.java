@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
@@ -46,6 +47,8 @@ public class TaskInfoDialog extends JDialog
 	private JTextField folderPath;
 	private JSpinner toolSpinner;
 	private JSpinner partSpinner;
+	private JTextArea stepsTextArea;
+	private JScrollPane stepsScroll;
 	
 	private JButton addTask;
 	private JButton removeTask;
@@ -55,6 +58,7 @@ public class TaskInfoDialog extends JDialog
 	private JButton removePart;
 	private JButton find;
 	private JButton deleteButton;
+	private JButton taskSteps;
 
 	private JList<Task> taskList;
 	private JList<Task> taskCstrList;
@@ -136,6 +140,33 @@ public class TaskInfoDialog extends JDialog
 			gbc_taskName.gridx = 1;
 			gbc_taskName.gridy = 0;
 			mcontentPanel.add(taskName, gbc_taskName);
+		}
+		{
+			stepsTextArea = new JTextArea();
+			stepsTextArea.setColumns(30);
+			stepsTextArea.setRows(10);
+			stepsTextArea.setLineWrap( true );
+			stepsTextArea.setWrapStyleWord( true );
+			stepsScroll = new JScrollPane(stepsTextArea);
+
+			taskSteps = new JButton("Edit Task Steps");
+			taskSteps.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					String curStr = stepsTextArea.getText();
+					if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog(dialog, stepsScroll, "Task Steps", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE))
+					{
+						stepsTextArea.setText(curStr);
+					}
+				}
+			});
+			GridBagConstraints gbc_taskSteps = new GridBagConstraints();
+			gbc_taskSteps.fill = GridBagConstraints.HORIZONTAL;
+			gbc_taskSteps.insets = new Insets(0, 0, 5, 5);
+			gbc_taskSteps.gridx = 4;
+			gbc_taskSteps.gridy = 0;
+			mcontentPanel.add(taskSteps, gbc_taskSteps);
 		}
 		/*{
 			JLabel builderLabel = new JLabel("Builder");
@@ -692,6 +723,7 @@ public class TaskInfoDialog extends JDialog
 								task.addTools(toolCstrModel);
 								task.addParts(partCstrModel);
 								task.setPath(folderPath.getText());
+								task.setSteps(stepsTextArea.getText());
 								if (task.meetDependencies() && task.meetResources())
 									task.setStatus(Task.Status.UNSTARTED);
 								else
@@ -717,12 +749,17 @@ public class TaskInfoDialog extends JDialog
 									change = true;
 									task.setForeman(foremanName.getText());
 								}*/
-								if (!task.getParts().equals(folderPath.getText()))
+								if (!task.getPath().equals(folderPath.getText()))
 								{
 									change = true;
 									task.setPath(folderPath.getText());
 								}
-								
+								if (!task.getSteps().equals(stepsTextArea.getText()))
+								{
+									change = true;
+									task.setSteps(stepsTextArea.getText());
+								}
+
 								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.UNSTARTED)
 								{
 									if (!task.getDependencies().containsAll(taskCstrModel) || !taskCstrModel.containsAll(task.getDependencies()))
@@ -824,9 +861,9 @@ public class TaskInfoDialog extends JDialog
 			JOptionPane.showMessageDialog(dialog, "Task with same name already exists.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		else if (path != null && !"".equals(path) && !(new File(path).isDirectory()))
+		else if (path != null && !"".equals(path) && !(new File(path).exists()))
 		{
-			JOptionPane.showMessageDialog(dialog, "Cannot find given folder.", "", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(dialog, "Cannot find given file.", "", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
@@ -891,6 +928,7 @@ public class TaskInfoDialog extends JDialog
 		
 		if (t == null)
 		{
+			dialog.stepsTextArea.setText("");
 			dialog.taskName.setText("");
 			//dialog.builderName.setText("");
 			//dialog.foremanName.setText("");
@@ -901,6 +939,7 @@ public class TaskInfoDialog extends JDialog
 		}
 		else
 		{
+			dialog.stepsTextArea.setText(t.getSteps());
 			dialog.taskName.setText(t.getName());
 			/*if (t.getBuilder() == null)
 				dialog.builderName.setText("");

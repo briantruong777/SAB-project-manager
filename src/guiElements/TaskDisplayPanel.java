@@ -255,6 +255,10 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 			task.resume(builderTextField.getText(), foremanTextField.getText());
 			task.setStatus(Task.Status.WORKING);
 			Runner.notifyChange();
+
+			textArea.setText(task.getSteps());
+			textArea.setEditable(false);
+			JOptionPane.showMessageDialog(this, textScroll, "Task Steps", JOptionPane.PLAIN_MESSAGE);
 		}
 		else if (command.equals("Complete")) // Only possible when state is WORKING
 		{
@@ -276,6 +280,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		{
 			String text = task.getNotes();
 			textArea.setText(text);
+			textArea.setEditable(true);
 			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Notes", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (option == JOptionPane.OK_OPTION)
 			{
@@ -561,12 +566,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 			System.out.println("Double click");
 			String text = task.getSteps();
 			textArea.setText(text);
-			int option = JOptionPane.showConfirmDialog(this, textScroll, "Task Steps", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-			if (option == JOptionPane.OK_OPTION)
-			{
-				task.setSteps(textArea.getText());
-				Runner.notifyChange();
-			}
+			textArea.setEditable(false);
+			JOptionPane.showMessageDialog(this, textScroll, "Task Steps", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
