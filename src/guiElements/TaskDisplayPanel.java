@@ -168,18 +168,22 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		if (command.equals("UndoComplete")) // Only possible when state is COMPLETE
 		{
 			// First change state of all dependers
-			boolean haveWorkingDependers = false;
+			ArrayList<Task> workingDependers = new ArrayList<Task>();
 			for (Task t : task.getDependers())
 			{
 				if (t.getStatus() == Task.Status.WORKING)
 				{
-					haveWorkingDependers = true;
-					break;
+					workingDependers.add(t);
 				}
 			}
-			if (haveWorkingDependers)
+			if (workingDependers.size() > 0)
 			{
-				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, "Undo-completing this task\nwill set any Working\ntasks dependent on this one\nto the Paused state.\n\nDo you want to undo-complete this task and set relevant\ndependent tasks to the Paused state?", "Undo-complete this task?", JOptionPane.YES_NO_OPTION))
+				String confirmStr = "<html>Undo-completing this task will set the following Working tasks to the Paused state:";
+				confirmStr += "<br> - " + workingDependers.get(0);
+				for (int i = 1; i < workingDependers.size(); i++)
+					confirmStr += "<br> - " + workingDependers.get(i);
+				confirmStr += "<br><br>Do you want to undo-complete this task and set the above tasks to the Paused state?";
+				if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(panel, confirmStr, "Undo-complete this task?", JOptionPane.YES_NO_OPTION))
 				{
 					// Set all Working dependers to Paused so they can later be set to
 					// Unavailable

@@ -487,18 +487,22 @@ public class ResourcePanel extends JPanel
 				else
 				{
 					// If any working tasks, ask to pause them
-					boolean haveWorkingDependers = false;
+					ArrayList<Task> workingDependers = new ArrayList<Task>();
 					for (Task t : r.getDependers())
 					{
 						if (t.getStatus() == Task.Status.WORKING)
 						{
-							haveWorkingDependers = true;
-							break;
+							workingDependers.add(t);
 						}
 					}
-					if (haveWorkingDependers)
+					if (workingDependers.size() > 0)
 					{
-						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Marking this tool as broken\nwill set any Working\ntasks dependent on it\nto the Paused state.\n\nDo you want to mark this tool as broken and set relevant\ndependent tasks to the Paused state?", "Mark this tool as broken?", JOptionPane.YES_NO_OPTION))
+						String confirmStr = "<html>Marking this tool as broken will set the following Working tasks to the Paused state:";
+						confirmStr += "<br> - " + workingDependers.get(0);
+						for (int i = 1; i < workingDependers.size(); i++)
+							confirmStr += "<br> - " + workingDependers.get(i);
+						confirmStr += "<br><br>Do you want to mark this tool as broken and set the above tasks to the Paused state?";
+						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, confirmStr, "Mark this tool as broken?", JOptionPane.YES_NO_OPTION))
 						{
 							// Set all dependers to Paused so they can later be set to
 							// Unavailable
