@@ -368,7 +368,7 @@ public class TaskInfoDialog extends JDialog
 							return;
 						}
 					}
-					toolCstrModel.add(new ResourceConstraint(r.getName(), 1));//(Integer)toolSpinner.getValue()));
+					toolCstrModel.add(new ResourceConstraint(r.getName()));//(Integer)toolSpinner.getValue()));
 					toolCstrList.repaint();
 				}
 			});
@@ -560,7 +560,7 @@ public class TaskInfoDialog extends JDialog
 							return;
 						}
 					}
-					partCstrModel.add(new ResourceConstraint(r.getName(), 1));// (Integer)partSpinner.getValue()));
+					partCstrModel.add(new ResourceConstraint(r.getName()));// (Integer)partSpinner.getValue()));
 					partCstrList.repaint();
 				}
 			});

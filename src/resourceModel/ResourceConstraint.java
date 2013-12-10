@@ -8,7 +8,7 @@ public class ResourceConstraint implements Serializable
 	private String name;
 	private int amount;
 	
-	public ResourceConstraint(String name, int amount)
+	public ResourceConstraint(String name)
 	{
 		this.name = name;
 		this.amount = 1;
