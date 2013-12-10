@@ -1,5 +1,6 @@
 package guiElements;
 
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -334,14 +335,19 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
+					ArrayList<Task> refreshTasks = new ArrayList<Task>();
 					Inventory.removeTool(r.getName());
 					r.setName(text);
 					for (Task t: r.getDependers())
+					{
 						t.renameTool(r.getName(), text);
+						refreshTasks.add(t);
+					}
 					r.setMax((Integer)toolSpinner.getValue());
 					r.setAvailable(amount);
 					toolModel.notifyChanged(toolList.getMinSelectionIndex());
 					Inventory.addTool(r);
+					Runner.refreshTaskPanelTasks(refreshTasks);
 					repaint();
 					Runner.notifyChange();
 				}
@@ -385,14 +391,19 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
+					ArrayList<Task> refreshTasks = new ArrayList<Task>();
 					Inventory.removePart(r.getName());
 					for (Task t: r.getDependers())
+					{
 						t.renamePart(r.getName(), text);
+						refreshTasks.add(t);
+					}
 					r.setName(text);
 					r.setMax((Integer)partSpinner.getValue());
 					r.setAvailable(amount);
 					partModel.notifyChanged(partList.getMinSelectionIndex());
 					Inventory.addPart(r);
+					Runner.refreshTaskPanelTasks(refreshTasks);
 					repaint();
 					Runner.notifyChange();
 				}
