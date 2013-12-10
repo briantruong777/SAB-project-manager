@@ -457,7 +457,6 @@ public class ActiveInstructionsFrame extends JFrame
 		    exportInventory(s1);
 		    exportTaskProperties(s2);
 		    exportTaskDependencies(s3);
-		    exportSessions(s4);
 		    workbook.write();
 		    workbook.close();
 		    return true;
