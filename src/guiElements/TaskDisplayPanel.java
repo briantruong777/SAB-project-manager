@@ -90,13 +90,13 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		mhorizontalStrut_1 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_1);
 
-		statusLabel = new JLabel(new ImageIcon("res/unstarted.png"), JLabel.LEFT);
+		statusLabel = new JLabel(new ImageIcon("src/res/unstarted.png"), JLabel.LEFT);
 		add(statusLabel);
 
 		mhorizontalStrut_4 = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut_4);
 
-		brokenResourceLabel = new JLabel(new ImageIcon("res/broken_part.png"), JLabel.LEFT);
+		brokenResourceLabel = new JLabel(new ImageIcon("src/res/broken_part.png"), JLabel.LEFT);
 		brokenResourceLabel.setVisible(false);
 		add(brokenResourceLabel);
 
@@ -110,37 +110,37 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		mhorizontalGlue = Box.createHorizontalGlue();
 		add(mhorizontalGlue);
 
-		workingButton = new JButton(new ImageIcon("res/work.png"));
+		workingButton = new JButton(new ImageIcon("src/res/work.png"));
 		workingButton.addActionListener(this);
 		workingButton.setActionCommand("Working");
 		workingButton.setToolTipText("Set this task to the Working state");
 		add(workingButton);
 
-		pauseButton = new JButton(new ImageIcon("res/pause.png"));
+		pauseButton = new JButton(new ImageIcon("src/res/pause.png"));
 		pauseButton.addActionListener(this);
 		pauseButton.setActionCommand("Paused");
 		pauseButton.setToolTipText("Set this task to the Paused state");
 		add(pauseButton);
 
-		completeButton = new JButton(new ImageIcon("res/complete.png"));
+		completeButton = new JButton(new ImageIcon("src/res/complete.png"));
 		completeButton.addActionListener(this);
 		completeButton.setActionCommand("Complete");
 		completeButton.setToolTipText("Set this task to the Complete state");
 		add(completeButton);
 
-		undoCompleteButton = new JButton(new ImageIcon("res/stop.png"));
+		undoCompleteButton = new JButton(new ImageIcon("src/res/stop.png"));
 		undoCompleteButton.addActionListener(this);
 		undoCompleteButton.setActionCommand("UndoComplete");
 		undoCompleteButton.setToolTipText("Undo-complete this task");
 		add(undoCompleteButton);
 
-		mradioNotesButton = new JRadioButton(new ImageIcon("res/notes.png"));
+		mradioNotesButton = new JRadioButton(new ImageIcon("src/res/notes.png"));
 		mradioNotesButton.addActionListener(this);
 		mradioNotesButton.setActionCommand("Notes");
 		mradioNotesButton.setToolTipText("Edit/View this Task's notes");
 		add(mradioNotesButton);
 
-		mradioLinkButton = new JRadioButton(new ImageIcon("res/folder.png"));
+		mradioLinkButton = new JRadioButton(new ImageIcon("src/res/folder.png"));
 		mradioLinkButton.addActionListener(this);
 		mradioLinkButton.setActionCommand("File");
 		mradioLinkButton.setToolTipText("Open a window to this Task's associated file");
@@ -336,14 +336,14 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 					if (task.getUndoCompleted())
 					{
-						statusLabel.setIcon(new ImageIcon("res/unavailable_red_square.png"));
+						statusLabel.setIcon(new ImageIcon("src/res/unavailable_red_square.png"));
 						toolTip += " (Undo-completed)<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
 							undoCompleteTasksStr;
 					}
 					else
 					{
-						statusLabel.setIcon(new ImageIcon("res/unavailable_red.png"));
+						statusLabel.setIcon(new ImageIcon("src/res/unavailable_red.png"));
 						toolTip += "<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
 							undoCompleteTasksStr;
@@ -353,12 +353,12 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				{
 					if (task.getUndoCompleted())
 					{
-						statusLabel.setIcon(new ImageIcon("res/unavailable_square.png"));
+						statusLabel.setIcon(new ImageIcon("src/res/unavailable_square.png"));
 						toolTip += " (Undo-completed)";
 					}
 					else
 					{
-						statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
+						statusLabel.setIcon(new ImageIcon("src/res/unavailable.png"));
 					}
 				}
 				statusLabel.setToolTipText(toolTip);
@@ -409,7 +409,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				completeButton.setVisible(false);
 				undoCompleteButton.setVisible(false);
 
-				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
+				statusLabel.setIcon(new ImageIcon("src/res/unstarted.png"));
 				statusLabel.setToolTipText("Unstarted Task");
 				brokenResourceLabel.setVisible(false);
 				break;
@@ -422,12 +422,12 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				if (task.getUndoCompleted())
 				{
-					statusLabel.setIcon(new ImageIcon("res/pause_square.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/pause_square.png"));
 					statusLabel.setToolTipText("Paused Task (Undo-completed)");
 				}
 				else
 				{
-					statusLabel.setIcon(new ImageIcon("res/pause.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/pause.png"));
 					statusLabel.setToolTipText("Paused Task");
 				}
 				brokenResourceLabel.setVisible(false);
@@ -441,12 +441,12 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				if (task.getUndoCompleted())
 				{
-					statusLabel.setIcon(new ImageIcon("res/work_square.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/work_square.png"));
 					statusLabel.setToolTipText("Working Task (Undo-completed)");
 				}
 				else
 				{
-					statusLabel.setIcon(new ImageIcon("res/work.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/work.png"));
 					statusLabel.setToolTipText("Working Task");
 				}
 				brokenResourceLabel.setVisible(false);
@@ -464,7 +464,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				if (task.checkDependenciesUndoCompleted())
 				{
-					statusLabel.setIcon(new ImageIcon("res/complete_red.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/complete_red.png"));
 
 					ArrayList<Task> depsUndoCompleted =
 						task.getDependenciesUndoCompleted();
@@ -481,7 +481,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				}
 				else
 				{
-					statusLabel.setIcon(new ImageIcon("res/complete.png"));
+					statusLabel.setIcon(new ImageIcon("src/res/complete.png"));
 				}
 				statusLabel.setToolTipText(toolTip);
 
