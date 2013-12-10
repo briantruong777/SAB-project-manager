@@ -37,6 +37,7 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import resourceModel.Inventory;
 import resourceModel.ResourceConstraint;
+import taskModel.Session;
 import taskModel.Task;
 import taskModel.TaskManager;
 
@@ -508,39 +509,40 @@ public class ActiveInstructionsFrame extends JFrame
 	     	s2.setColumnView(6, 40);
 	     	ArrayList<Label> propertyLabels = new ArrayList<Label>();
 	     	propertyLabels.add(new Label(0, 0, "Task"));
-	     	propertyLabels.add(new Label(1, 0, "Builder"));
-	     	propertyLabels.add(new Label(2, 0, "Foreman"));
-	     	propertyLabels.add(new Label(3, 0, "Start Time"));
-	     	propertyLabels.add(new Label(4, 0, "End Time"));
-	     	propertyLabels.add(new Label(5, 0, "Time Spent"));
-	     	propertyLabels.add(new Label(6,0, "Notes"));
+	     	propertyLabels.add(new Label(1, 0, "Sessions"));
+	     	propertyLabels.add(new Label(2,0, "Notes"));
 	     	for (int k = 1; k <= TaskManager.getTotalNumTasks(); k++)
 	     	{
 	     		Task t = TaskManager.getTask(k-1);
 	     		ArrayList<Label> valueLabels = new ArrayList<Label>();
-	     		valueLabels.add(new Label(0, k, t.getName()));
-	     		//valueLabels.add(new Label(1, k, t.getBuilder()));
-	     		//valueLabels.add(new Label(2, k, t.getForeman()));
 	     		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-	     		if (t.getStartDate().isSet(Calendar.MINUTE))
-	     			valueLabels.add(new Label(3, k, df.format(t.getStartDate().getTime())));
-	     		else
-	     			valueLabels.add(new Label(3, k, ""));
-	     		if (t.getEndDate().isSet(Calendar.MINUTE))
-	     			valueLabels.add(new Label(4, k, df.format(t.getEndDate().getTime())));
-	     		else
-	     			valueLabels.add(new Label(4, k, ""));
-	     		valueLabels.add(new Label(6, k, t.getNotes()));
-	     		
-	     		String timeStr = "";
-	     		if (t.getTimeSpent() != 0)
-	     		{	
-	     			long hrs = t.getTimeSpent() / 1000 / 60 / 60;
-	     			long days = hrs / 24;
-	     			hrs %= 24;
-	     			timeStr += days + " days, " + hrs + " hours";
+	     		valueLabels.add(new Label(0, k, t.getName()));
+	     		String sessions = "";
+	     		for (Session s : t.getSessions())
+	     		{
+	     			sessions += "Builder: " + s.getBuilderName() + "\012";
+	     			sessions += "Foreman: " + s.getForemanName() + "\012";
+	     			sessions += "Start Date: ";
+	     			if (s.getStartDate().isSet(Calendar.MINUTE))
+	     				sessions += df.format(s.getStartDate().getTime());
+	     			sessions += "\012End Date: ";
+	     			if (s.getEndDate().isSet(Calendar.MINUTE))
+	     				sessions += df.format(s.getEndDate().getTime());
+	     			sessions += "Time Spent: ";
+	     			String timeStr = "";
+		     		if (t.getTimeSpent() != 0)
+		     		{	
+		     			long hrs = t.getTimeSpent() / 1000 / 60 / 60;
+		     			long days = hrs / 24;
+		     			hrs %= 24;
+		     			sessions += "\012" + days + " days" ;
+		     		}
+		     		sessions += "\012";
 	     		}
-	     		valueLabels.add(new Label(5, k, timeStr));
+	     		valueLabels.add(new Label(1, k, sessions));
+
+	     		valueLabels.add(new Label(2, k, t.getNotes()));
+	     	
 	     		
 	     		for (int l = 0; l < valueLabels.size(); l++)
 	     			s2.addCell(valueLabels.get(l));  		
