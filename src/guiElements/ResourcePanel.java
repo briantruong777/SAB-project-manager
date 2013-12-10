@@ -8,6 +8,7 @@ import javax.swing.event.*;
 
 import resourceModel.*;
 import taskModel.Task;
+import guiElements.Runner;
 
 @SuppressWarnings("serial")
 public class ResourcePanel extends JPanel
@@ -26,6 +27,8 @@ public class ResourcePanel extends JPanel
 	private JButton partChange;
 	private JButton toolRemove;
 	private JButton partRemove;
+	private JButton toolMarkBroken;
+	private JButton partMarkBroken;
 	
 	/**
 	 * Create the panel.
@@ -87,7 +90,8 @@ public class ResourcePanel extends JPanel
                     boolean cellHasFocus)
 			{
 				Resource r = (Resource)value; 
-				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + value;
+				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + r +
+					(r.isBroken() ? " (Broken)" : "");
 				return super.getListCellRendererComponent(list, s, index, isSelected, cellHasFocus);
 			}
 		});
@@ -127,7 +131,8 @@ public class ResourcePanel extends JPanel
                     boolean cellHasFocus)
 			{
 				Resource r = (Resource)value; 
-				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + value;
+				String s = "" + r.getAvailable() + '/' + r.getMax() + ' ' + r +
+					(r.isBroken() ? " (Broken)" : "");
 				return super.getListCellRendererComponent(list, s, index, isSelected, cellHasFocus);
 			}
 		});
@@ -452,6 +457,137 @@ public class ResourcePanel extends JPanel
 		gbc_partRemove.gridx = 4;
 		gbc_partRemove.gridy = 6;
 		add(partRemove, gbc_partRemove);
+
+		toolMarkBroken = new JButton("Mark Broken");
+		toolMarkBroken.setEnabled(false);
+		toolMarkBroken.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Resource r = toolList.getSelectedValue();
+
+				if (r.isBroken())
+				{
+					toolMarkBroken.setText("Mark Broken");
+					r.setBroken(false);
+					Runner.refreshTaskPanelTasks(r.getDependers());
+					Runner.notifyChange();
+				}
+				else
+				{
+					// If any working tasks, ask to pause them
+					boolean haveWorkingDependers = false;
+					for (Task t : r.getDependers())
+					{
+						if (t.getStatus() == Task.Status.WORKING)
+						{
+							haveWorkingDependers = true;
+							break;
+						}
+					}
+					if (haveWorkingDependers)
+					{
+						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Marking this tool as broken\nwill set any Working\ntasks dependent on it\nto the Paused state.\n\nDo you want to mark this tool as broken and set relevant\ndependent tasks to the Paused state?", "Mark this tool as broken?", JOptionPane.YES_NO_OPTION))
+						{
+							// Set all dependers to Paused so they can later be set to
+							// Unavailable
+							for (Task t : r.getDependers())
+							{
+								if (t.getStatus() == Task.Status.WORKING)
+								{
+									t.stop();
+									t.pause();
+									t.setStatus(Task.Status.PAUSED);
+								}
+							}
+						}
+						else
+						{
+							return;
+						}
+					}
+					r.setBroken(true);
+					toolMarkBroken.setText("Unmark Broken");
+					Runner.refreshTaskPanelTasks(r.getDependers());
+					Runner.notifyChange();
+				}
+
+				repaint();
+			}
+		});
+		GridBagConstraints gbc_toolMarkBroken = new GridBagConstraints();
+		gbc_toolMarkBroken.fill = GridBagConstraints.HORIZONTAL;
+		gbc_toolMarkBroken.gridwidth = 2;
+		gbc_toolMarkBroken.insets = new Insets(5, 5, 5, 5);
+		gbc_toolMarkBroken.gridx = 1;
+		gbc_toolMarkBroken.gridy = 7;
+		add(toolMarkBroken, gbc_toolMarkBroken);
+
+		partMarkBroken = new JButton("Mark Broken");
+		partMarkBroken.setEnabled(false);
+		partMarkBroken.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				Resource r = partList.getSelectedValue();
+
+				if (r.isBroken())
+				{
+					r.setBroken(false);
+					partMarkBroken.setText("Mark Broken");
+					Runner.refreshTaskPanelTasks(r.getDependers());
+					Runner.notifyChange();
+				}
+				else
+				{
+					// If any working tasks, ask to pause them
+					boolean haveWorkingDependers = false;
+					for (Task t : r.getDependers())
+					{
+						if (t.getStatus() == Task.Status.WORKING)
+						{
+							haveWorkingDependers = true;
+							break;
+						}
+					}
+					if (haveWorkingDependers)
+					{
+						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Marking this part as broken\nwill set any Working\ntasks dependent on it\nto the Paused state.\n\nDo you want to mark this part as broken and set relevant\ndependent tasks to the Paused state?", "Mark this part as broken?", JOptionPane.YES_NO_OPTION))
+						{
+							// Set all dependers to Paused so they can later be set to
+							// Unavailable
+							for (Task t : r.getDependers())
+							{
+								if (t.getStatus() == Task.Status.WORKING)
+								{
+									t.stop();
+									t.pause();
+									t.setStatus(Task.Status.PAUSED);
+								}
+							}
+						}
+						else
+						{
+							return;
+						}
+					}
+					r.setBroken(true);
+					partMarkBroken.setText("Unmark Broken");
+					Runner.refreshTaskPanelTasks(r.getDependers());
+					Runner.notifyChange();
+				}
+
+				repaint();
+			}
+		});
+		GridBagConstraints gbc_partMarkBroken = new GridBagConstraints();
+		gbc_partMarkBroken.fill = GridBagConstraints.HORIZONTAL;
+		gbc_partMarkBroken.gridwidth = 2;
+		gbc_partMarkBroken.insets = new Insets(5, 5, 5, 5);
+		gbc_partMarkBroken.gridx = 4;
+		gbc_partMarkBroken.gridy = 7;
+		add(partMarkBroken, gbc_partMarkBroken);
+		
 	}
 	
 	private void unpickTool()
@@ -460,6 +596,7 @@ public class ResourcePanel extends JPanel
 		toolSpinner.setValue(1);
 		toolChange.setEnabled(false);
 		toolRemove.setEnabled(false);
+		toolMarkBroken.setEnabled(false);
 		repaint();
 	}
 	
@@ -469,6 +606,8 @@ public class ResourcePanel extends JPanel
 		toolSpinner.setValue(r.getMax());
 		toolChange.setEnabled(true);
 		toolRemove.setEnabled(true);
+		toolMarkBroken.setEnabled(true);
+		toolMarkBroken.setText(r.isBroken() ? "Unmark Broken" : "Mark Broken");
 		partList.clearSelection();
 		repaint();
 	}
@@ -479,6 +618,7 @@ public class ResourcePanel extends JPanel
 		partSpinner.setValue(1);
 		partChange.setEnabled(false);
 		partRemove.setEnabled(false);
+		partMarkBroken.setEnabled(false);
 		repaint();
 	}
 	
@@ -488,6 +628,8 @@ public class ResourcePanel extends JPanel
 		partSpinner.setValue(r.getMax());
 		partChange.setEnabled(true);
 		partRemove.setEnabled(true);
+		partMarkBroken.setEnabled(true);
+		partMarkBroken.setText(r.isBroken() ? "Unmark Broken" : "Mark Broken");
 		toolList.clearSelection();
 		repaint();
 	}

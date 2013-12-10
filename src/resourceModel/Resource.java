@@ -13,6 +13,7 @@ public class Resource implements Serializable
 	private int max;
 	private int available;
 	private ArrayList<Task> dependers;
+	private boolean broken;
 	
 	public Resource(String name)
 	{
@@ -24,6 +25,7 @@ public class Resource implements Serializable
 		this.name = name;
 		this.max = available = max;
 		dependers = new ArrayList<Task>();
+		broken = false;
 	}
 
 	public String getName()
@@ -74,6 +76,15 @@ public class Resource implements Serializable
 	public Collection<Task> getDependers()
 	{
 		return dependers;
+	}
+
+	public boolean isBroken()
+	{
+		return broken;
+	}
+	public void setBroken(boolean val)
+	{
+		broken = val;
 	}
 	
 	public boolean equals(Object o)

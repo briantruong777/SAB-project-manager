@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import resourceModel.Inventory;
 import resourceModel.ResourceConstraint;
+import resourceModel.Resource;
 
 @SuppressWarnings("serial")
 public class Task implements Serializable, Comparable<Task>
@@ -368,6 +369,37 @@ public class Task implements Serializable, Comparable<Task>
 			}
 		}
 		return undoCompletedTasks;
+	}
+
+	/**
+	 * Returns ArrayList of any broken tools.
+	 */
+	public ArrayList<Resource> getBrokenTools()
+	{
+		ArrayList<Resource> brokenTools = new ArrayList<Resource>();
+		Resource r;
+		for (ResourceConstraint rc : tools.values())
+		{
+			r = Inventory.getTool(rc.getName());
+			if (r.isBroken())
+				brokenTools.add(r);
+		}
+		return brokenTools;
+	}
+	/**
+	 * Returns ArrayList of any broken parts.
+	 */
+	public ArrayList<Resource> getBrokenParts()
+	{
+		ArrayList<Resource> brokenParts = new ArrayList<Resource>();
+		Resource r;
+		for (ResourceConstraint rc : parts.values())
+		{
+			r = Inventory.getPart(rc.getName());
+			if (r.isBroken())
+				brokenParts.add(r);
+		}
+		return brokenParts;
 	}
 	
 	public int hashCode()

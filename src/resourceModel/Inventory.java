@@ -118,12 +118,12 @@ public class Inventory
 	{
 		for (ResourceConstraint tool : taskTools)
 		{
-			if (!tools.containsKey(tool.getName()) || tool.getAmount() > tools.get(tool.getName()).getAvailable())
+			if (!tools.containsKey(tool.getName()) || tools.get(tool.getName()).isBroken() || tool.getAmount() > tools.get(tool.getName()).getAvailable())
 				return false;
 		}
 		for (ResourceConstraint part : taskParts)
 		{
-			if (!parts.containsKey(part.getName()) || part.getAmount() > parts.get(part.getName()).getAvailable())
+			if (!parts.containsKey(part.getName()) || parts.get(part.getName()).isBroken() || part.getAmount() > parts.get(part.getName()).getAvailable())
 				return false;
 		}
 		return true;

@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import taskModel.Task;
+import resourceModel.Resource;
 
 @SuppressWarnings("serial")
 public class TaskDisplayPanel extends JPanel implements ActionListener, MouseListener
@@ -30,6 +31,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	Task task;
 	//private JButton incompleteButton;
 	private JLabel statusLabel;
+	private JLabel brokenResourceLabel;
 	private JButton undoCompleteButton;
 	private JButton pauseButton;
 	private JButton workingButton;
@@ -43,6 +45,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	private Component mhorizontalStrut_1;
 	private Component mhorizontalStrut_2;
 	private Component mhorizontalStrut_3;
+	private Component mhorizontalStrut_4;
+	
 
 	private JScrollPane textScroll;
 	private JTextArea textArea;
@@ -89,7 +93,14 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		statusLabel = new JLabel(new ImageIcon("res/unstarted.png"), JLabel.LEFT);
 		add(statusLabel);
 
-		mhorizontalStrut = Box.createHorizontalStrut(10);
+		mhorizontalStrut_4 = Box.createHorizontalStrut(5);
+		add(mhorizontalStrut_4);
+
+		brokenResourceLabel = new JLabel(new ImageIcon("res/broken_part.png"), JLabel.LEFT);
+		brokenResourceLabel.setVisible(false);
+		add(brokenResourceLabel);
+
+		mhorizontalStrut = Box.createHorizontalStrut(5);
 		add(mhorizontalStrut);
 
 		JLabel lblTasknamelabel = new JLabel(task.getName());
@@ -298,6 +309,9 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 	 */
 	private void enableButtons()
 	{
+		String toolTip;
+		ArrayList<Resource> brokenTools;
+		ArrayList<Resource> brokenParts;
 		switch (task.getStatus())
 		{
 			case UNAVAILABLE:
@@ -306,6 +320,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				pauseButton.setVisible(false);
 				completeButton.setVisible(false);
 				undoCompleteButton.setVisible(false);
+				toolTip = "<html>Unavailable Task";
 
 				if (task.checkDependenciesUndoCompleted())
 				{
@@ -322,24 +337,61 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 					if (task.getUndoCompleted())
 					{
 						statusLabel.setIcon(new ImageIcon("res/unavailable_red_square.png"));
-						statusLabel.setToolTipText("<html>" +
-							"Unavailable Task (Undo-completed)<br><br>" +
+						toolTip += " (Undo-completed)<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
-							undoCompleteTasksStr);
+							undoCompleteTasksStr;
 					}
 					else
 					{
 						statusLabel.setIcon(new ImageIcon("res/unavailable_red.png"));
-						statusLabel.setToolTipText("<html>" +
-							"Unavailable Task<br><br>" +
+						toolTip += "<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
-							undoCompleteTasksStr);
+							undoCompleteTasksStr;
 					}
 				}
 				else
 				{
 					statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
-					statusLabel.setToolTipText("Unavailable Task");
+				}
+				statusLabel.setToolTipText(toolTip);
+
+				brokenTools = task.getBrokenTools();
+				brokenParts = task.getBrokenParts();
+				if (brokenTools.size() > 0 || brokenParts.size() > 0)
+				{
+					String brokenToolTip = "<html>Some resource(s) are broken<br>";
+
+					// Finding broken tools
+					if (brokenTools.size() > 0)
+					{
+						String brokenToolsStr = " - " +
+							brokenTools.get(0).getName();
+						for (int i = 1; i < brokenTools.size(); i++)
+						{
+							brokenToolsStr += "<br> - " + brokenTools.get(i).getName();
+						}
+
+						brokenToolTip += "<br>Broken Tools:<br>" + brokenToolsStr;
+					}
+					// Finding broken parts
+					if (brokenParts.size() > 0)
+					{
+						String brokenPartsStr = " - " +
+							brokenParts.get(0).getName();
+						for (int i = 1; i < brokenParts.size(); i++)
+						{
+							brokenPartsStr += "<br> - " + brokenParts.get(i).getName();
+						}
+
+						brokenToolTip += "<br>Broken Parts:<br>" + brokenPartsStr;
+					}
+
+					brokenResourceLabel.setVisible(true);
+					brokenResourceLabel.setToolTipText(brokenToolTip);
+				}
+				else // if (brokenTools.size() > 0 || brokenParts.size() > 0)
+				{
+					brokenResourceLabel.setVisible(false);
 				}
 				break;
 			case UNSTARTED:
@@ -351,6 +403,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 				statusLabel.setIcon(new ImageIcon("res/unstarted.png"));
 				statusLabel.setToolTipText("Unstarted Task");
+				brokenResourceLabel.setVisible(false);
 				break;
 			case PAUSED:
 				workingButton.setVisible(true);
@@ -369,6 +422,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 					statusLabel.setIcon(new ImageIcon("res/pause.png"));
 					statusLabel.setToolTipText("Paused Task");
 				}
+				brokenResourceLabel.setVisible(false);
 				break;
 			case WORKING:
 				workingButton.setVisible(false);
@@ -387,7 +441,7 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 					statusLabel.setIcon(new ImageIcon("res/work.png"));
 					statusLabel.setToolTipText("Working Task");
 				}
-
+				brokenResourceLabel.setVisible(false);
 				break;
 			case COMPLETE:
 				workingButton.setVisible(false);
@@ -397,6 +451,8 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 					undoCompleteButton.setVisible(true);
 				else
 					undoCompleteButton.setVisible(false);
+
+				toolTip = "<html>Complete Task";
 
 				if (task.checkDependenciesUndoCompleted())
 				{
@@ -411,15 +467,53 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 						undoCompleteTasksStr += "<br> - " +
 							depsUndoCompleted.get(i).getName();
 					}
-					statusLabel.setToolTipText("<html>" +
-						"Complete Task (DEPENDENCY FAILURE)<br><br>" +
+					toolTip += " (DEPENDENCY FAILURE)<br><br>" +
 						"Dependencies that were undo-completed:<br>" +
-						undoCompleteTasksStr);
+						undoCompleteTasksStr;
 				}
 				else
 				{
 					statusLabel.setIcon(new ImageIcon("res/complete.png"));
-					statusLabel.setToolTipText("Complete Task");
+				}
+				statusLabel.setToolTipText(toolTip);
+
+				brokenTools = task.getBrokenTools();
+				brokenParts = task.getBrokenParts();
+				if (brokenTools.size() > 0 || brokenParts.size() > 0)
+				{
+					String brokenToolTip = "<html>Some resource(s) are broken<br>";
+
+					// Finding broken tools
+					if (brokenTools.size() > 0)
+					{
+						String brokenToolsStr = " - " +
+							brokenTools.get(0).getName();
+						for (int i = 1; i < brokenTools.size(); i++)
+						{
+							brokenToolsStr += "<br> - " + brokenTools.get(i).getName();
+						}
+
+						brokenToolTip += "<br>Broken Tools:<br>" + brokenToolsStr;
+					}
+					// Finding broken parts
+					if (brokenParts.size() > 0)
+					{
+						String brokenPartsStr = " - " +
+							brokenParts.get(0).getName();
+						for (int i = 1; i < brokenParts.size(); i++)
+						{
+							brokenPartsStr += "<br> - " + brokenParts.get(i).getName();
+						}
+
+						brokenToolTip += "<br>Broken Parts:<br>" + brokenPartsStr;
+					}
+
+					brokenResourceLabel.setVisible(true);
+					brokenResourceLabel.setToolTipText(brokenToolTip);
+				}
+				else // if (brokenTools.size() > 0 || brokenParts.size() > 0)
+				{
+					brokenResourceLabel.setVisible(false);
 				}
 				break;
 			default:
