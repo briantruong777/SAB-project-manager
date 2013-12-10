@@ -351,7 +351,15 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				}
 				else
 				{
-					statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
+					if (task.getUndoCompleted())
+					{
+						statusLabel.setIcon(new ImageIcon("res/unavailable_square.png"));
+						toolTip += " (Undo-completed)";
+					}
+					else
+					{
+						statusLabel.setIcon(new ImageIcon("res/unavailable.png"));
+					}
 				}
 				statusLabel.setToolTipText(toolTip);
 
