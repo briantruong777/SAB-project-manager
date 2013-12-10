@@ -208,7 +208,8 @@ public class TaskInfoDialog extends JDialog
 					}
 				});
 				taskScroll.setViewportView(taskList);
-				taskList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				taskList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				taskList.setToolTipText("Ctrl+Click to multi-select");
 			}
 		}
 		{
@@ -217,11 +218,14 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (!taskCstrModel.contains(taskList.getSelectedValue()))
+					for (Task t : taskList.getSelectedValuesList())
 					{
-						taskCstrModel.add(taskList.getSelectedValue());
-						taskCstrList.repaint();
+						if (!taskCstrModel.contains(t))
+						{
+							taskCstrModel.add(t);
+						}
 					}
+					taskCstrList.repaint();
 				}
 			});
 			GridBagConstraints gbc_addTask = new GridBagConstraints();
@@ -259,7 +263,8 @@ public class TaskInfoDialog extends JDialog
 					}
 				});
 				taskCstrScroll.setViewportView(taskCstrList);
-				taskCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				taskCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				taskCstrList.setToolTipText("Ctrl+Click to multi-select");
 			}
 		}
 		{
@@ -268,12 +273,11 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (taskCstrList.getMinSelectionIndex() >= 0)
+					for (Task t : taskCstrList.getSelectedValuesList())
 					{
-						taskCstrModel.remove(taskCstrList.getMinSelectionIndex());
-						taskCstrList.clearSelection();
-						taskCstrList.repaint();
+						taskCstrModel.remove(t);
 					}
+					taskCstrList.repaint();
 				}
 			});
 			GridBagConstraints gbc_removeTask = new GridBagConstraints();
@@ -318,7 +322,8 @@ public class TaskInfoDialog extends JDialog
 						repaint();
 					}
 				});
-				toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				toolList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				toolList.setToolTipText("Ctrl+Click to multi-select");
 				toolList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -358,17 +363,19 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent arg0)
 				{
-					Resource r = toolList.getSelectedValue();
-					for (ResourceConstraint rc: toolCstrModel)
+					for (Resource r : toolList.getSelectedValuesList())
 					{
-						if (rc.getName().equals(r.getName()))
+						for (ResourceConstraint rc: toolCstrModel)
 						{
-							rc.setAmount((Integer)toolSpinner.getValue());
-							toolCstrList.repaint();
-							return;
+							if (rc.getName().equals(r.getName()))
+							{
+//								rc.setAmount((Integer)toolSpinner.getValue());
+//								toolCstrList.repaint();
+								break;
+							}
 						}
+						toolCstrModel.add(new ResourceConstraint(r.getName()));//(Integer)toolSpinner.getValue()));
 					}
-					toolCstrModel.add(new ResourceConstraint(r.getName()));//(Integer)toolSpinner.getValue()));
 					toolCstrList.repaint();
 				}
 			});
@@ -396,7 +403,8 @@ public class TaskInfoDialog extends JDialog
 							repaint();
 						}
 					});
-					toolCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+					toolCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+					toolCstrList.setToolTipText("Ctrl+Click to multi-select");
 					toolCstrList.setCellRenderer(new DefaultListCellRenderer()
 					{
 						public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -423,12 +431,11 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (toolCstrList.getMinSelectionIndex() >= 0)
+					for (ResourceConstraint rc : toolCstrList.getSelectedValuesList())
 					{
-						toolCstrModel.remove(toolCstrList.getMinSelectionIndex());
-						toolCstrList.clearSelection();
-						toolCstrList.repaint();
+						toolCstrModel.remove(rc);
 					}
+					toolCstrList.repaint();
 				}
 			});
 			GridBagConstraints gbc_removeTool = new GridBagConstraints();
@@ -473,7 +480,8 @@ public class TaskInfoDialog extends JDialog
 						repaint();
 					}
 				});
-				partList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				partList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				partList.setToolTipText("Ctrl+Click to multi-select");
 				partList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -531,7 +539,8 @@ public class TaskInfoDialog extends JDialog
 						repaint();
 					}
 				});
-				partCstrList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				partCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				partCstrList.setToolTipText("Ctrl+Click to multi-select");
 				partCstrList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -550,17 +559,19 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					Resource r = partList.getSelectedValue();
-					for (ResourceConstraint rc: partCstrModel)
+					for (Resource r : partList.getSelectedValuesList())
 					{
-						if (rc.getName().equals(r.getName()))
+						for (ResourceConstraint rc: partCstrModel)
 						{
-							rc.setAmount(1);//(Integer)partSpinner.getValue());
-							partCstrList.repaint();
-							return;
+							if (rc.getName().equals(r.getName()))
+							{
+//								rc.setAmount(1);//(Integer)partSpinner.getValue());
+//								partCstrList.repaint();
+								break;
+							}
 						}
+						partCstrModel.add(new ResourceConstraint(r.getName()));// (Integer)partSpinner.getValue()));
 					}
-					partCstrModel.add(new ResourceConstraint(r.getName()));// (Integer)partSpinner.getValue()));
 					partCstrList.repaint();
 				}
 			});
@@ -578,12 +589,11 @@ public class TaskInfoDialog extends JDialog
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					if (partCstrList.getMinSelectionIndex() >= 0)
+					for (ResourceConstraint rc : partCstrList.getSelectedValuesList())
 					{
-						partCstrModel.remove(partCstrList.getMinSelectionIndex());
-						partCstrList.clearSelection();
-						partCstrList.repaint();
+						partCstrModel.remove(rc);
 					}
+					partCstrList.repaint();
 				}
 			});
 			GridBagConstraints gbc_removePart = new GridBagConstraints();
