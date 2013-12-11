@@ -262,6 +262,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		}
 		else if (command.equals("Complete")) // Only possible when state is WORKING
 		{
+			String password = JOptionPane.showInputDialog(this, "Enter your password:", "Password Entry", JOptionPane.QUESTION_MESSAGE);
+			if (password == null)
+				return;
+
+			if (!Runner.checkPassword(password))
+			{
+				JOptionPane.showMessageDialog(this, "Password was incorrect");
+				return;
+			}
+
 			task.stop();
 			task.pause();
 			task.finish();

@@ -170,6 +170,11 @@ public class ActiveInstructionsFrame extends JFrame
 		tabbedPane.setEnabledAt(tabbedPane.indexOfComponent(resourcePanel), val);
 		menuItemAdminView.setState(val);
 	}
+
+	public File getFile()
+	{
+		return file;
+	}
 	
 	private class FileHandler extends WindowAdapter implements ActionListener
 	{
@@ -234,7 +239,7 @@ public class ActiveInstructionsFrame extends JFrame
 							return;
 						}
 
-						if (Runner.checkPassword(file.getAbsolutePath() + "-Backup\\misc.dat", password))
+						if (Runner.checkPassword(password))
 						{
 							setAdminView(true);
 						}

@@ -286,11 +286,12 @@ public class Runner
 	}
 
 	/**
-	 * Returns true if the given String matches the given password file
+	 * Returns true if the given String matches the given password file.
+	 * Get password file by accessing file variable from frame.
 	 */
-	public static boolean checkPassword(String passwordPath, String password)
+	public static boolean checkPassword(String password)
 	{
-		File passFile = new File(passwordPath);
+		File passFile = new File(frame.getFile().getAbsolutePath() + "-Backup\\misc.dat");
 		if (passFile.isFile())
 		{
 			char[] charArray = new char[password.length()];
