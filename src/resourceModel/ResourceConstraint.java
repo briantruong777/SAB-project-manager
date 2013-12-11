@@ -3,7 +3,7 @@ package resourceModel;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class ResourceConstraint implements Serializable
+public class ResourceConstraint implements Serializable, Comparable<ResourceConstraint>
 {
 	private String name;
 	private int amount;
@@ -32,6 +32,11 @@ public class ResourceConstraint implements Serializable
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public int compareTo(ResourceConstraint o)
+	{
+		return name.compareTo(o.name);
 	}
 	
 	public String toString()

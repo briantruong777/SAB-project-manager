@@ -12,6 +12,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -912,16 +913,19 @@ public class TaskInfoDialog extends JDialog
 		dialog.taskCstrList.clearSelection();
 		dialog.taskModel.clear();
 		dialog.taskModel.addAll(TaskManager.getTasks());
+		Collections.sort(dialog.taskModel);
 		dialog.taskCstrModel.clear();
 		dialog.toolList.clearSelection();
 		dialog.toolCstrList.clearSelection();
 		dialog.toolModel.clear();
 		dialog.toolModel.addAll(Inventory.getTools());
+		Collections.sort(dialog.toolModel);
 		dialog.toolCstrModel.clear();
 		dialog.partList.clearSelection();
 		dialog.partCstrList.clearSelection();
 		dialog.partModel.clear();
 		dialog.partModel.addAll(Inventory.getParts());
+		Collections.sort(dialog.partModel);
 		dialog.partCstrModel.clear();
 		//dialog.toolSpinner.setValue(1);
 		//dialog.toolSpinner.setValue(1);
@@ -955,8 +959,11 @@ public class TaskInfoDialog extends JDialog
 				dialog.folderPath.setText(t.getPath());
 			
 			dialog.taskCstrModel.addAll(t.getDependencies());
+			Collections.sort(dialog.taskCstrModel);
 			dialog.toolCstrModel.addAll(t.getTools());
+			Collections.sort(dialog.toolCstrModel);
 			dialog.partCstrModel.addAll(t.getParts());
+			Collections.sort(dialog.partCstrModel);
 			
 			if (t.getStartDate().isSet(Calendar.MINUTE))
 				dialog.startDate.setText("Start: " + format.format(t.getStartDate().getTime()));

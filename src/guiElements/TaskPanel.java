@@ -234,15 +234,22 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 	@Override
 	public int compare(TaskDisplayPanel tdp1, TaskDisplayPanel tdp2)
 	{
-		int comp = tdp1.getStatus().compareTo(tdp2.getStatus());
-		if (comp != 0)
-			return comp;
-		else if (tdp1.getStatus() == Task.Status.UNSTARTED && tdp2.getStatus() == Task.Status.UNSTARTED)
-		{
-			int depr = tdp2.task.getDependers().size() - tdp1.task.getDependers().size();
-			if (depr != 0)
-				return depr;
-		}
+		int diff = tdp1.getStatus().compareTo(tdp2.getStatus());
+		if (diff != 0)
+			return diff;
+
+		diff = tdp2.task.getDependers().size() - tdp1.task.getDependers().size();
+		if (diff != 0)
+			return diff;
+
+		diff = tdp2.task.getParts().size() - tdp1.task.getParts().size();
+		if (diff != 0)
+			return diff;
+
+		diff = tdp2.task.getTools().size() - tdp1.task.getTools().size();
+		if (diff != 0)
+			return diff;
+
 		return tdp1.task.compareTo(tdp2.task);
 	}
 }

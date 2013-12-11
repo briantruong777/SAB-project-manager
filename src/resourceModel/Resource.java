@@ -7,7 +7,7 @@ import java.util.Collection;
 import taskModel.Task;
 
 @SuppressWarnings("serial")
-public class Resource implements Serializable
+public class Resource implements Serializable, Comparable<Resource>
 {
 	private String name;
 	private int max;
@@ -85,6 +85,11 @@ public class Resource implements Serializable
 	public void setBroken(boolean val)
 	{
 		broken = val;
+	}
+
+	public int compareTo(Resource o)
+	{
+		return name.compareTo(o.name);
 	}
 	
 	public boolean equals(Object o)

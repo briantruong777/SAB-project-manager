@@ -1,6 +1,7 @@
 package guiElements;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -661,7 +662,9 @@ public class ResourcePanel extends JPanel
 	{
 		clearInventory();
 		toolModel.addAll(Inventory.getTools());
+		Collections.sort(toolModel);
 		partModel.addAll(Inventory.getParts());
+		Collections.sort(partModel);
 		repaint();
 	}
 }
