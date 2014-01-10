@@ -1,6 +1,0 @@
-hammer 
-1 2
-screwdriver 
-4 10
-saw 
-7 92
