@@ -205,6 +205,8 @@ public class ResourcePanel extends JPanel
 		gbc_toolSpinner.gridx = 2;
 		gbc_toolSpinner.gridy = 3;
 		add(toolSpinner, gbc_toolSpinner);
+		partSpinner = new JSpinner();
+		partSpinner.setValue(1);
 		/*
 		JLabel partMaxLabel = new JLabel("Max#");
 		GridBagConstraints gbc_partMaxLabel = new GridBagConstraints();
@@ -317,14 +319,14 @@ public class ResourcePanel extends JPanel
 				String text = toolName.getText();
 				if ("".equals(text))
 				{
-					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.ERROR_MESSAGE);
 					toolName.setText(r.getName());
 					repaint();
 					return;
 				}
 				if (!r.getName().equals(text) && toolModel.contains(new Resource(text)))
 				{
-					JOptionPane.showMessageDialog(null, "There is already a tool with that name.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "There is already a tool with that name.", "", JOptionPane.ERROR_MESSAGE);
 					toolName.setText(r.getName());
 					repaint();
 					return;
@@ -333,7 +335,12 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)toolSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					JOptionPane.showMessageDialog(null, "Please stop the task whose tool has issues.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please stop the task whose tool has issues.", "", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (r.hasDepender())
+				{
+					JOptionPane.showMessageDialog(null, "There are tasks that need this tool so it cannot be changed", "", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				else
@@ -374,14 +381,14 @@ public class ResourcePanel extends JPanel
 				String text = partName.getText();
 				if ("".equals(text))
 				{
-					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Name of tool cannot be blank.", "", JOptionPane.ERROR_MESSAGE);
 					toolName.setText(r.getName());
 					repaint();
 					return;
 				}
 				if (!r.getName().equals(text) && partModel.contains(new Resource(text)))
 				{
-					JOptionPane.showMessageDialog(null, "There is already a part with that name.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "There is already a part with that name.", "", JOptionPane.ERROR_MESSAGE);
 					partName.setText(r.getName());
 					repaint();
 					return;
@@ -389,7 +396,12 @@ public class ResourcePanel extends JPanel
 				int amount = r.getAvailable() + (Integer)partSpinner.getValue() - r.getMax();
 				if (amount < 0)
 				{
-					JOptionPane.showMessageDialog(null, "Please stop the task whose part has issues.", "", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please stop the task whose part has issues.", "", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (r.hasDepender())
+				{
+					JOptionPane.showMessageDialog(null, "There are tasks that need this part so it cannot be changed", "", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				else
@@ -643,7 +655,7 @@ public class ResourcePanel extends JPanel
 	private void pickPart(Resource r)
 	{
 		partName.setText(r.getName());
-		partSpinner.setValue(r.getMax());
+		//partSpinner.setValue(r.getMax());
 		partChange.setEnabled(true);
 		partRemove.setEnabled(true);
 		partMarkBroken.setEnabled(true);
