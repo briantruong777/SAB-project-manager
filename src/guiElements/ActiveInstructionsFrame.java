@@ -1,6 +1,7 @@
 package guiElements;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -15,12 +16,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Locale;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -464,6 +465,9 @@ public class ActiveInstructionsFrame extends JFrame
 		    exportTaskDependencies(s3);
 		    workbook.write();
 		    workbook.close();
+		    Desktop dt = Desktop.getDesktop();
+		    //dt.open(new File(filename));
+		    dt.open(file);
 		    return true;
 		}
 		
@@ -507,7 +511,8 @@ public class ActiveInstructionsFrame extends JFrame
 		
 		public void exportTaskProperties(WritableSheet s2) throws WriteException, IOException
 		{
-			s2.setColumnView(2, 20);
+			s2.setColumnView(1, 60);
+			s2.setColumnView(2, 60);
 	     	s2.setColumnView(3, 20);
 	     	s2.setColumnView(4, 20);
 	     	s2.setColumnView(5, 20);
@@ -533,7 +538,7 @@ public class ActiveInstructionsFrame extends JFrame
 	     			sessions += "\012End Date: ";
 	     			if (s.getEndDate().isSet(Calendar.MINUTE))
 	     				sessions += df.format(s.getEndDate().getTime());
-	     			sessions += "Time Spent: ";
+	     			sessions += "\012Time Spent: ";
 	     			String timeStr = "";
 		     		if (t.getTimeSpent() != 0)
 		     		{	
@@ -542,7 +547,7 @@ public class ActiveInstructionsFrame extends JFrame
 		     			hrs %= 24;
 		     			sessions += "\012" + days + " days" ;
 		     		}
-		     		sessions += "\012";
+		     		sessions += "\012\012";
 	     		}
 	     		valueLabels.add(new Label(1, k, sessions));
 
