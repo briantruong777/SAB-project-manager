@@ -192,6 +192,7 @@ public class TaskPanel extends JPanel implements ItemListener, Comparator<TaskDi
 		{
 			switch(p.getStatus())
 			{
+				case UNAVAILABLE_PAUSED:
 				case UNAVAILABLE:
 					if (checkUnavailable.isSelected())
 						p.setVisible(true);

@@ -725,10 +725,7 @@ public class TaskInfoDialog extends JDialog
 								task.addParts(partCstrModel);
 								task.setPath(folderPath.getText());
 								task.setSteps(stepsTextArea.getText());
-								if (task.meetDependencies() && task.meetResources())
-									task.setStatus(Task.Status.UNSTARTED);
-								else
-									task.setStatus(Task.Status.UNAVAILABLE);
+								task.refreshStatus();
 								change = true;
 								break;
 							case EDIT:
@@ -761,7 +758,10 @@ public class TaskInfoDialog extends JDialog
 									task.setSteps(stepsTextArea.getText());
 								}
 
-								if (task.getStatus() == Task.Status.UNAVAILABLE || task.getStatus() == Task.Status.UNSTARTED)
+								if (task.getStatus() == Task.Status.UNAVAILABLE ||
+										task.getStatus() == Task.Status.UNAVAILABLE_PAUSED ||
+										task.getStatus() == Task.Status.UNSTARTED ||
+										task.getStatus() == Task.Status.PAUSED)
 								{
 									if (!task.getDependencies().containsAll(taskCstrModel) || !taskCstrModel.containsAll(task.getDependencies()))
 									{
@@ -781,10 +781,7 @@ public class TaskInfoDialog extends JDialog
 										task.clearParts();
 										task.addParts(partCstrModel);
 									}
-									if (task.meetDependencies() && task.meetResources())
-										task.setStatus(Task.Status.UNSTARTED);
-									else
-										task.setStatus(Task.Status.UNAVAILABLE);
+									task.refreshStatus();
 								}
 								break;
 							case VIEW:
@@ -891,13 +888,14 @@ public class TaskInfoDialog extends JDialog
 		switch(t.getStatus())
 		{
 			case UNAVAILABLE:
+			case UNAVAILABLE_PAUSED:
 			case UNSTARTED:
+			case PAUSED:
+			case COMPLETE:
 				enableLists(true);
 				dialog.deleteButton.setVisible(true);
 				break;
 			case WORKING:
-			case PAUSED:
-			case COMPLETE:
 				enableLists(false);
 				dialog.deleteButton.setVisible(false);
 				break;

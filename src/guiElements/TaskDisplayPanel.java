@@ -338,12 +338,16 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 		switch (task.getStatus())
 		{
 			case UNAVAILABLE:
+			case UNAVAILABLE_PAUSED:
 				workingButton.setVisible(true);
 				workingButton.setEnabled(false);
 				pauseButton.setVisible(false);
 				completeButton.setVisible(false);
 				undoCompleteButton.setVisible(false);
-				toolTip = "<html>Unavailable Task";
+				if (task.getStatus() == Task.Status.UNAVAILABLE)
+					toolTip = "<html>Unavailable Task";
+				else
+					toolTip = "<html>Unavailable Paused Task";
 
 				if (task.checkDependenciesUndoCompleted())
 				{
@@ -359,14 +363,20 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 
 					if (task.getUndoCompleted())
 					{
-						statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_red_square.png")));
+						if (task.getStatus() == Task.Status.UNAVAILABLE)
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_red_square.png")));
+						else
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/pause_red_square.png")));
 						toolTip += " (Undo-completed)<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
 							undoCompleteTasksStr;
 					}
 					else
 					{
-						statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_red.png")));
+						if (task.getStatus() == Task.Status.UNAVAILABLE)
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_red.png")));
+						else
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/pause_red.png")));
 						toolTip += "<br><br>" +
 							"Dependencies that were undo-completed:<br>" +
 							undoCompleteTasksStr;
@@ -376,12 +386,18 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				{
 					if (task.getUndoCompleted())
 					{
-						statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_square.png")));
+						if (task.getStatus() == Task.Status.UNAVAILABLE)
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable_square.png")));
+						else
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/pause_bw_square.png")));
 						toolTip += " (Undo-completed)";
 					}
 					else
 					{
-						statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable.png")));
+						if (task.getStatus() == Task.Status.UNAVAILABLE)
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/unavailable.png")));
+						else
+							statusLabel.setIcon(new ImageIcon(cl.getResource("res/pause_bw.png")));
 					}
 				}
 				statusLabel.setToolTipText(toolTip);
