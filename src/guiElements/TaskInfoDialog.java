@@ -397,16 +397,23 @@ public class TaskInfoDialog extends JDialog
 				{
 					for (Resource r : toolList.getSelectedValuesList())
 					{
+						boolean addAsConstraint = true;
 						for (ResourceConstraint rc: toolCstrModel)
 						{
 							if (rc.getName().equals(r.getName()))
 							{
 //								rc.setAmount((Integer)toolSpinner.getValue());
 //								toolCstrList.repaint();
+								//JOptionPane.showMessageDialog(addTool, "This tool has already been set as a constraint",
+									//	"", JOptionPane.ERROR_MESSAGE);
+								addAsConstraint = false;
 								break;
-							}
+							}								
 						}
-						toolCstrModel.add(new ResourceConstraint(r.getName()));//(Integer)toolSpinner.getValue()));
+						if (addAsConstraint)
+							toolCstrModel.add(new ResourceConstraint(r.getName()));//(Integer)toolSpinner.getValue()));
+						else
+							JOptionPane.showMessageDialog(addTool, "This tool has already been set as a constraint", "", JOptionPane.ERROR_MESSAGE);
 					}
 					toolCstrList.repaint();
 				}
@@ -593,16 +600,21 @@ public class TaskInfoDialog extends JDialog
 				{
 					for (Resource r : partList.getSelectedValuesList())
 					{
+						boolean addAsConstraint = true;
 						for (ResourceConstraint rc: partCstrModel)
 						{
 							if (rc.getName().equals(r.getName()))
 							{
 //								rc.setAmount(1);//(Integer)partSpinner.getValue());
 //								partCstrList.repaint();
+								addAsConstraint = false;
 								break;
 							}
 						}
-						partCstrModel.add(new ResourceConstraint(r.getName()));// (Integer)partSpinner.getValue()));
+						if (addAsConstraint)
+							partCstrModel.add(new ResourceConstraint(r.getName()));// (Integer)partSpinner.getValue()));
+						else
+							JOptionPane.showMessageDialog(addTool, "This part has already been set as a constraint", "", JOptionPane.ERROR_MESSAGE);						
 					}
 					partCstrList.repaint();
 				}
