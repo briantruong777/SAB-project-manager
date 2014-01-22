@@ -8,6 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -15,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -32,6 +36,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicListUI;
 
 import resourceModel.Inventory;
 import resourceModel.Resource;
@@ -239,9 +244,12 @@ public class TaskInfoDialog extends JDialog
 						repaint();
 					}
 				});
+        taskList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        taskList.setSelectionModel(new SpecialListSelectionModel());
+        MouseMotionListener[] ml = taskList.getMouseMotionListeners();
+        taskList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+        taskList.addMouseMotionListener(new SpecialMouseMotionListener());
 				taskScroll.setViewportView(taskList);
-				taskList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				taskList.setToolTipText("Ctrl+Click to multi-select");
 			}
 		}
 		{
@@ -294,9 +302,12 @@ public class TaskInfoDialog extends JDialog
 						repaint();
 					}
 				});
+        taskCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        taskCstrList.setSelectionModel(new SpecialListSelectionModel());
+        MouseMotionListener[] ml = taskCstrList.getMouseMotionListeners();
+        taskCstrList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+        taskCstrList.addMouseMotionListener(new SpecialMouseMotionListener());
 				taskCstrScroll.setViewportView(taskCstrList);
-				taskCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				taskCstrList.setToolTipText("Ctrl+Click to multi-select");
 			}
 		}
 		{
@@ -355,7 +366,6 @@ public class TaskInfoDialog extends JDialog
 					}
 				});
 				toolList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				toolList.setToolTipText("Ctrl+Click to multi-select");
 				toolList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -364,6 +374,10 @@ public class TaskInfoDialog extends JDialog
 						return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 					}
 				});
+        toolList.setSelectionModel(new SpecialListSelectionModel());
+        MouseMotionListener[] ml = toolList.getMouseMotionListeners();
+        toolList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+        toolList.addMouseMotionListener(new SpecialMouseMotionListener());
 				toolScroll.setViewportView(toolList);
 			}
 		}/*
@@ -443,7 +457,6 @@ public class TaskInfoDialog extends JDialog
 						}
 					});
 					toolCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-					toolCstrList.setToolTipText("Ctrl+Click to multi-select");
 					toolCstrList.setCellRenderer(new DefaultListCellRenderer()
 					{
 						public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -453,6 +466,10 @@ public class TaskInfoDialog extends JDialog
 							return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 						}
 					});
+					toolCstrList.setSelectionModel(new SpecialListSelectionModel());
+	        MouseMotionListener[] ml = toolCstrList.getMouseMotionListeners();
+	        toolCstrList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+	        toolCstrList.addMouseMotionListener(new SpecialMouseMotionListener());
 					toolCstrScroll.setViewportView(toolCstrList);
 				}
 			}
@@ -520,7 +537,6 @@ public class TaskInfoDialog extends JDialog
 					}
 				});
 				partList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				partList.setToolTipText("Ctrl+Click to multi-select");
 				partList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -529,6 +545,10 @@ public class TaskInfoDialog extends JDialog
 						return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 					}
 				});
+				partList.setSelectionModel(new SpecialListSelectionModel());
+        MouseMotionListener[] ml = partList.getMouseMotionListeners();
+        partList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+				partList.addMouseMotionListener(new SpecialMouseMotionListener());
 				partScroll.setViewportView(partList);
 			}
 		}/*
@@ -579,7 +599,6 @@ public class TaskInfoDialog extends JDialog
 					}
 				});
 				partCstrList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				partCstrList.setToolTipText("Ctrl+Click to multi-select");
 				partCstrList.setCellRenderer(new DefaultListCellRenderer()
 				{
 					public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
@@ -589,6 +608,10 @@ public class TaskInfoDialog extends JDialog
 						return super.getListCellRendererComponent(list, str, index, isSelected, cellHasFocus);
 					}
 				});
+				partCstrList.setSelectionModel(new SpecialListSelectionModel());
+        MouseMotionListener[] ml = partCstrList.getMouseMotionListeners();
+        partCstrList.removeMouseMotionListener(ml[0] instanceof BasicListUI.MouseInputHandler ? ml[0] : ml[1]);
+				partCstrList.addMouseMotionListener(new SpecialMouseMotionListener());
 				partCstrScroll.setViewportView(partCstrList);
 			}
 		}
@@ -1042,4 +1065,31 @@ public class TaskInfoDialog extends JDialog
 	{
 		return oldName;
 	}
+	
+	private class SpecialListSelectionModel extends DefaultListSelectionModel
+  {
+    @Override
+    public void setSelectionInterval(int index0, int index1)
+    {
+      if (index0 == index1)
+      {
+        if (super.isSelectedIndex(index0))
+        {
+          super.removeSelectionInterval(index0, index1);
+        }
+        else
+        {
+          super.addSelectionInterval(index0, index1);
+        }
+      }
+    }
+  }
+	
+	private class SpecialMouseMotionListener implements MouseMotionListener
+  {
+    @Override
+    public void mouseDragged(MouseEvent arg0) {}
+    @Override
+    public void mouseMoved(MouseEvent arg0) {}
+  }
 }
