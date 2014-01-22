@@ -1,16 +1,36 @@
 package guiElements;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
-import java.awt.*;
-import java.awt.event.*;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import resourceModel.*;
+import resourceModel.BrokenReport;
+import resourceModel.Inventory;
+import resourceModel.Resource;
 import taskModel.Task;
-import guiElements.Runner;
 
 @SuppressWarnings("serial")
 public class ResourcePanel extends JPanel
@@ -494,6 +514,8 @@ public class ResourcePanel extends JPanel
 
 				if (r.isBroken())
 				{
+					BrokenReport report = r.getLatestReport();
+					report.markAsFixed(Calendar.getInstance());
 					toolMarkBroken.setText("Mark Broken");
 					r.setBroken(false);
 					Runner.refreshTaskPanelTasks(r.getDependers());
@@ -501,6 +523,20 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
+					JScrollPane textScroll;
+					JTextArea textArea;
+					textArea = new JTextArea();
+					textArea.setColumns(30);
+					textArea.setRows(10);
+					textArea.setLineWrap( true );
+					textArea.setWrapStyleWord( true );
+					textScroll = new JScrollPane(textArea);
+					String text = "";
+					textArea.setText(text);
+					textArea.setEditable(true);
+					int option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (option == JOptionPane.OK_OPTION)
+						r.addReport(textArea.getText(), Calendar.getInstance());		
 					// If any working tasks, ask to pause them
 					ArrayList<Task> workingDependers = new ArrayList<Task>();
 					for (Task t : r.getDependers())

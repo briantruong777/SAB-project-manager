@@ -2,6 +2,7 @@ package resourceModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 
 import taskModel.Task;
@@ -14,10 +15,12 @@ public class Resource implements Serializable, Comparable<Resource>
 	private int available;
 	private ArrayList<Task> dependers;
 	private boolean broken;
+	private ArrayList<BrokenReport> reports;
 	
 	public Resource(String name)
 	{
 		this(name, 0);
+		reports = new ArrayList<BrokenReport>();
 	}
 	
 	public Resource(String name, int max)
@@ -26,6 +29,7 @@ public class Resource implements Serializable, Comparable<Resource>
 		this.max = available = max;
 		dependers = new ArrayList<Task>();
 		broken = false;
+		reports = new ArrayList<BrokenReport>();
 	}
 
 	public String getName()
@@ -95,6 +99,16 @@ public class Resource implements Serializable, Comparable<Resource>
 	public boolean equals(Object o)
 	{
 		return name.equals(o.toString());
+	}
+	
+	public void addReport(String s, Calendar startDate)
+	{
+		reports.add(new BrokenReport(s, startDate));
+	}
+	
+	public BrokenReport getLatestReport()
+	{
+		return reports.get(reports.size()-1);
 	}
 	
 	public String toString()
