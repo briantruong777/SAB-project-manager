@@ -558,12 +558,12 @@ public class ActiveInstructionsFrame extends JFrame
 		
 		public void exportTaskProperties(WritableSheet s2) throws WriteException, IOException
 		{
-			s2.setColumnView(1, 60);
-			s2.setColumnView(2, 60);
+			s2.setColumnView(1, 40);
+			s2.setColumnView(2, 40);
 	     	s2.setColumnView(3, 20);
-	     	s2.setColumnView(4, 20);
+	     	/*s2.setColumnView(4, 20);
 	     	s2.setColumnView(5, 20);
-	     	s2.setColumnView(6, 40);
+	     	s2.setColumnView(6, 40);*/
 	     	ArrayList<Label> propertyLabels = new ArrayList<Label>();
 	     	propertyLabels.add(new Label(0, 0, "Task"));
 	     	propertyLabels.add(new Label(1, 0, "Sessions"));
