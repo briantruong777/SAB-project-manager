@@ -111,6 +111,11 @@ public class Resource implements Serializable, Comparable<Resource>
 		return reports.get(reports.size()-1);
 	}
 	
+	public ArrayList<BrokenReport> getBrokenReports()
+	{
+		return reports;
+	}
+	
 	public String toString()
 	{
 		return name;

@@ -36,7 +36,9 @@ import jxl.write.Number;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import resourceModel.BrokenReport;
 import resourceModel.Inventory;
+import resourceModel.Resource;
 import resourceModel.ResourceConstraint;
 import taskModel.Session;
 import taskModel.Task;
@@ -476,19 +478,28 @@ public class ActiveInstructionsFrame extends JFrame
 			Label tools = new Label(0, 0, "Tool");
 		    Label numAvailableTools = new Label(1, 0, "Number Available");
 		    Label numMaxTools = new Label(2, 0, "Total Amount");
-		    Label parts = new Label(4, 0, "Part");
-		    Label numAvailableParts = new Label(5, 0, "Number Available");
-		    Label numMaxParts = new Label(6, 0, "Total Amount");
+		    Label brokenTools = new Label(3, 0, "Broken Reports");
+		    Label parts = new Label(5, 0, "Part");
+		    Label numAvailableParts = new Label(6, 0, "Number Available");
+		    Label numMaxParts = new Label(7, 0, "Total Amount");
+		    Label brokenParts = new Label(8, 0, "Broken Reports");		    
+		    s1.setColumnView(0, 15);
 		    s1.setColumnView(1, 15);
 		    s1.setColumnView(2, 15);
+		    s1.setColumnView(3, 40);
+		    s1.setColumnView(4, 30);
 		    s1.setColumnView(5, 15);
 		    s1.setColumnView(6, 15);
+		    s1.setColumnView(7, 15);
+		    s1.setColumnView(8, 40);
 		    s1.addCell(tools);
 		    s1.addCell(parts);
 		    s1.addCell(numAvailableTools);
 		    s1.addCell(numAvailableParts);
 		    s1.addCell(numMaxTools);
 		    s1.addCell(numMaxParts);
+		    s1.addCell(brokenTools);
+		    s1.addCell(brokenParts);
 	     	for (int j = 1; j <= Inventory.getNumTools(); j++)
 	    	{
 	    		Label l1 = new Label(0,j, Inventory.getTool(j-1).getName());
@@ -498,14 +509,50 @@ public class ActiveInstructionsFrame extends JFrame
 	    	    s1.addCell(n1);
 	    	    s1.addCell(n2);
 	    	}
+	     	for (int k = 1; k <= Inventory.getNumTools(); k++)
+	     	{
+	     		Resource r = Inventory.getTool(k-1);
+	     		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+	     		String reports = "";
+	     		for (BrokenReport b : r.getBrokenReports())
+	     		{
+	     			reports += b.getReport() + "\012";
+	     			reports += "Broken on: ";
+	     			if (b.getStartDate().isSet(Calendar.MINUTE))
+	     				reports += df.format(b.getStartDate().getTime());
+	     			reports += "\012Fixed On: ";
+	     			if (b.getEndDate().isSet(Calendar.MINUTE))
+	     				reports += df.format(b.getEndDate().getTime());
+		     		reports += "\012\012";
+		     		s1.addCell(new Label(3, k, reports));
+	     		}
+	     	}
 	     	for (int i = 1; i <= Inventory.getNumParts(); i++)
 	     	{
-	     		Label l1 = new Label(4,i, Inventory.getPart(i-1).getName());
-	    		Number n1 = new Number(5,i, Inventory.getPart(i-1).getAvailable());
-	    		Number n2 = new Number(6,i, Inventory.getPart(i-1).getMax());
+	     		Label l1 = new Label(5,i, Inventory.getPart(i-1).getName());
+	    		Number n1 = new Number(6,i, Inventory.getPart(i-1).getAvailable());
+	    		Number n2 = new Number(7,i, Inventory.getPart(i-1).getMax());
 	    	    s1.addCell(l1);
 	    	    s1.addCell(n1);
 	    	    s1.addCell(n2);
+	     	}     	
+	     	for (int m = 1; m <= Inventory.getNumParts(); m++)
+	     	{
+	     		Resource r = Inventory.getPart(m-1);
+	     		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+	     		String reports = "";
+	     		for (BrokenReport b : r.getBrokenReports())
+	     		{
+	     			reports += b.getReport() + "\012";
+	     			reports += "Broken on: ";
+	     			if (b.getStartDate().isSet(Calendar.MINUTE))
+	     				reports += df.format(b.getStartDate().getTime());
+	     			reports += "\012Fixed On: ";
+	     			if (b.getEndDate().isSet(Calendar.MINUTE))
+	     				reports += df.format(b.getEndDate().getTime());
+		     		reports += "\012\012";
+		     		s1.addCell(new Label(8, m, reports));
+	     		}
 	     	}
 		}
 		
