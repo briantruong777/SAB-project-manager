@@ -541,22 +541,6 @@ public class ResourcePanel extends JPanel
 						confirmStr += "<br><br>Do you want to mark this tool as broken and set the above tasks to the Paused state?";
 						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, confirmStr, "Mark this tool as broken?", JOptionPane.YES_NO_OPTION))
 						{
-							JScrollPane textScroll;
-							JTextArea textArea;
-							textArea = new JTextArea();
-							textArea.setColumns(30);
-							textArea.setRows(10);
-							textArea.setLineWrap( true );
-							textArea.setWrapStyleWord( true );
-							textScroll = new JScrollPane(textArea);
-							String text = "";
-							textArea.setText(text);
-							textArea.setEditable(true);
-							int option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-							if (option == JOptionPane.OK_OPTION)
-								r.addReport(textArea.getText(), Calendar.getInstance());
-							else
-							  return;
 							// Set all dependers to Paused so they can later be set to
 							// Unavailable
 							for (Task t : r.getDependers())
@@ -574,6 +558,24 @@ public class ResourcePanel extends JPanel
 							return;
 						}
 					}
+					
+					JScrollPane textScroll;
+          JTextArea textArea;
+          textArea = new JTextArea();
+          textArea.setColumns(30);
+          textArea.setRows(10);
+          textArea.setLineWrap( true );
+          textArea.setWrapStyleWord( true );
+          textScroll = new JScrollPane(textArea);
+          String text = "";
+          textArea.setText(text);
+          textArea.setEditable(true);
+          int option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          if (option == JOptionPane.OK_OPTION)
+            r.addReport(textArea.getText(), Calendar.getInstance());
+          else
+            return;
+          
 					r.setBroken(true);
 					toolMarkBroken.setText("Unmark Broken");
 					Runner.refreshTaskPanelTasks(r.getDependers());
@@ -624,22 +626,7 @@ public class ResourcePanel extends JPanel
 					{
 						if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null, "Marking this part as broken\nwill set any Working\ntasks dependent on it\nto the Paused state.\n\nDo you want to mark this part as broken and set relevant\ndependent tasks to the Paused state?", "Mark this part as broken?", JOptionPane.YES_NO_OPTION))
 						{
-							  JScrollPane textScroll;
-					          JTextArea textArea;
-					          textArea = new JTextArea();
-					          textArea.setColumns(30);
-					          textArea.setRows(10);
-					          textArea.setLineWrap( true );
-					          textArea.setWrapStyleWord( true );
-					          textScroll = new JScrollPane(textArea);
-					          String text = "";
-					          textArea.setText(text);
-					          textArea.setEditable(true);
-					          int option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-					          if (option == JOptionPane.OK_OPTION)
-					            r.addReport(textArea.getText(), Calendar.getInstance());
-					          else
-					            return;
+							  
 							// Set all dependers to Paused so they can later be set to
 							// Unavailable
 							for (Task t : r.getDependers())
@@ -657,7 +644,26 @@ public class ResourcePanel extends JPanel
 						{
 							return;
 						}
+						
 					}
+					
+					JScrollPane textScroll;
+          JTextArea textArea;
+          textArea = new JTextArea();
+          textArea.setColumns(30);
+          textArea.setRows(10);
+          textArea.setLineWrap( true );
+          textArea.setWrapStyleWord( true );
+          textScroll = new JScrollPane(textArea);
+          String text = "";
+          textArea.setText(text);
+          textArea.setEditable(true);
+          int option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          if (option == JOptionPane.OK_OPTION)
+            r.addReport(textArea.getText(), Calendar.getInstance());
+          else
+            return;
+          
 					r.setBroken(true);
 					partMarkBroken.setText("Unmark Broken");
 					Runner.refreshTaskPanelTasks(r.getDependers());
