@@ -25,6 +25,8 @@ import taskModel.TaskManager;
 
 public class Runner 
 {
+  private static final String CONTACT_INFO = "Andy Myrna (630) 536-7620"; // NOTE:CONTACT_INFO
+  private static final int CONTACT_MAX_LENGTH = 200; // NOTE:CONTACT_MAX_LENGTH
 	private static ActiveInstructionsFrame frame;
 
 	public static void main(String[] args)
@@ -127,6 +129,46 @@ public class Runner
 			JOptionPane.showMessageDialog(frame, "IO Error: Failed to save misc file!", null, JOptionPane.ERROR_MESSAGE);
 			// Not returning false since password is secondary
 		}
+
+    // Saving contact file
+    File contactFile = new File(backupDirectory.getAbsolutePath() + "\\contact.dat");
+    if (contactFile.exists())
+    {
+      if (!contactFile.isFile())
+      {
+        System.err.println("Contact file already exists as directory!");
+        JOptionPane.showMessageDialog(frame, "There already is a directory here of that name! Contact file was not created.", null, JOptionPane.ERROR_MESSAGE);
+        // Not returning false since contact is secondary
+      }
+    }
+    else
+    {
+      try
+      {
+        contactFile.createNewFile();
+      }
+      catch(IOException ex)
+      {
+        ex.printStackTrace();
+        System.err.println("Failed to create contact file!");
+        JOptionPane.showMessageDialog(frame, "IO Error: Failed to create contact file!", null, JOptionPane.ERROR_MESSAGE);
+        // Not returning false since contact is secondary
+      }
+    }
+		
+    try
+    {
+      FileWriter fw = new FileWriter(contactFile);
+      fw.write(CONTACT_INFO);
+      fw.flush();
+    }
+    catch (IOException ex)
+    {
+      ex.printStackTrace();
+      System.err.println("Failed to save contact file!");
+      JOptionPane.showMessageDialog(frame, "IO Error: Failed to save contact file!", null, JOptionPane.ERROR_MESSAGE);
+      // Not returning false since contact is secondary
+    }
 
 		return true;
 	}
@@ -325,6 +367,40 @@ public class Runner
 			JOptionPane.showMessageDialog(frame, "Failed to find password file!", null, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
+	}
+	
+	public static String getContact()
+	{
+	  File contactFile = new File(frame.getFile().getAbsolutePath() + "-Backup\\contact.dat");
+    if (contactFile.isFile())
+    {
+      char[] charArray = new char[CONTACT_MAX_LENGTH];
+      FileReader fr;
+      try
+      {
+        fr = new FileReader(contactFile);
+        fr.read(charArray);
+        return ((new String(charArray)).trim());
+      }
+      catch (FileNotFoundException ex)
+      {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(frame, "FileNotFound Error: Could not find contact file!", null, JOptionPane.ERROR_MESSAGE);
+        return CONTACT_INFO;
+      }
+      catch (IOException ex)
+      {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(frame, "IO Error: Could not read contact file!", null, JOptionPane.ERROR_MESSAGE);
+        return CONTACT_INFO;
+      }
+    }
+    else
+    {
+      System.err.println("Failed to find contact file!");
+      JOptionPane.showMessageDialog(frame, "Failed to find contact file!", null, JOptionPane.ERROR_MESSAGE);
+      return CONTACT_INFO;
+    }
 	}
 	
 	public static void notifyChange()
