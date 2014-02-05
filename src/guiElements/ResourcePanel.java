@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -31,6 +33,7 @@ import resourceModel.BrokenReport;
 import resourceModel.Inventory;
 import resourceModel.Resource;
 import taskModel.Task;
+import taskModel.TaskManager;
 
 @SuppressWarnings("serial")
 public class ResourcePanel extends JPanel
@@ -51,12 +54,20 @@ public class ResourcePanel extends JPanel
 	private JButton partRemove;
 	private JButton toolMarkBroken;
 	private JButton partMarkBroken;
+
+  private JPanel fbDialogPanel;
+  private JTextField builderTextField;
+  private JTextField foremanTextField;
+  
+  private ResourcePanel thisPanel;
 	
 	/**
 	 * Create the panel.
 	 */
 	public ResourcePanel()
 	{
+	  thisPanel = this;
+	  
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -559,6 +570,44 @@ public class ResourcePanel extends JPanel
 						}
 					}
 					
+					// Getting foreman and builder name
+          foremanTextField.setText("");
+          builderTextField.setText("");
+          while (foremanTextField.getText().length() == 0 ||
+                 builderTextField.getText().length() == 0)
+          {
+            int option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
+              "Foreman and Builder Name", JOptionPane.OK_CANCEL_OPTION,
+              JOptionPane.QUESTION_MESSAGE);
+            if (option == JOptionPane.OK_OPTION)
+            {
+              if (foremanTextField.getText().length() == 0 ||
+                 builderTextField.getText().length() == 0)
+              {
+                JOptionPane.showMessageDialog(thisPanel,
+                  "Foreman and Builder name must both be provided",
+                  "Foreman and Builder Name Issue", JOptionPane.ERROR_MESSAGE);
+              }
+            }
+            else
+            {
+              return;
+            }
+          }
+          JPanel taskComboPanel = new JPanel();
+          taskComboPanel.setLayout(new BoxLayout(taskComboPanel, BoxLayout.Y_AXIS));
+          ArrayList taskArrayList = TaskManager.getSortedTasks();
+          Task[] taskArray = new Task[10];
+          taskArrayList.toArray(taskArray);
+          //generate array of strings
+          JComboBox<Task> taskComboBox = new JComboBox<Task>(taskArray);
+          taskComboPanel.add(new JLabel("Select the task the part was broken on"));
+          taskComboPanel.add(taskComboBox);
+          int result = JOptionPane.showConfirmDialog(thisPanel, taskComboPanel, "Select a Task",
+              JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+          if (result != JOptionPane.OK_OPTION)
+            return;
+					
 					JScrollPane textScroll;
           JTextArea textArea;
           textArea = new JTextArea();
@@ -572,7 +621,8 @@ public class ResourcePanel extends JPanel
           textArea.setEditable(true);
           int option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
-            r.addReport(textArea.getText(), Calendar.getInstance());
+            r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
+                foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
           else
             return;
           
@@ -647,6 +697,44 @@ public class ResourcePanel extends JPanel
 						
 					}
 					
+					// Getting foreman and builder name
+		      foremanTextField.setText("");
+		      builderTextField.setText("");
+		      while (foremanTextField.getText().length() == 0 ||
+		             builderTextField.getText().length() == 0)
+		      {
+		        int option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
+		          "Foreman and Builder Name", JOptionPane.OK_CANCEL_OPTION,
+		          JOptionPane.QUESTION_MESSAGE);
+		        if (option == JOptionPane.OK_OPTION)
+		        {
+		          if (foremanTextField.getText().length() == 0 ||
+		             builderTextField.getText().length() == 0)
+		          {
+		            JOptionPane.showMessageDialog(thisPanel,
+		              "Foreman and Builder name must both be provided",
+		              "Foreman and Builder Name Issue", JOptionPane.ERROR_MESSAGE);
+		          }
+		        }
+		        else
+		        {
+		          return;
+		        }
+		      }
+		      JPanel taskComboPanel = new JPanel();
+          taskComboPanel.setLayout(new BoxLayout(taskComboPanel, BoxLayout.Y_AXIS));
+		      ArrayList taskArrayList = TaskManager.getSortedTasks();
+		      Task[] taskArray = new Task[10];
+		      taskArrayList.toArray(taskArray);
+		      //generate array of strings
+		      JComboBox<Task> taskComboBox = new JComboBox<Task>(taskArray);
+		      taskComboPanel.add(new JLabel("Select the task the part was broken on"));
+		      taskComboPanel.add(taskComboBox);
+		      int result = JOptionPane.showConfirmDialog(thisPanel, taskComboPanel, "Select a Task",
+		          JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		      if (result != JOptionPane.OK_OPTION)
+		        return;
+		      
 					JScrollPane textScroll;
           JTextArea textArea;
           textArea = new JTextArea();
@@ -660,7 +748,8 @@ public class ResourcePanel extends JPanel
           textArea.setEditable(true);
           int option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
-            r.addReport(textArea.getText(), Calendar.getInstance());
+            r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
+                foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
           else
             return;
           
@@ -681,6 +770,15 @@ public class ResourcePanel extends JPanel
 		gbc_partMarkBroken.gridy = 7;
 		add(partMarkBroken, gbc_partMarkBroken);
 		
+		// Setting up fbDialogPanel
+    fbDialogPanel = new JPanel();
+    builderTextField = new JTextField();
+    foremanTextField = new JTextField();
+    fbDialogPanel.setLayout(new BoxLayout(fbDialogPanel, BoxLayout.Y_AXIS));
+    fbDialogPanel.add(new JLabel("Builder Name:"));
+    fbDialogPanel.add(builderTextField);
+    fbDialogPanel.add(new JLabel("Foreman Name:"));
+    fbDialogPanel.add(foremanTextField);
 	}
 	
 	private void unpickTool()

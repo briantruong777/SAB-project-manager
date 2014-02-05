@@ -8,13 +8,19 @@ public class BrokenReport implements Serializable
 	private String report;
 	private Calendar startDate;
 	private Calendar endDate;
+	private String builder;
+	private String foreman;
+	private String task;
 	
-	public BrokenReport(String r, Calendar curTime)
+	public BrokenReport(String r, Calendar curTime, String b, String f, String t)
 	{
 		report = r;
 		startDate = curTime;
 		endDate = Calendar.getInstance();
 		endDate.clear(); // Invalidates value
+		builder = b;
+		foreman = f;
+		task = t;
 	}
 	
 	public String getReport()
@@ -36,6 +42,21 @@ public class BrokenReport implements Serializable
 	{
 		endDate = curTime;
 	}
+	
+	public String getBuilder()
+	{
+	  return builder;
+	}
+  
+  public String getForeman()
+  {
+    return foreman;
+  }
+  
+  public String getTask()
+  {
+    return task;
+  }
 	
 	public String toString()
 	{

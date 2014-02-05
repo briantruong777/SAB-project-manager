@@ -101,9 +101,9 @@ public class Resource implements Serializable, Comparable<Resource>
 		return name.equals(o.toString());
 	}
 	
-	public void addReport(String s, Calendar startDate)
+	public void addReport(String s, Calendar startDate, String b, String f, String t)
 	{
-		reports.add(new BrokenReport(s, startDate));
+		reports.add(new BrokenReport(s, startDate, b, f, t));
 	}
 	
 	public BrokenReport getLatestReport()
