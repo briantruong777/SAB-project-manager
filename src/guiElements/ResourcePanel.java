@@ -570,13 +570,26 @@ public class ResourcePanel extends JPanel
 						}
 					}
 					
+					String dispString = "Have the correct people been contacted?\n" + Runner.getContact();
+					int option = JOptionPane.showConfirmDialog(thisPanel, dispString, "Confirm the following",
+					    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+					if (option == JOptionPane.NO_OPTION)
+					{
+					  JOptionPane.showMessageDialog(thisPanel, "Please contact the correct people");
+					  return;
+					}
+					else if (option == JOptionPane.CANCEL_OPTION)
+					{
+					  return;
+					}
+					
 					// Getting foreman and builder name
           foremanTextField.setText("");
           builderTextField.setText("");
           while (foremanTextField.getText().length() == 0 ||
                  builderTextField.getText().length() == 0)
           {
-            int option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
+            option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
               "Foreman and Builder Name", JOptionPane.OK_CANCEL_OPTION,
               JOptionPane.QUESTION_MESSAGE);
             if (option == JOptionPane.OK_OPTION)
@@ -619,7 +632,7 @@ public class ResourcePanel extends JPanel
           String text = "";
           textArea.setText(text);
           textArea.setEditable(true);
-          int option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
             r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
                 foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
@@ -697,13 +710,26 @@ public class ResourcePanel extends JPanel
 						
 					}
 					
+					String dispString = "Have the correct people been contacted?\n" + Runner.getContact();
+          int option = JOptionPane.showConfirmDialog(thisPanel, dispString, "Confirm the following",
+              JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+          if (option == JOptionPane.NO_OPTION)
+          {
+            JOptionPane.showMessageDialog(thisPanel, "Please contact the correct people");
+            return;
+          }
+          else if (option == JOptionPane.CANCEL_OPTION)
+          {
+            return;
+          }
+					
 					// Getting foreman and builder name
 		      foremanTextField.setText("");
 		      builderTextField.setText("");
 		      while (foremanTextField.getText().length() == 0 ||
 		             builderTextField.getText().length() == 0)
 		      {
-		        int option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
+		        option = JOptionPane.showConfirmDialog(thisPanel, fbDialogPanel,
 		          "Foreman and Builder Name", JOptionPane.OK_CANCEL_OPTION,
 		          JOptionPane.QUESTION_MESSAGE);
 		        if (option == JOptionPane.OK_OPTION)
@@ -746,7 +772,7 @@ public class ResourcePanel extends JPanel
           String text = "";
           textArea.setText(text);
           textArea.setEditable(true);
-          int option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+          option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
             r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
                 foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
