@@ -610,7 +610,7 @@ public class ResourcePanel extends JPanel
           JPanel taskComboPanel = new JPanel();
           taskComboPanel.setLayout(new BoxLayout(taskComboPanel, BoxLayout.Y_AXIS));
           ArrayList taskArrayList = TaskManager.getSortedTasks();
-          Task[] taskArray = new Task[10];
+          Task[] taskArray = new Task[taskArrayList.size()];
           taskArrayList.toArray(taskArray);
           //generate array of strings
           JComboBox<Task> taskComboBox = new JComboBox<Task>(taskArray);
@@ -635,7 +635,7 @@ public class ResourcePanel extends JPanel
           option = JOptionPane.showConfirmDialog(toolMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
             r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
-                foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
+                foremanTextField.getText(), taskComboBox.getSelectedItem() != null ? taskComboBox.getSelectedItem().toString() : "No Task");
           else
             return;
           
@@ -750,7 +750,7 @@ public class ResourcePanel extends JPanel
 		      JPanel taskComboPanel = new JPanel();
           taskComboPanel.setLayout(new BoxLayout(taskComboPanel, BoxLayout.Y_AXIS));
 		      ArrayList taskArrayList = TaskManager.getSortedTasks();
-		      Task[] taskArray = new Task[10];
+		      Task[] taskArray = new Task[taskArrayList.size()];
 		      taskArrayList.toArray(taskArray);
 		      //generate array of strings
 		      JComboBox<Task> taskComboBox = new JComboBox<Task>(taskArray);
@@ -775,7 +775,7 @@ public class ResourcePanel extends JPanel
           option = JOptionPane.showConfirmDialog(partMarkBroken, textScroll, "Broken Resource Report", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
           if (option == JOptionPane.OK_OPTION)
             r.addReport(textArea.getText(), Calendar.getInstance(), builderTextField.getText(),
-                foremanTextField.getText(), taskComboBox.getSelectedItem().toString());
+                foremanTextField.getText(), taskComboBox.getSelectedItem() != null ? taskComboBox.getSelectedItem().toString() : "No Task");
           else
             return;
           
