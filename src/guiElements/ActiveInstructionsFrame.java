@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -224,9 +225,11 @@ public class ActiveInstructionsFrame extends JFrame
 						export();					
 					} catch (WriteException e1) {
 						e1.printStackTrace();
+					}catch (FileNotFoundException e1){
+						JOptionPane.showMessageDialog(null, "Error! The file could not be saved to that location. The file with that name may already be open.", null, JOptionPane.ERROR_MESSAGE);
 					} catch (IOException e1) {
 						e1.printStackTrace();
-					}
+					} 			
 					break;
 				case "Quit":						
 					if (pauseTasks() && savedChanges())
@@ -452,10 +455,12 @@ public class ActiveInstructionsFrame extends JFrame
 				return false;
 			File file = fileChooser.getSelectedFile();
 			String filename = file.getAbsolutePath();
-			if (!filename.substring(filename.length()-4, filename.length()).equals(".xls"))
+			String tempname = getOnlyFileName(filename);
+			if (tempname.length() < 4 || !filename.substring(filename.length()-4, filename.length()).equals(".xls"))
 			{
 				filename +=".xls";
 			}
+			file = new File(filename);
 			WorkbookSettings ws = new WorkbookSettings();
 		    ws.setLocale(new Locale("en", "EN"));
 		    WritableWorkbook workbook = Workbook.createWorkbook(new File(filename), ws);		
@@ -473,6 +478,18 @@ public class ActiveInstructionsFrame extends JFrame
 		    return true;
 		}
 		
+		public String getOnlyFileName(String s)
+		{
+			String temp = s;
+			do
+			{
+				int index = temp.indexOf('\\');
+				if (index != -1)
+					temp = temp.substring(index+1, temp.length());
+			}
+			while (temp.indexOf('\\') != -1);
+			return temp;
+		}
 		public void exportInventory(WritableSheet s1) throws WriteException, IOException
 		{
 			Label tools = new Label(0, 0, "Tool");
