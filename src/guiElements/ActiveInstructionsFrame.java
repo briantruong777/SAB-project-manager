@@ -590,9 +590,10 @@ public class ActiveInstructionsFrame extends JFrame
 		     		if (t.getTimeSpent() != 0)
 		     		{	
 		     			long hrs = t.getTimeSpent() / 1000 / 60 / 60;
-		     			long days = hrs / 24;
+		     			long minutes = t.getTimeSpent() / 1000 / 60;
 		     			hrs %= 24;
-		     			sessions += "\012" + days + " days" ;
+		     			minutes %= 60;
+		     			sessions += "\012" + hrs + " hour(s) and " + minutes + " minute(s)";
 		     		}
 		     		sessions += "\012\012";
 	     		}
