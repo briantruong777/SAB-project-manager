@@ -527,44 +527,6 @@ public class TaskDisplayPanel extends JPanel implements ActionListener, MouseLis
 				}
 				statusLabel.setToolTipText(toolTip);
 
-				brokenTools = task.getBrokenTools();
-				brokenParts = task.getBrokenParts();
-				if (brokenTools.size() > 0 || brokenParts.size() > 0)
-				{
-					String brokenToolTip = "<html>Some resource(s) are broken<br>";
-
-					// Finding broken tools
-					if (brokenTools.size() > 0)
-					{
-						String brokenToolsStr = " - " +
-							brokenTools.get(0).getName();
-						for (int i = 1; i < brokenTools.size(); i++)
-						{
-							brokenToolsStr += "<br> - " + brokenTools.get(i).getName();
-						}
-
-						brokenToolTip += "<br>Broken Tools:<br>" + brokenToolsStr;
-					}
-					// Finding broken parts
-					if (brokenParts.size() > 0)
-					{
-						String brokenPartsStr = " - " +
-							brokenParts.get(0).getName();
-						for (int i = 1; i < brokenParts.size(); i++)
-						{
-							brokenPartsStr += "<br> - " + brokenParts.get(i).getName();
-						}
-
-						brokenToolTip += "<br>Broken Parts:<br>" + brokenPartsStr;
-					}
-
-					brokenResourceLabel.setVisible(true);
-					brokenResourceLabel.setToolTipText(brokenToolTip);
-				}
-				else // if (brokenTools.size() > 0 || brokenParts.size() > 0)
-				{
-					brokenResourceLabel.setVisible(false);
-				}
 				break;
 			default:
 				break;
