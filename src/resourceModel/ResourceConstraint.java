@@ -14,6 +14,12 @@ public class ResourceConstraint implements Serializable, Comparable<ResourceCons
 		this.amount = 1;
 	}
 
+	public ResourceConstraint(String name, int amount)
+	{
+		this.name = name;
+		this.amount = amount;
+	}
+	
 	public String getName()
 	{
 		return name;
@@ -42,5 +48,10 @@ public class ResourceConstraint implements Serializable, Comparable<ResourceCons
 	public String toString()
 	{
 		return name;
+	}
+	
+	public void increment()
+	{
+		this.amount++;
 	}
 }

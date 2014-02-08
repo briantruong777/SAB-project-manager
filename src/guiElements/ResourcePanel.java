@@ -93,7 +93,7 @@ public class ResourcePanel extends JPanel
 		gbc_toolLabel.gridy = 0;
 		add(toolLabel, gbc_toolLabel);
 		
-		JLabel partLabel = new JLabel("Parts");
+		JLabel partLabel = new JLabel("Parts (Available/Max)");
 		GridBagConstraints gbc_partLabel = new GridBagConstraints();
 		gbc_partLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_partLabel.gridwidth = 3;
@@ -238,7 +238,7 @@ public class ResourcePanel extends JPanel
 		add(toolSpinner, gbc_toolSpinner);
 		partSpinner = new JSpinner();
 		partSpinner.setValue(1);
-		/*
+		
 		JLabel partMaxLabel = new JLabel("Max#");
 		GridBagConstraints gbc_partMaxLabel = new GridBagConstraints();
 		gbc_partMaxLabel.insets = new Insets(5, 5, 5, 5);
@@ -254,7 +254,7 @@ public class ResourcePanel extends JPanel
 		gbc_partSpinner.insets = new Insets(5, 5, 5, 5);
 		gbc_partSpinner.gridx = 5;
 		gbc_partSpinner.gridy = 3;
-		add(partSpinner, gbc_partSpinner);*/
+		add(partSpinner, gbc_partSpinner);
 		
 		JButton toolAdd = new JButton("Add");
 		toolAdd.addActionListener(new ActionListener()
@@ -307,7 +307,7 @@ public class ResourcePanel extends JPanel
 					JOptionPane.showMessageDialog(null, "Part is not named.", "", JOptionPane.PLAIN_MESSAGE);
 					return;
 				}
-				Resource newPart = new Resource(partName.getText(), 1);//(Integer)partSpinner.getValue());
+				Resource newPart = new Resource(partName.getText(), (Integer)partSpinner.getValue());
 				int i = partModel.indexOf(newPart);
 				
 				// does not contain given resource
@@ -318,14 +318,13 @@ public class ResourcePanel extends JPanel
 				}
 				else
 				{
-					/*
 					Resource existPart = partModel.get(i);
 					existPart.setMax(existPart.getMax() + newPart.getMax());
 					existPart.setAvailable(existPart.getAvailable() + newPart.getMax());
 					for (Task t: existPart.getDependers())
 						t.refreshStatus();
-					partModel.notifyChanged(i);*/
-					JOptionPane.showMessageDialog(null, "Part with that name already exists", "", JOptionPane.ERROR_MESSAGE);					
+					partModel.notifyChanged(i);
+					//JOptionPane.showMessageDialog(null, "Part with that name already exists", "", JOptionPane.ERROR_MESSAGE);					
 				}
 				partList.clearSelection();
 				unpickPart();
@@ -832,7 +831,7 @@ public class ResourcePanel extends JPanel
 	private void unpickPart()
 	{
 		partName.setText("");
-		//partSpinner.setValue(1);
+		partSpinner.setValue(1);
 		partChange.setEnabled(false);
 		partRemove.setEnabled(false);
 		partMarkBroken.setEnabled(false);
@@ -842,7 +841,7 @@ public class ResourcePanel extends JPanel
 	private void pickPart(Resource r)
 	{
 		partName.setText(r.getName());
-		//partSpinner.setValue(r.getMax());
+		partSpinner.setValue(r.getMax());
 		partChange.setEnabled(true);
 		partRemove.setEnabled(true);
 		partMarkBroken.setEnabled(true);
