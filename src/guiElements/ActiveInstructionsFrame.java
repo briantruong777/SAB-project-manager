@@ -591,7 +591,7 @@ public class ActiveInstructionsFrame extends JFrame
 		     		{	
 		     			long hrs = t.getTimeSpent() / 1000 / 60 / 60;
 		     			long minutes = t.getTimeSpent() / 1000 / 60;
-		     			hrs %= 24;
+		     			//hrs %= 24;
 		     			minutes %= 60;
 		     			sessions += "\012" + hrs + " hour(s) and " + minutes + " minute(s)";
 		     		}
