@@ -540,6 +540,9 @@ public class ActiveInstructionsFrame extends JFrame
 	     			reports += "\012Fixed On: ";
 	     			if (b.getEndDate().isSet(Calendar.MINUTE))
 	     				reports += df.format(b.getEndDate().getTime());
+	     			reports += "\012Builder: " + b.getBuilder();
+	     			reports += "\012Foreman: " + b.getForeman();
+	     			reports += "\012Affected Task: " + b.getTask();
 		     		reports += "\012\012";
 		     		s1.addCell(new Label(3, k, reports));
 	     		}
@@ -567,6 +570,10 @@ public class ActiveInstructionsFrame extends JFrame
 	     			reports += "\012Fixed On: ";
 	     			if (b.getEndDate().isSet(Calendar.MINUTE))
 	     				reports += df.format(b.getEndDate().getTime());
+	     			reports += "\012Builder: " + b.getBuilder();
+	     			System.out.println("test");
+	     			reports += "\012Foreman: " + b.getForeman();
+	     			reports += "\012Affected Task: " + b.getTask();
 		     		reports += "\012\012";
 		     		s1.addCell(new Label(8, m, reports));
 	     		}
